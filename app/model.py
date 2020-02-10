@@ -58,11 +58,3 @@ class NovelCoronaAPI:
         """ The affected countries """
         countries = self.df_confirmed['Country/Region'].unique().tolist()
         return {'countries': countries}
-    
-    def get_country(self) -> Dict[str, List]:
-        """ Get a single affected country """
-
-
-        return None
-
-
