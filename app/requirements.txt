@@ -1,5 +1,7 @@
 fastapi
 uvicorn
 gunicorn
+jinja2
+aiofiles
 pandas
 requests

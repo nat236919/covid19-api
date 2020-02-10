@@ -1,6 +1,6 @@
 """
 FILE: helper.py
-DESCRIPTION: Download and Unzip the data
+DESCRIPTION: Read raw files from GitHub
 AUTHOR: Nuttaphat Arunoprayoch
 DATE: 9-Feb-2020
 """

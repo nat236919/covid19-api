@@ -8,19 +8,26 @@ RUN SERVER: uvicorn main:app --reload
 # Import libraries
 import sys
 from fastapi import FastAPI
+from starlette.requests import Request
+from starlette.staticfiles import StaticFiles
+from starlette.templating import Jinja2Templates
+
 from typing import Dict
 from model import NovelCoronaAPI
 
 # Setup variables
 version = f"{sys.version_info.major}.{sys.version_info.minor}"
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
 novel_corona_api = NovelCoronaAPI()
 
 
 @app.get("/")
-async def read_root():
+async def read_root(request: Request):
     message = f"Hello world! From FastAPI running on Uvicorn with Gunicorn. Using Python {version}"
-    return {"message": message}
+    return templates.TemplateResponse('index.html', {"request": request})
 
 
 @app.get('/current')
