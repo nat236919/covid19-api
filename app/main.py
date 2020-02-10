@@ -26,7 +26,6 @@ novel_corona_api = NovelCoronaAPI()
 
 @app.get("/")
 async def read_root(request: Request):
-    message = f"Hello world! From FastAPI running on Uvicorn with Gunicorn. Using Python {version}"
     return templates.TemplateResponse('index.html', {"request": request})
 
 
