@@ -47,5 +47,10 @@ Send a request to the follwing URLs:
 {"countries":["China","Thailand","Japan","South Korea","Taiwan","US","Macau","Hong Kong","Singapore","Vietnam","France","Nepal","Malaysia","Canada","Australia","Cambodia","Sri Lanka","Germany","Finland","United Arab Emirates","Philippines","India","Italy","UK","Russia","Sweden","Spain","Belgium","Others"]}
 ```
 
+6. https://corona-api.herokuapp.com/country/china
+```python
+{"China":{"confirmed":40160,"deaths":908,"recovered":3286}}
+```
+
 #### References
 https://github.com/CSSEGISandData/2019-nCoV

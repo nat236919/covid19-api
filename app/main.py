@@ -12,7 +12,7 @@ from starlette.requests import Request
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
-from typing import Dict
+from typing import Dict, Any
 from model import NovelCoronaAPI
 
 # Setup variables
@@ -52,7 +52,21 @@ def recovered() -> Dict[str, int]:
     data = novel_corona_api.get_recovered()
     return data
 
+
 @app.get('/countries')
 def affected_countries() -> Dict[int, str]:
     data = novel_corona_api.get_affected_countries()
+    return data
+
+
+@app.get('/country/{country_name}')
+def country(country_name: str) -> Dict[str, Any]:
+    country_name = country_name.lower().capitalize()
+    raw_data = novel_corona_api.get_current_status()
+
+    try:
+        data = {country_name: raw_data[country_name]}
+    except:
+        data = {'result': 'Not Found'}
+
     return data
