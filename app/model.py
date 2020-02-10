@@ -26,20 +26,17 @@ class NovelCoronaAPI:
         countries = self.df_confirmed['Country/Region'].unique().tolist()
         current_data = {country: {'confirmed': 0, 'deaths': 0, 'recovered': 0} for country in countries}
 
-        # Calculate the data
-        sum_confirmed = self.df_confirmed.T.to_dict()
-        sum_deaths = self.df_deaths.T.to_dict()
-        sum_recovered = self.df_recovered.T.to_dict()
+        # Extractor
+        def extractor(col: str, df: pd.DataFrame) -> None:
+            temp_data = df.T.to_dict()
+            for data in temp_data.values():
+                current_data[data['Country/Region']][col] += int(data[col.capitalize()])
+            return None
 
-        # Temporary Solutions
-        for data in sum_confirmed.values():
-            current_data[data['Country/Region']]['confirmed'] += int(data['Confirmed'])
-
-        for data in sum_deaths.values():
-            current_data[data['Country/Region']]['deaths'] += int(data['Deaths'])
-
-        for data in sum_recovered.values():
-            current_data[data['Country/Region']]['recovered'] += int(data['Recovered'])
+        # Add data to current_data
+        df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered}
+        for col, df in df_list.items():
+            extractor(col, df)
         
         # Add timestamp
         current_data['ts'] = datetime.timestamp(datetime.now())
