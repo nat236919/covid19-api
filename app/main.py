@@ -46,7 +46,7 @@ def recovered() -> Dict[str, int]:
     data = novel_corona_api.get_recovered()
     return data
 
-@app.get('/affected')
+@app.get('/countries')
 def affected_countries() -> Dict[int, str]:
     data = novel_corona_api.get_affected_countries()
     return data
