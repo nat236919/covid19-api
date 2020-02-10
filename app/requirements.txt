@@ -3,4 +3,3 @@ uvicorn
 gunicorn
 pandas
 requests
-csv

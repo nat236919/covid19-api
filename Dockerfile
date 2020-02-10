@@ -6,6 +6,5 @@ RUN pip install fastapi
 RUN pip install uvicorn
 RUN pip install pandas
 RUN pip install requests
-RUN pip install csv
 
 COPY ./app /app
