@@ -31,6 +31,7 @@ class NovelCoronaAPI:
         sum_deaths = self.df_deaths.T.to_dict()
         sum_recovered = self.df_recovered.T.to_dict()
 
+        # Temporary Solutions
         for data in sum_confirmed.values():
             current_data[data['Country/Region']]['confirmed'] += int(data['Confirmed'])
 
