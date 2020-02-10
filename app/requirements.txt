@@ -2,4 +2,5 @@ fastapi
 uvicorn
 gunicorn
 pandas
-kaggle
+requests
+csv

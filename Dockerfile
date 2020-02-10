@@ -4,8 +4,8 @@ LABEL maintainer="Nuttaphat Arunoprayoch <nat236919@gmail.com>"
 
 RUN pip install fastapi
 RUN pip install uvicorn
-RUN pip install kaggle
-RUN pip install zipfile
 RUN pip install pandas
+RUN pip install requests
+RUN pip install csv
 
 COPY ./app /app
