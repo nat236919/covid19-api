@@ -34,10 +34,9 @@ class NovelCoronaAPI:
             return None
 
         # Add data to current_data
-        df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered}
-        for col, df in df_list.items():
-            extractor(col, df)
-        
+        df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered} 
+        [extractor(col, df) for col, df in df_list.items()]
+
         # Add timestamp
         current_data['ts'] = datetime.timestamp(datetime.now())
 
