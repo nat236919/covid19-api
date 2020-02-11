@@ -21,40 +21,43 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-novel_corona_api = NovelCoronaAPI()
 
-
-@app.get("/")
+@app.get('/')
 async def read_root(request: Request):
     return templates.TemplateResponse('index.html', {"request": request})
 
 
 @app.get('/current')
 def current_status() -> Dict[str, int]:
+    novel_corona_api = NovelCoronaAPI()
     data = novel_corona_api.get_current_status()
     return data
 
 
 @app.get('/confirmed')
 def confirmed_cases() -> Dict[str, int]:
+    novel_corona_api = NovelCoronaAPI()
     data = novel_corona_api.get_confirmed_cases()
     return data
 
 
 @app.get('/deaths')
 def deaths() -> Dict[str, int]:
+    novel_corona_api = NovelCoronaAPI()
     data = novel_corona_api.get_deaths()
     return data
 
 
 @app.get('/recovered')
 def recovered() -> Dict[str, int]:
+    novel_corona_api = NovelCoronaAPI()
     data = novel_corona_api.get_recovered()
     return data
 
 
 @app.get('/countries')
 def affected_countries() -> Dict[int, str]:
+    novel_corona_api = NovelCoronaAPI()
     data = novel_corona_api.get_affected_countries()
     return data
 
@@ -62,6 +65,8 @@ def affected_countries() -> Dict[int, str]:
 @app.get('/country/{country_name}')
 def country(country_name: str) -> Dict[str, Any]:
     country_name = country_name.lower().capitalize()
+
+    novel_corona_api = NovelCoronaAPI()
     raw_data = novel_corona_api.get_current_status()
 
     try:
