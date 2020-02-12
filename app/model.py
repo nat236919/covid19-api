@@ -60,7 +60,18 @@ class NovelCoronaAPI:
         """ Summation of all recovers """
         return {'recovered': sum([int(i) for i in self.df_recovered['Recovered']]),
                 'dt': self.datetime_raw, 'ts': self.timestamp}
-    
+
+    def get_total(self) -> Dict[str, int]:
+        """ Summation of Confirmed, Deaths, Recovered """
+        data = {
+            'confirmed': self.get_confirmed_cases()['confirmed'],
+            'deaths': self.get_deaths()['deaths'],
+            'recovered': self.get_recovered()['recovered'],
+            'dt': self.datetime_raw,
+            'ts': self.timestamp
+        }
+        return data
+
     def get_affected_countries(self) -> Dict[str, List]:
         """ The affected countries """
         countries = self.df_confirmed['Country/Region'].unique().tolist()

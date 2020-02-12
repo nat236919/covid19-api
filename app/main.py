@@ -48,6 +48,13 @@ def current_status() -> Dict[str, int]:
     return data
 
 
+@app.get('/total')
+@reload_model
+def current_status() -> Dict[str, int]:
+    data = novel_corona_api.get_total()
+    return data
+
+
 @app.get('/confirmed')
 @reload_model
 def confirmed_cases() -> Dict[str, int]:
