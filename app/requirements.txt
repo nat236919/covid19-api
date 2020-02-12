@@ -5,3 +5,4 @@ jinja2
 aiofiles
 pandas
 requests
+pycountry

@@ -29,10 +29,10 @@ def get_data() -> Dict[str, pd.DataFrame]:
         df = pd.DataFrame(data)
 
         # Data Cleaning
-        df = df.iloc[:,[1, -1]] # Select only Country and its last values
-        df.columns = ['Country/Region', category]
+        df = df.iloc[:,[0, 1, -1]] # Select only Region, Country and its last values
+        df.columns = ['Province/State', 'Country/Region', category]
+        df['Country/Region'] = df['Country/Region'].str.replace(' ', '_')
         pd.to_numeric(df[category])
-        df['Country/Region'].replace({'Mainland China': 'China'}, inplace=True)
         df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
 
         DATAFRAMES[category.lower()] = df

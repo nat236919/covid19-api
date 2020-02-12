@@ -7,13 +7,15 @@ RUN SERVER: uvicorn main:app --reload
 """
 # Import libraries
 import sys
+import pycountry
 from functools import wraps
+from typing import Dict, Any
+
 from fastapi import FastAPI
 from starlette.requests import Request
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
-from typing import Dict, Any
 from model import NovelCoronaAPI
 
 # Setup variables
@@ -77,12 +79,21 @@ def affected_countries() -> Dict[int, str]:
 @app.get('/country/{country_name}')
 @reload_model
 def country(country_name: str) -> Dict[str, Any]:
-    country_name = country_name.lower().capitalize()
-    raw_data = novel_corona_api.get_current_status()
-
+    """ Search by name or ISO (alpha2 and alpha3) """
+    raw_data = novel_corona_api.get_current_status() # Get all current data
     try:
-        data = {country_name: raw_data[country_name]}
+        if country_name.lower() not in ['us', 'uk'] and len(country_name) in [2]:
+            country_name = pycountry.countries.lookup(country_name).name # Select the first portion of str when , is found
+            if ',' in country_name:
+                country_name = country_name.split(',')[0]
+            elif ' ' in country_name:
+                country_name = country_name.split(' ')[-1]
+            print(country_name)
+            data = {k: v for k, v in raw_data.items() if country_name.lower() in k.lower()}
+        else:
+            data = {k: v for k, v in raw_data.items() if country_name.lower() == k.lower()}
+
     except:
-        data = {'result': 'Not Found'}
+        data = {}
 
     return data
