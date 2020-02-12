@@ -79,7 +79,7 @@ def affected_countries() -> Dict[int, str]:
 @app.get('/country/{country_name}')
 @reload_model
 def country(country_name: str) -> Dict[str, Any]:
-    """ Search by name or ISO (alpha2 and alpha3) """
+    """ Search by name or ISO (alpha2) """
     raw_data = novel_corona_api.get_current_status() # Get all current data
     try:
         if country_name.lower() not in ['us', 'uk'] and len(country_name) in [2]:
