@@ -53,7 +53,7 @@ https://covid2019-api.herokuapp.com/countries
 {"countries":["Mainland_China","Thailand","Japan","South_Korea","Taiwan","US","Macau","Hong_Kong","Singapore","Vietnam","France","Nepal","Malaysia","Canada","Australia","Cambodia","Sri_Lanka","Germany","Finland","United_Arab_Emirates","Philippines","India","Italy","UK","Russia","Sweden","Spain","Belgium","Others"]}
 ```
 
-6. Get a country by its key name or ISO code (Alpha-2 code)
+6. Get a country by its key name (small letters) or ISO code (Alpha-2 code)
 ```python
 https://covid2019-api.herokuapp.com/country/mainland_china
 {"Mainland_China":{"confirmed":44641,"deaths":1113,"recovered":4730}}
