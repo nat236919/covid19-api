@@ -93,6 +93,10 @@ def country(country_name: str) -> Dict[str, Any]:
         else:
             data = {k: v for k, v in raw_data.items() if country_name.lower() == k.lower()}
 
+        # Add dt and ts
+        data['dt'] = raw_data['dt']
+        data['ts'] = raw_data['ts']
+
     except:
         data = {}
 
