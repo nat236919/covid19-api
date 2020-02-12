@@ -1,5 +1,5 @@
 """
-PROJECT: NovelCoronaAPI
+PROJECT: Covid2019-API
 DESCRIPTION: Daily level information on various cases
 AUTHOR: Nuttaphat Arunoprayoch
 DATE: 9-Feb-2020

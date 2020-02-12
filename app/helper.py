@@ -12,9 +12,9 @@ from typing import Dict
 
 
 def get_data() -> Dict[str, pd.DataFrame]:
-    """ Get the dataset from https://github.com/CSSEGISandData/2019-nCoV """
+    """ Get the dataset from https://github.com/CSSEGISandData/COVID-19 """
     # Download the dataset
-    BASE_URL = 'https://raw.githubusercontent.com/CSSEGISandData/2019-nCoV/master/time_series/time_series_2019-ncov-{}.csv'
+    BASE_URL = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/time_series/time_series_2019-ncov-{}.csv'
     CATEGORIES = ['Confirmed', 'Deaths', 'Recovered']
     DATAFRAMES = {}
 

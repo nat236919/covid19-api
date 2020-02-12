@@ -1,5 +1,5 @@
-# NovelCoronaAPI
-Novel Corona Virus | API
+# COVID2019-API
+Covid2019 | API
 <p>
 <img src="https://img.shields.io/github/issues/nat236919/NovelCoronaAPI">
 <img src="https://img.shields.io/github/forks/nat236919/NovelCoronaAPI">
@@ -7,7 +7,7 @@ Novel Corona Virus | API
 <img src="https://img.shields.io/github/license/nat236919/NovelCoronaAPI">
 </p>
 
-https://corona-api.herokuapp.com/
+https://covid2019-api.herokuapp.com/
 
 This API provides the information regarding '2019 Novel Coronavirus (nCoV)'. It contains a number of confirmed, death, and recovered cases based on the data provided by the Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE).
 
@@ -30,29 +30,29 @@ https://corona-api.herokuapp.com/current
 ```
 
 ```python
-https://corona-api.herokuapp.com/confirmed
+https://covid2019-api.herokuapp.com/confirmed
 {"confirmed":40536}
 ```
 
 ```python
-https://corona-api.herokuapp.com/deaths
+https://covid2019-api.herokuapp.com/deaths
 {"deaths":910}
 ```
 
 ```python
-https://corona-api.herokuapp.com/recovered
+https://covid2019-api.herokuapp.com/recovered
 {"recovered":3312}
 ```
 
 ```python
-https://corona-api.herokuapp.com/countries
+https://covid2019-api.herokuapp.com/countries
 {"countries":["China","Thailand","Japan","South Korea","Taiwan","US","Macau","Hong Kong","Singapore","Vietnam","France","Nepal","Malaysia","Canada","Australia","Cambodia","Sri Lanka","Germany","Finland","United Arab Emirates","Philippines","India","Italy","UK","Russia","Sweden","Spain","Belgium","Others"]}
 ```
 
 ```python
-https://corona-api.herokuapp.com/country/china
+https://covid2019-api.herokuapp.com/country/china
 {"China":{"confirmed":40160,"deaths":908,"recovered":3286}}
 ```
 
 #### References
-https://github.com/CSSEGISandData/2019-nCoV
+https://github.com/CSSEGISandData/COVID-19
