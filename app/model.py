@@ -25,6 +25,7 @@ class NovelCoronaAPI:
         # Create a template
         countries = self.df_confirmed['Country/Region'].unique().tolist()
         current_data = {country: {'confirmed': 0, 'deaths': 0, 'recovered': 0} for country in countries}
+        raw_datetime = self.df_confirmed['datetime'].unique().tolist()[0]
 
         # Extractor
         def extractor(col: str, df: pd.DataFrame) -> None:
@@ -37,8 +38,9 @@ class NovelCoronaAPI:
         df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered} 
         [extractor(col, df) for col, df in df_list.items()]
 
-        # # Add timestamp
-        # current_data['ts'] = datetime.timestamp(datetime.now())
+        # Add datetime and timestamp
+        current_data['dt'] = raw_datetime
+        current_data['ts'] = datetime.strptime(raw_datetime, '%m/%d/%y %H:%M').timestamp()
 
         return current_data
 

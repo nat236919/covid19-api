@@ -8,6 +8,7 @@ DATE: 9-Feb-2020
 import requests
 import csv
 import pandas as pd
+from datetime import datetime
 from typing import Dict
 
 
@@ -28,10 +29,12 @@ def get_data() -> Dict[str, pd.DataFrame]:
         data = list(csv.DictReader(text.splitlines()))
         df = pd.DataFrame(data)
 
-        # Data Cleaning
+        # Data Preprocessing
         df = df.iloc[:,[0, 1, -1]] # Select only Region, Country and its last values
+        datetime_raw = list(df.columns.values)[-1] # Ex) '2/11/20 20:44'
         df.columns = ['Province/State', 'Country/Region', category]
         df['Country/Region'] = df['Country/Region'].str.replace(' ', '_')
+        df['datetime'] = datetime_raw
         pd.to_numeric(df[category])
         df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
 
