@@ -108,3 +108,22 @@ def country(country_name: str) -> Dict[str, Any]:
         data = {}
 
     return data
+
+
+@app.get('/timeseries/{case}')
+@reload_model
+def timeseries(case: str) -> Dict[str, Any]:
+    """ Get the time series based on a given case: confirmed, deaths, recovered """
+    raw_data = novel_corona_api.get_time_series()
+    case = case.lower()
+
+    if case not in ['confirmed', 'deaths', 'recovered']:
+        data = {}
+    else:
+        data = {
+            case: raw_data[case],
+            'dt': raw_data['dt'],
+            'ts': raw_data['ts']
+        }
+
+    return data

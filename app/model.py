@@ -8,17 +8,24 @@ DATE: 9-Feb-2020
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
-from helper import get_data
+from helper import get_data, get_time_series
 
 
 # Create a model and its methods
 class NovelCoronaAPI:
     """ Model and Its methods """
     def __init__(self) -> None:
+        """ Get data from helper -> the source data """
         list_of_dataframes = get_data()
         self.df_confirmed = list_of_dataframes['confirmed']
         self.df_deaths = list_of_dataframes['deaths']
         self.df_recovered = list_of_dataframes['recovered']
+
+        list_of_time_series = get_time_series()
+        self.df_time_series_confirmed = list_of_time_series['confirmed']
+        self.df_time_series_deaths = list_of_time_series['deaths']
+        self.df_time_series_recovered = list_of_time_series['recovered']
+
         self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
         self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y %H:%M').timestamp()
 
@@ -76,3 +83,14 @@ class NovelCoronaAPI:
         """ The affected countries """
         countries = self.df_confirmed['Country/Region'].unique().tolist()
         return {'countries': countries, 'dt': self.datetime_raw, 'ts': self.timestamp}
+
+    def get_time_series(self) -> Dict[str, Dict]:
+        """ Raw time series """
+        data = {
+            'confirmed': self.df_time_series_confirmed,
+            'deaths': self.df_time_series_deaths,
+            'recovered':  self.df_time_series_recovered,
+            'dt': self.datetime_raw,
+            'ts': self.timestamp
+        }
+        return data
