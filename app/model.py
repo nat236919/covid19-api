@@ -61,7 +61,7 @@ class NovelCoronaAPI:
         return {'recovered': sum([int(i) for i in self.df_recovered['Recovered']]),
                 'dt': self.datetime_raw, 'ts': self.timestamp}
 
-    def get_total(self) -> Dict[str, int]:
+    def get_total(self) -> Dict[str, Any]:
         """ Summation of Confirmed, Deaths, Recovered """
         data = {
             'confirmed': self.get_confirmed_cases()['confirmed'],

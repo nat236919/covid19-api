@@ -50,7 +50,7 @@ def current_status() -> Dict[str, int]:
 
 @app.get('/total')
 @reload_model
-def current_status() -> Dict[str, int]:
+def current_status() -> Dict[str, Any]:
     data = novel_corona_api.get_total()
     return data
 
