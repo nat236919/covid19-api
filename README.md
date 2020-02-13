@@ -1,11 +1,9 @@
 # COVID2019-API
-Covid2019 | API
-<p>
-<img src="https://img.shields.io/github/issues/nat236919/NovelCoronaAPI">
-<img src="https://img.shields.io/github/forks/nat236919/NovelCoronaAPI">
-<img src="https://img.shields.io/github/stars/nat236919/NovelCoronaAPI">
-<img src="https://img.shields.io/github/license/nat236919/NovelCoronaAPI">
-</p>
+
+[![issues](<https://img.shields.io/github/issues/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/issues)
+[![forks](<https://img.shields.io/github/forks/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/forks)
+[![stars](<https://img.shields.io/github/stars/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/stars)
+[![license](<https://img.shields.io/github/license/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/license)
 
 https://covid2019-api.herokuapp.com/
 
@@ -22,6 +20,19 @@ https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e
 
 ## How to use
 Send a request to the follwing URLs:
+
+|  Request (GET)              |                       Description                               |
+| ---------------------------- | -------------------------------------------------------------- |
+| https://covid2019-api.herokuapp.com/current     | Get all data from all the reportedly affected countries |
+| https://covid2019-api.herokuapp.com/total  | Get the total numbers of Confirmed, Deaths, and Recovered |
+| https://covid2019-api.herokuapp.com/confirmed   | Get the total number of Confirmed cases |
+| https://covid2019-api.herokuapp.com/deaths | Get the total number of Deaths |
+| https://covid2019-api.herokuapp.com/recovered | Get the total number of Confirmed cases} |
+| https://covid2019-api.herokuapp.com/countries  | Get a list of the reportedly affected countries |
+| https://covid2019-api.herokuapp.com/country/mainland_china |  Search a country by a key name (refered to 'current' method) |
+| https://covid2019-api.herokuapp.com/country/kr | Search a country by an [ISO country code (alpha2)] (https://www.iban.com/country-codes) |
+
+#### Examples
 
 1. Get current data
 ```python
