@@ -16,7 +16,7 @@ from starlette.requests import Request
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
-from model import NovelCoronaAPI
+from models.covid_model import NovelCoronaAPI
 
 # Setup variables
 version = f"{sys.version_info.major}.{sys.version_info.minor}"

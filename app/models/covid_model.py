@@ -1,5 +1,5 @@
 """
-FILE: model.py
+FILE: covid_model.py
 DESCRIPTION: Prepare the data as API-ready
 AUTHOR: Nuttaphat Arunoprayoch
 DATE: 9-Feb-2020
@@ -8,7 +8,7 @@ DATE: 9-Feb-2020
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
-from helper import get_data, get_time_series
+from utils.helper import get_data, get_time_series
 
 
 # Create a model and its methods
