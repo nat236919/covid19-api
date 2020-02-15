@@ -27,7 +27,7 @@ Send a request to the follwing URLs:
 | https://covid2019-api.herokuapp.com/total  | Get the total numbers of Confirmed, Deaths, and Recovered |
 | https://covid2019-api.herokuapp.com/confirmed   | Get the total number of Confirmed cases |
 | https://covid2019-api.herokuapp.com/deaths | Get the total number of Deaths |
-| https://covid2019-api.herokuapp.com/recovered | Get the total number of Confirmed cases} |
+| https://covid2019-api.herokuapp.com/recovered | Get the total number of Confirmed cases |
 | https://covid2019-api.herokuapp.com/countries  | Get a list of the reportedly affected countries |
 | https://covid2019-api.herokuapp.com/country/mainland_china |  Search a country by a key name (refered to 'current' method) |
 | https://covid2019-api.herokuapp.com/country/kr | Search a country by an [ISO country code (alpha2)] (https://www.iban.com/country-codes) |
