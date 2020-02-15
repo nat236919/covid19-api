@@ -13,7 +13,7 @@ from typing import Dict
 
 
 # Set global variables
-BASE_URL = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/time_series/time_series_2019-ncov-{}.csv'
+BASE_URL = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-{}.csv'
 CATEGORIES = ['Confirmed', 'Deaths', 'Recovered']
 
 

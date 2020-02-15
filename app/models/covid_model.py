@@ -27,14 +27,13 @@ class NovelCoronaAPI:
         self.df_time_series_recovered = list_of_time_series['recovered']
 
         self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
-        self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y %H:%M').timestamp()
+        self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y').timestamp()
 
     def get_current_status(self) -> Dict[str, Any]:
         """ Current data (Lastest date) """
         # Create a template
         countries = self.df_confirmed['Country/Region'].unique().tolist()
         current_data = {country: {'confirmed': 0, 'deaths': 0, 'recovered': 0} for country in countries}
-        raw_datetime = self.df_confirmed['datetime'].unique().tolist()[0]
 
         # Extractor
         def extractor(col: str, df: pd.DataFrame) -> None:
