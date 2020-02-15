@@ -48,6 +48,20 @@ def current_status() -> Dict[str, int]:
     return data
 
 
+@app.get('/current_list')
+@reload_model
+def current_status_list() -> Dict[str, Any]:
+    """ Coutries are kept in a List """
+    raw_data = novel_corona_api.get_current_status()
+    data = {
+        'countries': [{k: v for k, v in raw_data.items() if k not in ['ts', 'dt']}],
+        'dt': raw_data['dt'],
+        'ts': raw_data['ts']
+    }
+
+    return data
+
+
 @app.get('/total')
 @reload_model
 def total() -> Dict[str, Any]:
@@ -116,10 +130,9 @@ def timeseries(case: str) -> Dict[str, Any]:
     """ Get the time series based on a given case: confirmed, deaths, recovered """
     raw_data = novel_corona_api.get_time_series()
     case = case.lower()
+    data = {}
 
-    if case not in ['confirmed', 'deaths', 'recovered']:
-        data = {}
-    else:
+    if case in ['confirmed', 'deaths', 'recovered']:
         data = {
             case: raw_data[case],
             'dt': raw_data['dt'],
