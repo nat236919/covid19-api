@@ -8,7 +8,7 @@ DATE: 9-Feb-2020
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
-from utils.helper import get_data, get_time_series
+from utils.helper import get_data
 
 
 # Create a model and its methods
@@ -21,7 +21,7 @@ class NovelCoronaAPI:
         self.df_deaths = list_of_dataframes['deaths']
         self.df_recovered = list_of_dataframes['recovered']
 
-        list_of_time_series = get_time_series()
+        list_of_time_series = get_data(time_series=True)
         self.df_time_series_confirmed = list_of_time_series['confirmed']
         self.df_time_series_deaths = list_of_time_series['deaths']
         self.df_time_series_recovered = list_of_time_series['recovered']
