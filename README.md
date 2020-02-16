@@ -3,7 +3,7 @@
 [![issues](<https://img.shields.io/github/issues/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/issues)
 [![forks](<https://img.shields.io/github/forks/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/forks)
 [![stars](<https://img.shields.io/github/stars/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/stars)
-[![license](<https://img.shields.io/github/license/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/license)
+[![license](<https://img.shields.io/github/license/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/blob/master/LICENCE)
 
 https://covid2019-api.herokuapp.com/
 
