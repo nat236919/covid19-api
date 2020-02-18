@@ -13,6 +13,7 @@ from typing import Dict, Any
 
 from fastapi import FastAPI
 from starlette.requests import Request
+from starlette.responses import RedirectResponse
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
@@ -37,8 +38,18 @@ def reload_model(func):
 
 
 @app.get('/')
-async def read_root(request: Request):
-    return templates.TemplateResponse('index.html', {"request": request})
+@reload_model
+def read_root(request: Request):
+    """ Landing page """
+    data = novel_corona_api.get_total()
+    return templates.TemplateResponse('index.html', {"request": request, "data": data})
+
+
+@app.get('/docs')
+@reload_model
+def read_docs() -> None:
+    """ API documentation """
+    return RedirectResponse(url='/docs')
 
 
 @app.get('/current')
