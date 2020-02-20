@@ -29,7 +29,13 @@ class NovelCoronaAPI:
         self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
         self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y').timestamp()
 
-    def get_current_status(self) -> Dict[str, Any]:
+    def add_dt_and_ts(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """ Add datetime and timestamp to Dict data """
+        data['dt'] = self.datetime_raw
+        data['ts'] = self.timestamp
+        return data
+
+    def get_current_status(self, list_required: bool = False) -> Dict[str, Any]:
         """ Current data (Lastest date) """
         # Create a template
         countries = self.df_confirmed['Country/Region'].unique().tolist()
@@ -46,42 +52,49 @@ class NovelCoronaAPI:
         df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered} 
         [extractor(col, df) for col, df in df_list.items()]
 
+        # Check if a List form is required
+        if list_required:
+            current_data['countries'] = [{k: v for k, v in current_data.items()}]
+            current_data = {k:v for k, v in current_data.items() if k in ['countries']} # Filter out other keys except countries
+
         # Add datetime and timestamp
-        current_data['dt'] = self.datetime_raw
-        current_data['ts'] = self.timestamp
+        current_data = self.add_dt_and_ts(current_data)
 
         return current_data
 
     def get_confirmed_cases(self) -> Dict[str, int]:
         """ Summation of all confirmed cases """
-        return {'confirmed': sum([int(i) for i in self.df_confirmed['Confirmed']]),
-                'dt': self.datetime_raw, 'ts': self.timestamp}
+        data = {'confirmed': sum([int(i) for i in self.df_confirmed['Confirmed']])}
+        data = self.add_dt_and_ts(data)
+        return data
 
     def get_deaths(self) -> Dict[str, int]:
         """ Summation of all deaths """
-        return {'deaths': sum([int(i) for i in self.df_deaths['Deaths']]),
-                'dt': self.datetime_raw, 'ts': self.timestamp}
+        data = {'deaths': sum([int(i) for i in self.df_deaths['Deaths']])}
+        data = self.add_dt_and_ts(data)
+        return data
 
     def get_recovered(self) -> Dict[str, int]:
         """ Summation of all recovers """
-        return {'recovered': sum([int(i) for i in self.df_recovered['Recovered']]),
-                'dt': self.datetime_raw, 'ts': self.timestamp}
+        data = {'recovered': sum([int(i) for i in self.df_recovered['Recovered']])}
+        data = self.add_dt_and_ts(data)
+        return data
 
     def get_total(self) -> Dict[str, Any]:
         """ Summation of Confirmed, Deaths, Recovered """
         data = {
             'confirmed': self.get_confirmed_cases()['confirmed'],
             'deaths': self.get_deaths()['deaths'],
-            'recovered': self.get_recovered()['recovered'],
-            'dt': self.datetime_raw,
-            'ts': self.timestamp
-        }
+            'recovered': self.get_recovered()['recovered']
+            }
+        data = self.add_dt_and_ts(data)
         return data
 
     def get_affected_countries(self) -> Dict[str, List]:
         """ The affected countries """
-        countries = self.df_confirmed['Country/Region'].unique().tolist()
-        return {'countries': countries, 'dt': self.datetime_raw, 'ts': self.timestamp}
+        data = {'countries': self.df_confirmed['Country/Region'].unique().tolist()}
+        data = self.add_dt_and_ts(data)
+        return data
 
     def get_time_series(self) -> Dict[str, Dict]:
         """ Raw time series """
@@ -89,7 +102,6 @@ class NovelCoronaAPI:
             'confirmed': self.df_time_series_confirmed,
             'deaths': self.df_time_series_deaths,
             'recovered':  self.df_time_series_recovered,
-            'dt': self.datetime_raw,
-            'ts': self.timestamp
         }
+        data = self.add_dt_and_ts(data)
         return data

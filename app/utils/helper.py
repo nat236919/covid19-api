@@ -36,7 +36,7 @@ def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
         if time_series:
             df = df.T.to_dict()
         else:
-            df = df.iloc[:,[0, 1, -1]] # Select only Region, Country and its last values
+            df = df.iloc[:, [0, 1, -1]] # Select only Region, Country and its last values
             datetime_raw = list(df.columns.values)[-1] # Ex) '2/11/20 20:44'
             df.columns = ['Province/State', 'Country/Region', category]
             df['datetime'] = datetime_raw
