@@ -11,7 +11,7 @@ import pycountry
 from functools import wraps
 from typing import Dict, Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from starlette.staticfiles import StaticFiles
@@ -124,7 +124,7 @@ def country(country_name: str) -> Dict[str, Any]:
         data['ts'] = raw_data['ts']
 
     except:
-        data = {}
+        raise HTTPException(status_code=404, detail="Item not found")
 
     return data
 
@@ -135,9 +135,10 @@ def timeseries(case: str) -> Dict[str, Any]:
     """ Get the time series based on a given case: confirmed, deaths, recovered """
     data = novel_corona_api.get_time_series()
     case = case.lower()
+
     if case in ['confirmed', 'deaths', 'recovered']:
         data = {k:v for k, v in data.items() if k in [case, 'dt', 'ts']}
     else:
-        data = {}
+        raise HTTPException(status_code=404, detail="Item not found")
 
     return data
