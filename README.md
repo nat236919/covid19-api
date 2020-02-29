@@ -7,7 +7,7 @@
 
 https://covid2019-api.herokuapp.com/
 
-This API provides the information regarding '2019 Novel Coronavirus (Covid2019)'. It contains a number of confirmed, death, and recovered cases based on the data provided by the Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE).
+This API provides the information regarding '2019 Novel Coronavirus (Covid2019)'. It contains a number of confirmed, death, and recovered cases based on the data provided by the Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE).
 
 ## Dashboard
 https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6
