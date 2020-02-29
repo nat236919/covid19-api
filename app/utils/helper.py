@@ -30,6 +30,7 @@ def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
         # Extract data
         data = list(csv.DictReader(text.splitlines()))
         df = pd.DataFrame(data)
+        df['Country/Region'] = df['Country/Region'].apply(lambda country_name: country_name.strip()) # Eliminate whitespace
         df['Country/Region'] = df['Country/Region'].str.replace(' ', '_')
 
         # Data Preprocessing
