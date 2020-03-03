@@ -9,6 +9,7 @@ import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
 from utils.helper import get_data
+from collections import OrderedDict
 
 
 # Create a model and its methods
@@ -38,7 +39,7 @@ class NovelCoronaAPI:
     def get_current_status(self, list_required: bool = False) -> Dict[str, Any]:
         """ Current data (Lastest date) """
         # Create a template
-        countries = sorted(self.df_confirmed['Country/Region'].unique().tolist())
+        countries = self.df_confirmed['Country/Region'].unique().tolist()
         current_data = {country: {'confirmed': 0, 'deaths': 0, 'recovered': 0} for country in countries}
 
         # Extractor
@@ -52,15 +53,19 @@ class NovelCoronaAPI:
         df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered}
         [extractor(col, df) for col, df in df_list.items()]
 
+        sorted_data = OrderedDict()
+        for key, value in sorted(current_data.items(), key=lambda item: item[1]["confirmed"]):
+            sorted_data[key] = value
+
         # Check if a List form is required
         if list_required:
-            current_data['countries'] = [{k: v for k, v in current_data.items()}]
-            current_data = {k:v for k, v in current_data.items() if k in ['countries']} # Filter out other keys except countries
+            sorted_data['countries'] = [{k: v for k, v in sorted_data.items()}]
+            sorted_data = {k:v for k, v in sorted_data.items() if k in ['countries']} # Filter out other keys except countries
 
         # Add datetime and timestamp
-        current_data = self.add_dt_and_ts(current_data)
+        sorted_data = self.add_dt_and_ts(sorted_data)
 
-        return current_data
+        return sorted_data
 
     def get_confirmed_cases(self) -> Dict[str, int]:
         """ Summation of all confirmed cases """
