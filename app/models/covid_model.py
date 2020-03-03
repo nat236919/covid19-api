@@ -38,7 +38,7 @@ class NovelCoronaAPI:
     def get_current_status(self, list_required: bool = False) -> Dict[str, Any]:
         """ Current data (Lastest date) """
         # Create a template
-        countries = self.df_confirmed['Country/Region'].unique().tolist()
+        countries = sorted(self.df_confirmed['Country/Region'].unique().tolist())
         current_data = {country: {'confirmed': 0, 'deaths': 0, 'recovered': 0} for country in countries}
 
         # Extractor
@@ -49,7 +49,7 @@ class NovelCoronaAPI:
             return None
 
         # Add data to current_data
-        df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered} 
+        df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered}
         [extractor(col, df) for col, df in df_list.items()]
 
         # Check if a List form is required
@@ -92,7 +92,7 @@ class NovelCoronaAPI:
 
     def get_affected_countries(self) -> Dict[str, List]:
         """ The affected countries """
-        data = {'countries': self.df_confirmed['Country/Region'].unique().tolist()}
+        data = {'countries': sorted(self.df_confirmed['Country/Region'].unique().tolist())}
         data = self.add_dt_and_ts(data)
         return data
 
