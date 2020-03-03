@@ -92,7 +92,9 @@ class NovelCoronaAPI:
 
     def get_affected_countries(self) -> Dict[str, List]:
         """ The affected countries """
-        data = {'countries': sorted(self.df_confirmed['Country/Region'].unique().tolist())}
+        # Sorted alphabetically and exlucde 'Others'
+        sort_filter_others = lambda country_list: sorted([country for country in country_list if country not in ['Others']])
+        data = {'countries': sort_filter_others(self.df_confirmed['Country/Region'].unique().tolist())}
         data = self.add_dt_and_ts(data)
         return data
 
