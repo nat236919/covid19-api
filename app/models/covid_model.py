@@ -49,8 +49,12 @@ class NovelCoronaAPI:
             return None
 
         # Add data to current_data
-        df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered} 
+        df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered}
         [extractor(col, df) for col, df in df_list.items()]
+
+        # Sort by Confirmed
+        current_data = {country_name: country_data for country_name, country_data
+                                                    in sorted(current_data.items(), key=lambda data: data[-1]['confirmed'], reverse=True)}
 
         # Check if a List form is required
         if list_required:
@@ -92,7 +96,9 @@ class NovelCoronaAPI:
 
     def get_affected_countries(self) -> Dict[str, List]:
         """ The affected countries """
-        data = {'countries': self.df_confirmed['Country/Region'].unique().tolist()}
+        # Sorted alphabetically and exlucde 'Others'
+        sort_filter_others = lambda country_list: sorted([country for country in country_list if country not in ['Others']])
+        data = {'countries': sort_filter_others(self.df_confirmed['Country/Region'].unique().tolist())}
         data = self.add_dt_and_ts(data)
         return data
 
