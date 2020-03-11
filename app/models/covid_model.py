@@ -105,9 +105,9 @@ class NovelCoronaAPI:
     def get_time_series(self) -> Dict[str, Dict]:
         """ Raw time series """
         data = {
-            'confirmed': self.df_time_series_confirmed,
-            'deaths': self.df_time_series_deaths,
-            'recovered':  self.df_time_series_recovered,
+            'confirmed': [v for v in self.df_time_series_confirmed.values()],
+            'deaths': [v for v in self.df_time_series_deaths.values()],
+            'recovered':  [v for v in self.df_time_series_recovered.values()],
         }
         data = self.add_dt_and_ts(data)
         return data
