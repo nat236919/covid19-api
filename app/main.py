@@ -18,6 +18,7 @@ from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
 from models.covid_model import NovelCoronaAPI
+from models.covid_model_api_v2 import NovelCoronaAPIv2
 
 # Setup variables
 version = f"{sys.version_info.major}.{sys.version_info.minor}"
@@ -38,6 +39,23 @@ def reload_model(func):
     return wrapper
 
 
+# Reload model (APIv2)
+def reload_model_api_v2(func):
+    """ Reload a model APIv2 for each quest """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        global novel_corona_api_v2, dt, ts
+        novel_corona_api_v2 = NovelCoronaAPIv2()
+        dt, ts = novel_corona_api_v2.datetime_raw, novel_corona_api_v2.timestamp
+        return func(*args, **kwargs)
+    return wrapper
+
+
+"""
+SECTION: Default routes
+DESCRIPTION: Routes to the landing page and APi documentation
+"""
+# Landing page
 @app.get('/')
 @reload_model
 def read_root(request: Request):
@@ -46,6 +64,7 @@ def read_root(request: Request):
     return templates.TemplateResponse('index.html', {"request": request, "data": data})
 
 
+# API documentation
 @app.get('/docs')
 @reload_model
 def read_docs() -> None:
@@ -53,14 +72,108 @@ def read_docs() -> None:
     return RedirectResponse(url='/docs')
 
 
-@app.get('/current')
+"""
+SECTION: API v2
+DESCRIPTION: New API (v2)
+DATE: 14-March-2020
+"""
+@app.get('/v2/current', tags=['v2'])
+@reload_model_api_v2
+def current() -> Dict[str, int]:
+    try:
+        data = novel_corona_api_v2.get_current()
+        response = {
+            "data": data,
+            "dt": dt,
+            "ts": ts
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
+
+    return response
+
+
+@app.get('/v2/total', tags=['v2'])
+@reload_model_api_v2
+def get_total() -> Dict[str, int]:
+    try:
+        data = novel_corona_api_v2.get_total()
+        response = {
+            "data": data,
+            "dt": dt,
+            "ts": ts
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
+
+    return response
+
+
+@app.get('/v2/confirmed', tags=['v2'])
+@reload_model_api_v2
+def get_confirmed() -> Dict[str, int]:
+    try:
+        data = novel_corona_api_v2.get_confirmed()
+        response = {
+            "data": data['confirmed'],
+            "dt": dt,
+            "ts": ts
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
+
+    return response
+
+
+@app.get('/v2/deaths', tags=['v2'])
+@reload_model_api_v2
+def get_deaths() -> Dict[str, int]:
+    try:
+        data = novel_corona_api_v2.get_deaths()
+        response = {
+            "data": data['deaths'],
+            "dt": dt,
+            "ts": ts
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
+
+    return response
+
+
+@app.get('/v2/recovered', tags=['v2'])
+@reload_model_api_v2
+def get_recovered() -> Dict[str, int]:
+    try:
+        data = novel_corona_api_v2.get_recovered()
+        response = {
+            "data": data['recovered'],
+            "dt": dt,
+            "ts": ts
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
+
+    return response
+
+
+"""
+SECTION: API v1
+REMARK: No further improvement intended unless necessary
+"""
+@app.get('/current', tags=['v1'])
 @reload_model
 def current_status() -> Dict[str, int]:
     data = novel_corona_api.get_current_status()
     return data
 
 
-@app.get('/current_list')
+@app.get('/current_list', tags=['v1'])
 @reload_model
 def current_status_list() -> Dict[str, Any]:
     """ Coutries are kept in a List """
@@ -68,42 +181,42 @@ def current_status_list() -> Dict[str, Any]:
     return data
 
 
-@app.get('/total')
+@app.get('/total', tags=['v1'])
 @reload_model
 def total() -> Dict[str, Any]:
     data = novel_corona_api.get_total()
     return data
 
 
-@app.get('/confirmed')
+@app.get('/confirmed', tags=['v1'])
 @reload_model
 def confirmed_cases() -> Dict[str, int]:
     data = novel_corona_api.get_confirmed_cases()
     return data
 
 
-@app.get('/deaths')
+@app.get('/deaths', tags=['v1'])
 @reload_model
 def deaths() -> Dict[str, int]:
     data = novel_corona_api.get_deaths()
     return data
 
 
-@app.get('/recovered')
+@app.get('/recovered', tags=['v1'])
 @reload_model
 def recovered() -> Dict[str, int]:
     data = novel_corona_api.get_recovered()
     return data
 
 
-@app.get('/countries')
+@app.get('/countries', tags=['v1'])
 @reload_model
 def affected_countries() -> Dict[int, str]:
     data = novel_corona_api.get_affected_countries()
     return data
 
 
-@app.get('/country/{country_name}')
+@app.get('/country/{country_name}', tags=['v1'])
 @reload_model
 def country(country_name: str) -> Dict[str, Any]:
     """ Search by name or ISO (alpha2) """
@@ -129,7 +242,7 @@ def country(country_name: str) -> Dict[str, Any]:
     return data
 
 
-@app.get('/timeseries/{case}')
+@app.get('/timeseries/{case}', tags=['v1'])
 @reload_model
 def timeseries(case: str) -> Dict[str, Any]:
     """ Get the time series based on a given case: confirmed, deaths, recovered """

@@ -19,7 +19,73 @@ https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e
 4. Individual affected country
 5. Timeseries
 
-## How to use
+
+## How to use API (v2)
+Send a request to the follwing URLs:
+
+|  Request (GET)              |                       Description                               |
+| ---------------------------- | -------------------------------------------------------------- |
+| https://covid2019-api.herokuapp.com/v2/current     | Get all data from all the reportedly affected countries (List of Object) |
+| https://covid2019-api.herokuapp.com/v2/total  | Get the total numbers of Confirmed, Deaths, and Recovered |
+| https://covid2019-api.herokuapp.com/v2/confirmed   | Get the total number of Confirmed cases |
+| https://covid2019-api.herokuapp.com/v2/deaths | Get the total number of Deaths |
+| https://covid2019-api.herokuapp.com/v2/recovered | Get the total number of Recovered cases |
+
+#### Examples API (v2)
+
+1. Get current data
+```python
+https://covid2019-api.herokuapp.com/v2/current
+{"data": [{"location": "China","confirmed": 80945, "deaths": 3180, "recovered": 64196},
+{"location": "Italy", "confirmed": 17660, "deaths": 1266, "recovered": 1439,  "dt": "3/13/20", "ts": 1584028800}
+```
+
+2. Get total data
+```python
+https://covid2019-api.herokuapp.com/v2/total
+{
+  "data": {
+    "confirmed": 145193,
+    "deaths": 5404,
+    "recovered": 70251
+  },
+  "dt": "3/13/20",
+  "ts": 1584028800
+}
+```
+
+3. Get confirmed cases
+```python
+https://covid2019-api.herokuapp.com/v2/confirmed
+{
+  "data": 145193,
+  "dt": "3/13/20",
+  "ts": 1584028800
+}
+```
+
+4. Get deaths
+```python
+https://covid2019-api.herokuapp.com/v2/deaths
+{
+  "data": 5404,
+  "dt": "3/13/20",
+  "ts": 1584028800
+}
+```
+
+5. Get recovered cases
+```python
+https://covid2019-api.herokuapp.com/v2/recovered
+{
+  "data": 70251,
+  "dt": "3/13/20",
+  "ts": 1584028800
+}
+```
+
+
+## How to use API (v1)
 Send a request to the follwing URLs:
 
 |  Request (GET)              |                       Description                               |
@@ -37,7 +103,7 @@ Send a request to the follwing URLs:
 | https://covid2019-api.herokuapp.com/timeseries/deaths |  Get the time series - Deaths |
 | https://covid2019-api.herokuapp.com/timeseries/recovered | Get the time series - Recovered |
 
-#### Examples
+#### Examples API (v1)
 
 1. Get current data
 ```python
