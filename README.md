@@ -36,8 +36,20 @@ Send a request to the follwing URLs:
 1. Get current data
 ```python
 https://covid2019-api.herokuapp.com/v2/current
-{"data": [{"location": "China","confirmed": 80945, "deaths": 3180, "recovered": 64196},
-{"location": "Italy", "confirmed": 17660, "deaths": 1266, "recovered": 1439,  "dt": "3/13/20", "ts": 1584028800}
+{"data": [{
+    "location": "China",
+    "confirmed": 80945,
+    "deaths": 3180,
+    "recovered": 64196
+    },
+    {
+    "location": "Italy",
+    "confirmed": 17660,
+    "deaths": 1266,
+    "recovered": 1439
+    }.....n],
+"dt": "3/13/20",
+"ts": 1584028800}
 ```
 
 2. Get total data
