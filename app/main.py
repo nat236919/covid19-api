@@ -69,16 +69,13 @@ DESCRIPTION: Routes to the landing page and APi documentation
 """
 # Landing page
 @app.get('/')
-@reload_model
 def read_root(request: Request):
     """ Landing page """
-    data = novel_corona_api.get_total()
-    return templates.TemplateResponse('index.html', {"request": request, "data": data})
+    return templates.TemplateResponse('index.html', {"request": request})
 
 
 # API documentation
 @app.get('/docs')
-@reload_model
 def read_docs() -> None:
     """ API documentation """
     return RedirectResponse(url='/docs')
