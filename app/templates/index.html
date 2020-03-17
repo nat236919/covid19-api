@@ -10,8 +10,6 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <!-- ChartJS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" crossorigin="anonymous">
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -76,8 +74,9 @@
             </a>
         </div>
         </header>
-        <div class="chart-container" style="position: relative;">
-                <canvas id="myChart"></canvas>
+        <div class="container-sm">
+            <img src="https://cdn2.iconfinder.com/data/icons/covid-19-2/64/29-Doctor-512.png" class="img-fluid" alt="temp-logo"
+                style="max-width: 300px; width:100%;">
         </div>
         <br>
         <main role="main" class="inner cover">
@@ -101,47 +100,4 @@
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-<script>
-var ctx = document.getElementById('myChart');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Confirmed', 'Deaths', 'Recovered'],
-        datasets: [{
-            label: 'Population',
-            data: [{{data["confirmed"]}}, {{data["deaths"]}}, {{data["recovered"]}}],
-            backgroundColor: [
-                'rgba(255, 189, 51, 0.5)',
-                'rgba(255, 87, 51, 0.5)',
-                'rgba(51, 255, 87, 0.5)'],
-            borderColor: [
-                'rgba(255, 189, 51, 1)',
-                'rgba(255, 87, 51, 1)',
-                'rgba(51, 255, 87, 1)'],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    fontColor: 'white'
-                }
-            }],
-            xAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    fontColor: 'white'
-                }
-            }]
-        },
-        legend: {
-            labels: {
-                fontColor: 'white'
-            }
-        }
-    }
-});
-</script>
 </html>
