@@ -1,4 +1,8 @@
-# COVID2019-API
+<p align="center">
+    <img src="https://cdn2.iconfinder.com/data/icons/covid-19-2/64/29-Doctor-256.png">
+</p>
+
+<h1>COVID2019-API</h1>
 
 [![issues](<https://img.shields.io/github/issues/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/issues)
 [![forks](<https://img.shields.io/github/forks/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/forks)
