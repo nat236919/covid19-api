@@ -8,7 +8,7 @@ DATE: 14-March-2020
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
-from .helper_api_v2 import get_data_api_v2
+from utils.helper import get_data_api_v2
 
 
 # Novel Corona API v2

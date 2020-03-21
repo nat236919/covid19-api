@@ -8,7 +8,7 @@ DATE: 9-Feb-2020
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
-from .helper import get_data
+from utils.helper import get_data
 
 
 # Create a model and its methods
