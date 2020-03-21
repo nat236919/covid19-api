@@ -178,7 +178,8 @@ def country(country_name: str) -> Dict[str, Any]:
             data = [i for i in raw_data if country_name.lower() in i.get("location").lower()]
         else:
             data = [i for i in raw_data if country_name.lower() == i.get("location").lower()]
-        response = {"data": data}
+        response = {"data": data[0]}
+
     except:
         raise HTTPException(status_code=404, detail="Item not found")
 
