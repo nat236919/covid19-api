@@ -100,7 +100,7 @@ DATE: 14-March-2020
 @app.get('/v2/current', tags=['v2'])
 @reload_model_api_v2
 @add_dt_and_ts
-def current() -> Dict[str, Any]:
+def get_current() -> Dict[str, Any]:
     try:
         data = novel_corona_api_v2.get_current()
         response = {"data": data}
@@ -165,6 +165,7 @@ def get_recovered() -> Dict[str, int]:
         raise HTTPException(status_code=400, detail=e)
 
     return response
+
 
 @app.get('/v2/country/{country_name}', tags=['v2'])
 @reload_model_api_v2
