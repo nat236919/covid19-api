@@ -63,6 +63,17 @@ def add_dt_and_ts(func):
     return wrapper
 
 
+# Look up a country name from a country code
+def lookup_country(country):
+    """ Look up a country name from a country code """
+    country_name = pycountry.countries.lookup(country).name # Select the first portion of str when , is found
+    if ',' in country_name:
+        country_name = country_name.split(',')[0]
+    elif ' ' in country_name:
+        country_name = country_name.split(' ')[-1]
+    return country_name
+
+
 """
 SECTION: Default routes
 DESCRIPTION: Routes to the landing page and APi documentation
@@ -155,6 +166,24 @@ def get_recovered() -> Dict[str, int]:
 
     return response
 
+@app.get('/v2/country/{country_name}', tags=['v2'])
+@reload_model_api_v2
+@add_dt_and_ts
+def country(country_name: str) -> Dict[str, Any]:
+    """ Search by name or ISO (alpha2) """
+    raw_data = novel_corona_api_v2.get_current() # Get all current data
+    try:
+        if country_name.lower() not in ['us', 'uk'] and len(country_name) in [2]:
+            country_name = lookup_country(country_name)
+            data = [i for i in raw_data if country_name.lower() in i.get("location").lower()]
+        else:
+            data = [i for i in raw_data if country_name.lower() == i.get("location").lower()]
+        response = {"data": data}
+    except:
+        raise HTTPException(status_code=404, detail="Item not found")
+
+    return response
+
 
 """
 SECTION: API v1
@@ -217,11 +246,7 @@ def country(country_name: str) -> Dict[str, Any]:
     raw_data = novel_corona_api.get_current_status() # Get all current data
     try:
         if country_name.lower() not in ['us', 'uk'] and len(country_name) in [2]:
-            country_name = pycountry.countries.lookup(country_name).name # Select the first portion of str when , is found
-            if ',' in country_name:
-                country_name = country_name.split(',')[0]
-            elif ' ' in country_name:
-                country_name = country_name.split(' ')[-1]
+            country_name = lookup_country(country_name)
             data = {k: v for k, v in raw_data.items() if country_name.lower() in k.lower()}
         else:
             data = {k: v for k, v in raw_data.items() if country_name.lower() == k.lower()}
