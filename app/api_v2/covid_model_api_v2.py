@@ -9,7 +9,7 @@ import pandas as pd
 from datetime import datetime
 from dataclasses import dataclass
 from typing import Dict, List, Any
-from utils.helper import get_data_api_v2
+from .helper_api_v2 import get_data_api_v2
 
 
 # Novel Corona API v2
