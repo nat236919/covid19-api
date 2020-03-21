@@ -7,13 +7,11 @@ DATE: 14-March-2020
 # Import libraries
 import pandas as pd
 from datetime import datetime
-from dataclasses import dataclass
 from typing import Dict, List, Any
 from .helper_api_v2 import get_data_api_v2
 
 
 # Novel Corona API v2
-@dataclass
 class NovelCoronaAPIv2:
     """ Covid-19 API v2 model and its methods
         SCHEMA: {
@@ -22,14 +20,13 @@ class NovelCoronaAPIv2:
             "ts": int = "{timestamp}
         }
     """
-    list_of_dataframes = get_data_api_v2()
-
-    df_confirmed = list_of_dataframes['confirmed']
-    df_deaths = list_of_dataframes['deaths']
-    df_recovered = list_of_dataframes['recovered']
-
-    datetime_raw = df_confirmed['datetime'].unique().tolist()[0]
-    timestamp = datetime.strptime(datetime_raw, '%m/%d/%y').timestamp()
+    def __init__(self):
+        self.list_of_dataframes = get_data_api_v2()
+        self.df_confirmed = self.list_of_dataframes['confirmed']
+        self.df_deaths = self.list_of_dataframes['deaths']
+        self.df_recovered = self.list_of_dataframes['recovered']
+        self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
+        self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y').timestamp()
 
     def get_current(self) -> List[Dict]:
         """ Current data (Lastest date) """
