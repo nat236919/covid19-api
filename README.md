@@ -11,10 +11,11 @@
 
 https://covid2019-api.herokuapp.com/
 
-This API provides the information regarding '2019 Novel Coronavirus (Covid2019)'. It contains a number of confirmed, death, and recovered cases based on the data provided by the Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE).
+This API provides the information regarding '2019 Novel Coronavirus (covid-19)'. It contains a number of confirmed, death, and recovered cases based on the data provided by the Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE).
 
-## Dashboard
-https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6
+#### References
+https://github.com/CSSEGISandData/COVID-19
+
 
 ## Features
 1. The current data (daily updated)
@@ -34,6 +35,8 @@ Send a request to the follwing URLs:
 | https://covid2019-api.herokuapp.com/v2/confirmed   | Get the total number of Confirmed cases |
 | https://covid2019-api.herokuapp.com/v2/deaths | Get the total number of Deaths |
 | https://covid2019-api.herokuapp.com/v2/recovered | Get the total number of Recovered cases |
+| https://covid2019-api.herokuapp.com/v2/country/china | Search a country by a key name (*space may be needed) |
+| https://covid2019-api.herokuapp.com/v2/country/kr | Search a country by an [ISO country code (alpha2)] (https://www.iban.com country-codes) |
 
 #### Examples API (v2)
 
@@ -97,6 +100,33 @@ https://covid2019-api.herokuapp.com/v2/recovered
   "data": 70251,
   "dt": "3/13/20",
   "ts": 1584028800
+}
+```
+
+6. Get a country data
+```python
+https://covid2019-api.herokuapp.com/v2/country/th
+{
+  "data":{
+    "location": "Thailand",
+    "confirmed": 322,
+    "deaths": 1,
+    "recovered": 42
+  },
+  "dt": "3/20/20",
+  "ts": 1584633600.0
+}
+
+https://covid2019-api.herokuapp.com/v2/country/united%20kingdom
+{
+  "data":{
+    "location": "United Kingdom",
+    "confirmed": 4014,
+    "deaths": 178,
+    "recovered": 67
+  },
+  "dt": "3/20/20",
+  "ts": 1584633600.0
 }
 ```
 
@@ -183,7 +213,3 @@ https://covid2019-api.herokuapp.com/timeseries/deaths
 https://covid2019-api.herokuapp.com/timeseries/recovered
 {"recovered":[{"Province/State":"Anhui","Country/Region":"Mainland_China","Lat":"31.825709999999997","Long":"117.2264","1/21/20 22:00":"","1/22/20 12:00":"","1/23/20 12:00":"","1/24/20 0:00":"","1/24/20 12:00":"","1/25/20 0:00":"","1/25/20 12:00":"","1/25/20 22:00":"","1/26/20 11:00":"","1/26/20 23:00":"","1/27/20 9:00":"","1/27/20 19:00":"","1/27/20 20:30":"","1/28/20 13:00":"","1/28/20 18:00":"","1/28/20 23:00":"","1/29/20 13:30":"2.0","1/29/20 14:30":"2.0","1/29/20 21:00":"2.0","1/30/20 11:00":"2.0","1/31/20 14:00":"3.0","2/1/20 10:00":"5.0","2/2/20 21:00":"7.0","2/3/20 21:00":"14.0","2/4/20 9:40":"14.0","2/4/20 22:00":"20.0","2/5/20 9:00":"23.0","2/5/20 23:00":"23.0","2/6/20 9:00":"34.0","2/6/20 14:20":"34.0","2/7/20 20:13":"47.0","2/7/20 22:50":"47.0","2/8/20 10:24":"59.0","2/8/20 23:04":"59.0","2/9/20 10:30":"72.0","2/9/20 23:20":"73.0","2/10/20 10:30":"88.0","2/10/20 19:30":"88.0","2/11/20 10:50":"105","2/11/20 20:44":"108","2/12/20 10:20":"127","2/12/20 22:00":"128".....n],"dt":"2/11/20 20:44","ts":1581425040.0}
 ```
-
-
-#### References
-https://github.com/CSSEGISandData/COVID-19
