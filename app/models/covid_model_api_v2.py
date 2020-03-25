@@ -29,8 +29,8 @@ class NovelCoronaAPIv2:
         self.timestamp = datetime.strptime(self.datetime, '%Y-%m-%d %H:%M:%S').timestamp()
         self.scheme = {
             'data': None,
-            'datetime': self.datetime,
-            'timestamp': self.timestamp
+            'dt': self.datetime,
+            'ts': self.timestamp
         }
     
     def get_current(self) -> Dict[str, Any]:
