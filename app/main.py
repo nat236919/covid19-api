@@ -14,15 +14,26 @@ from typing import Dict, Any
 from fastapi import FastAPI, HTTPException
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
+from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
 from models.covid_model import NovelCoronaAPI
 from models.covid_model_api_v2 import NovelCoronaAPIv2
 
-# Setup variables
-version = f"{sys.version_info.major}.{sys.version_info.minor}"
+# Setup application
 app = FastAPI()
+
+# Setup CORS (https://fastapi.tiangolo.com/tutorial/cors/)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Setup Template
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
