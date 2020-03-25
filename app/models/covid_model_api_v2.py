@@ -8,78 +8,82 @@ DATE: 14-March-2020
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
-from utils.helper import get_data_api_v2
+from utils.helper import get_data_daily_reports
 
 
-# Novel Corona API v2
 class NovelCoronaAPIv2:
     """ Covid-19 API v2 model and its methods
         SCHEMA: {
-            "data": List = {List[Any]},
+            "data": Any,
             "dt": str = "{datetime}",
             "ts": int = "{timestamp}
         }
     """
-    def __init__(self):
-        self.list_of_dataframes = get_data_api_v2()
-        self.df_confirmed = self.list_of_dataframes['confirmed']
-        self.df_deaths = self.list_of_dataframes['deaths']
-        self.df_recovered = self.list_of_dataframes['recovered']
-        self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
-        self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y').timestamp()
-
-    def get_current(self) -> List[Dict]:
-        """ Current data (Lastest date) """
-        # Create a template
-        countries = self.df_confirmed['Country/Region'].unique().tolist()
-        current_data = {country: {'confirmed': 0, 'deaths': 0, 'recovered': 0} for country in countries}
-
-        # Extractor
-        def extractor(col: str, df: pd.DataFrame) -> None:
-            temp_data = df.T.to_dict()
-            for data in temp_data.values():
-                current_data[data['Country/Region']][col] += int(data[col.capitalize()])
-            return None
-
-        # Add data to current_data
-        df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered}
-        [extractor(col, df) for col, df in df_list.items()]
-
-        # Sort by Confirmed
-        current_data = {country_name: country_data for country_name, country_data
-                                                    in sorted(current_data.items(), key=lambda data: data[-1]['confirmed'], reverse=True)}
-
-        # Create a list
-        data = []
-        for k, v in current_data.items():
-            data.append({
-                'location': k,
-                'confirmed': v['confirmed'],
-                'deaths': v['deaths'],
-                'recovered': v['recovered']
-            })
-        return data
+    def __init__(self) -> None:
+        """ Initiate DataFrame """
+        self.df = get_data_daily_reports()
+        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
+        self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
+        self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
+        self.datetime = max(self.df['Last_Update'].tolist())
+        self.timestamp = datetime.strptime(self.datetime, '%Y-%m-%d %H:%M:%S').timestamp()
+        self.scheme = {
+            'data': None,
+            'datetime': self.datetime,
+            'timestamp': self.timestamp
+        }
     
-    def get_confirmed(self) -> Dict[str, int]:
+    def get_current(self) -> Dict[str, Any]:
+        """ Current data from all locations (Lastest date) """
+        df_grp_by_country = self.df_grp_by_country.sort_values(by='Confirmed', ascending=False)
+        df_grp_by_country = df_grp_by_country.reset_index()
+        df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
+        data = [v for v in df_grp_by_country.to_dict('index').values()]
+        packed_data = self.scheme
+        packed_data['data'] = data
+
+        return packed_data
+    
+    def get_confirmed(self) -> Dict[str, Any]:
         """ Summation of all confirmed cases """
-        data = {'confirmed': sum([int(i) for i in self.df_confirmed['Confirmed']])}
-        return data
-    
-    def get_deaths(self) -> Dict[str, int]:
+        data = self.df['Confirmed'].sum()
+        packed_data = self.scheme
+        packed_data['data'] = int(data)
+
+        return packed_data
+
+    def get_deaths(self) -> Dict[str, Any]:
         """ Summation of all deaths """
-        data = {'deaths': sum([int(i) for i in self.df_deaths['Deaths']])}
-        return data
+        data = self.df['Deaths'].sum()
+        packed_data = self.scheme
+        packed_data['data'] = int(data)
+
+        return packed_data
     
-    def get_recovered(self) -> Dict[str, int]:
+    def get_recovered(self) -> Dict[str, Any]:
         """ Summation of all recovers """
-        data = {'recovered': sum([int(i) for i in self.df_recovered['Recovered']])}
-        return data
+        data = self.df['Recovered'].sum()
+        packed_data = self.scheme
+        packed_data['data'] = int(data)
+
+        return packed_data
+
+    def get_active(self) -> Dict[str, Any]:
+        """ Summation of all actives """
+        data = self.df['Active'].sum()
+        packed_data = self.scheme
+        packed_data['data'] = int(data)
+
+        return packed_data
     
     def get_total(self) -> Dict[str, Any]:
-        """ Summation of Confirmed, Deaths, Recovered """
-        data = {
-            'confirmed': self.get_confirmed()['confirmed'],
-            'deaths': self.get_deaths()['deaths'],
-            'recovered': self.get_recovered()['recovered']
-            }
-        return data
+        """ Summation of Confirmed, Deaths, Recovered, Active """
+        packed_data = self.scheme
+        packed_data['data'] = {
+            'confirmed': int(self.df['Confirmed'].sum()),
+            'deaths': int(self.df['Deaths'].sum()),
+            'recovered': int(self.df['Recovered'].sum()),
+            'active': int(self.df['Active'].sum())
+        }
+        
+        return packed_data

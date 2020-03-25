@@ -55,22 +55,9 @@ def reload_model_api_v2(func):
     """ Reload a model APIv2 for each quest """
     @wraps(func)
     def wrapper(*args, **kwargs):
-        global novel_corona_api_v2, dt_v2, ts_v2
+        global novel_corona_api_v2
         novel_corona_api_v2 = NovelCoronaAPIv2()
-        dt_v2, ts_v2 = novel_corona_api_v2.datetime_raw, novel_corona_api_v2.timestamp
         return func(*args, **kwargs)
-    return wrapper
-
-
-# Add datetime and timestamp
-def add_dt_and_ts(func):
-    """ Add datetime and timestamp to APIv2 """
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        data = func(*args, **kwargs)
-        data['dt'] = dt_v2
-        data['ts'] = ts_v2
-        return data
     return wrapper
 
 
@@ -110,92 +97,94 @@ DATE: 14-March-2020
 """
 @app.get('/v2/current', tags=['v2'])
 @reload_model_api_v2
-@add_dt_and_ts
 def get_current() -> Dict[str, Any]:
     try:
         data = novel_corona_api_v2.get_current()
-        response = {"data": data}
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
-    return response
+    return data
 
 
 @app.get('/v2/total', tags=['v2'])
 @reload_model_api_v2
-@add_dt_and_ts
 def get_total() -> Dict[str, Any]:
     try:
         data = novel_corona_api_v2.get_total()
-        response = {"data": data}
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
-    return response
+    return data
 
 
 @app.get('/v2/confirmed', tags=['v2'])
 @reload_model_api_v2
-@add_dt_and_ts
 def get_confirmed() -> Dict[str, int]:
     try:
         data = novel_corona_api_v2.get_confirmed()
-        response = {"data": data['confirmed']}
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
-    return response
+    return data
 
 
 @app.get('/v2/deaths', tags=['v2'])
 @reload_model_api_v2
-@add_dt_and_ts
 def get_deaths() -> Dict[str, int]:
     try:
         data = novel_corona_api_v2.get_deaths()
-        response = {"data": data['deaths']}
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
-    return response
+    return data
 
 
 @app.get('/v2/recovered', tags=['v2'])
 @reload_model_api_v2
-@add_dt_and_ts
 def get_recovered() -> Dict[str, int]:
     try:
         data = novel_corona_api_v2.get_recovered()
-        response = {"data": data['recovered']}
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
-    return response
+    return data
+
+
+@app.get('/v2/active', tags=['v2'])
+@reload_model_api_v2
+def get_active() -> Dict[str, int]:
+    try:
+        data = novel_corona_api_v2.get_active()
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
+
+    return data
 
 
 @app.get('/v2/country/{country_name}', tags=['v2'])
 @reload_model_api_v2
-@add_dt_and_ts
-def country(country_name: str) -> Dict[str, Any]:
+def get_country(country_name: str) -> Dict[str, Any]:
     """ Search by name or ISO (alpha2) """
     raw_data = novel_corona_api_v2.get_current() # Get all current data
     try:
         if country_name.lower() not in ['us', 'uk'] and len(country_name) in [2]:
             country_name = lookup_country(country_name)
-            data = [i for i in raw_data if country_name.lower() in i.get("location").lower()]
+            data = [i for i in raw_data['data'] if country_name.lower() in i.get("location").lower()]
         else:
-            data = [i for i in raw_data if country_name.lower() == i.get("location").lower()]
-        response = {"data": data[0]}
+            data = [i for i in raw_data['data'] if country_name.lower() == i.get("location").lower()]
+        
+        raw_data['data'] = data
 
     except:
         raise HTTPException(status_code=404, detail="Item not found")
 
-    return response
+    return raw_data
 
 
 """
