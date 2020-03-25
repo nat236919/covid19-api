@@ -35,6 +35,7 @@ Send a request to the follwing URLs:
 | https://covid2019-api.herokuapp.com/v2/confirmed   | Get the total number of Confirmed cases |
 | https://covid2019-api.herokuapp.com/v2/deaths | Get the total number of Deaths |
 | https://covid2019-api.herokuapp.com/v2/recovered | Get the total number of Recovered cases |
+| https://covid2019-api.herokuapp.com/v2/active | Get the total number of Active cases (Excluding Deaths and Recovered) |
 | https://covid2019-api.herokuapp.com/v2/country/china | Search a country by a key name (*space may be needed) |
 | https://covid2019-api.herokuapp.com/v2/country/kr | Search a country by an [ISO country code (alpha2)] (https://www.iban.com country-codes) |
 
@@ -44,19 +45,21 @@ Send a request to the follwing URLs:
 ```python
 https://covid2019-api.herokuapp.com/v2/current
 {"data": [{
-    "location": "China",
-    "confirmed": 80945,
-    "deaths": 3180,
-    "recovered": 64196
+      "location": "China",
+      "confirmed": 81591,
+      "deaths": 3281,
+      "recovered": 73280,
+      "active": 5030
     },
     {
-    "location": "Italy",
-    "confirmed": 17660,
-    "deaths": 1266,
-    "recovered": 1439
+      "location": "Italy",
+      "confirmed": 69176,
+      "deaths": 6820,
+      "recovered": 8326,
+      "active": 54030
     }.....n],
-"dt": "3/13/20",
-"ts": 1584028800}
+"dt": "2020-03-24 23:41:50",
+"ts": 1585064510}
 ```
 
 2. Get total data
@@ -64,12 +67,13 @@ https://covid2019-api.herokuapp.com/v2/current
 https://covid2019-api.herokuapp.com/v2/total
 {
   "data": {
-    "confirmed": 145193,
-    "deaths": 5404,
-    "recovered": 70251
+    "confirmed": 417966,
+    "deaths": 18615,
+    "recovered": 107705,
+    "active": 236306
   },
-  "dt": "3/13/20",
-  "ts": 1584028800
+  "dt": "2020-03-24 23:41:50",
+  "ts": 1585064510
 }
 ```
 
@@ -77,9 +81,9 @@ https://covid2019-api.herokuapp.com/v2/total
 ```python
 https://covid2019-api.herokuapp.com/v2/confirmed
 {
-  "data": 145193,
-  "dt": "3/13/20",
-  "ts": 1584028800
+  "data": 417966,
+  "dt": "2020-03-24 23:41:50",
+  "ts": 1585064510
 }
 ```
 
@@ -87,9 +91,9 @@ https://covid2019-api.herokuapp.com/v2/confirmed
 ```python
 https://covid2019-api.herokuapp.com/v2/deaths
 {
-  "data": 5404,
-  "dt": "3/13/20",
-  "ts": 1584028800
+  "data": 18615,
+  "dt": "2020-03-24 23:41:50",
+  "ts": 1585064510
 }
 ```
 
@@ -97,36 +101,48 @@ https://covid2019-api.herokuapp.com/v2/deaths
 ```python
 https://covid2019-api.herokuapp.com/v2/recovered
 {
-  "data": 70251,
-  "dt": "3/13/20",
-  "ts": 1584028800
+  "data": 107705,
+  "dt": "2020-03-24 23:41:50",
+  "ts": 1585064510
 }
 ```
 
-6. Get a country data
+6. Get active cases
+```python
+https://covid2019-api.herokuapp.com/v2/recovered
+{
+  "data": 236306,
+  "dt": "2020-03-24 23:41:50",
+  "ts": 1585064510
+}
+```
+
+7. Get a country data
 ```python
 https://covid2019-api.herokuapp.com/v2/country/th
 {
   "data":{
     "location": "Thailand",
-    "confirmed": 322,
-    "deaths": 1,
-    "recovered": 42
+    "confirmed": 827,
+    "deaths": 4,
+    "recovered": 52,
+    "active": 771
   },
-  "dt": "3/20/20",
-  "ts": 1584633600.0
+  "dt": "2020-03-24 23:41:50",
+  "ts": 1585064510
 }
 
 https://covid2019-api.herokuapp.com/v2/country/united%20kingdom
 {
   "data":{
     "location": "United Kingdom",
-    "confirmed": 4014,
-    "deaths": 178,
-    "recovered": 67
+    "confirmed": 8164,
+    "deaths": 423,
+    "recovered": 140,
+    "active": 7601
   },
-  "dt": "3/20/20",
-  "ts": 1584633600.0
+  "dt": "2020-03-24 23:41:50",
+  "ts": 1585064510
 }
 ```
 
