@@ -26,15 +26,19 @@ def get_data_daily_reports() -> pd.DataFrame:
     current_datetime = datetime.utcnow().strftime('%m-%d-%Y')
     url = BASE_URL_DAILY_REPORTS.format(current_datetime)
 
-    # Check the lastest file
+    # Check the latest file
     if requests.get(url).status_code == 404:
         current_datetime = datetime.strftime(datetime.utcnow() - timedelta(1), '%m-%d-%Y')
         url = BASE_URL_DAILY_REPORTS.format(current_datetime)
 
+    if requests.get(url).status_code == 404:
+        current_datetime = datetime.strftime(datetime.utcnow() - timedelta(2), '%m-%d-%Y')
+        url = BASE_URL_DAILY_REPORTS.format(current_datetime)
+
+    # Extract data
     res = requests.get(url)
     text = res.text
 
-    # Extract data
     data = list(csv.DictReader(text.splitlines()))
     df = pd.DataFrame(data)
     
