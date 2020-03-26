@@ -187,6 +187,18 @@ def get_country(country_name: str) -> Dict[str, Any]:
     return raw_data
 
 
+@app.get('/v2/timeseries/{case}', tags=['v2'])
+@reload_model_api_v2
+def get_time_series(case: str) -> Dict[str, Any]:
+    """ Get the time series based on a given case: confirmed, deaths"""
+    if case.lower() not in ['confirmed', 'deaths']:
+            raise HTTPException(status_code=404, detail="Item not found")
+
+    data = novel_corona_api_v2.get_time_series(case.lower())
+
+    return data
+
+
 """
 SECTION: API v1
 REMARK: No further improvement intended unless necessary

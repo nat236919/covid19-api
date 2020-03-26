@@ -15,6 +15,7 @@ from typing import Dict
 # Base URL for timeseries
 BASE_URL_TIME_SERIES = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_{}_global.csv'
 CATEGORIES = ['confirmed', 'deaths', 'recovered']
+NEW_CATEGORIES = ['confirmed', 'deaths']
 
 # Base URL for Daily Reports
 BASE_URL_DAILY_REPORTS = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv'
@@ -49,6 +50,25 @@ def get_data_daily_reports() -> pd.DataFrame:
     df[concerned_columns] = df[concerned_columns].astype(int)
     
     return df
+
+
+# Get data from time series
+def get_data_time_series() -> Dict[str, pd.DataFrame]:
+    """ Get the dataset from https://github.com/CSSEGISandData/COVID-19 """
+    dataframes = {}
+
+    # Iterate through all files
+    for category in NEW_CATEGORIES:
+        url = BASE_URL_TIME_SERIES.format(category)
+        res = requests.get(url)
+        text = res.text
+
+        # Extract data
+        data = list(csv.DictReader(text.splitlines()))
+        df = pd.DataFrame(data)
+        dataframes[category] = df
+
+    return dataframes
 
 
 # API v1
