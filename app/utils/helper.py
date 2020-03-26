@@ -13,8 +13,8 @@ from typing import Dict
 
 
 # Base URL for timeseries
-BASE_URL = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-{}.csv'
-CATEGORIES = ['Confirmed', 'Deaths', 'Recovered']
+BASE_URL_TIME_SERIES = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_{}_global.csv'
+CATEGORIES = ['confirmed', 'deaths', 'recovered']
 
 # Base URL for Daily Reports
 BASE_URL_DAILY_REPORTS = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv'
@@ -58,7 +58,7 @@ def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
 
     # Iterate through all files
     for category in CATEGORIES:
-        url = BASE_URL.format(category)
+        url = BASE_URL_TIME_SERIES.format(category)
         res = requests.get(url)
         text = res.text
 

@@ -45,7 +45,11 @@ class NovelCoronaAPI:
         def extractor(col: str, df: pd.DataFrame) -> None:
             temp_data = df.T.to_dict()
             for data in temp_data.values():
-                current_data[data['Country/Region']][col] += int(data[col.capitalize()])
+                try:
+                    current_data[data['Country/Region']][col] += int(data[col])
+                except:
+                    None
+
             return None
 
         # Add data to current_data
@@ -68,19 +72,19 @@ class NovelCoronaAPI:
 
     def get_confirmed_cases(self) -> Dict[str, int]:
         """ Summation of all confirmed cases """
-        data = {'confirmed': sum([int(i) for i in self.df_confirmed['Confirmed']])}
+        data = {'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']])}
         data = self.add_dt_and_ts(data)
         return data
 
     def get_deaths(self) -> Dict[str, int]:
         """ Summation of all deaths """
-        data = {'deaths': sum([int(i) for i in self.df_deaths['Deaths']])}
+        data = {'deaths': sum([int(i) for i in self.df_deaths['deaths']])}
         data = self.add_dt_and_ts(data)
         return data
 
     def get_recovered(self) -> Dict[str, int]:
         """ Summation of all recovers """
-        data = {'recovered': sum([int(i) for i in self.df_recovered['Recovered']])}
+        data = {'recovered': sum([int(i) for i in self.df_recovered['recovered']])}
         data = self.add_dt_and_ts(data)
         return data
 
