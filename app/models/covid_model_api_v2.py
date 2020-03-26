@@ -108,10 +108,27 @@ class NovelCoronaAPIv2:
             time_series_data.append(temp_dict)   
 
         return time_series_data
-    
+
+    def _extract_time_series_global(self, dataframe_dict: Dict[str, pd.DataFrame]) -> List[Dict]:
+        global_df_list = []
+        for key, df in dataframe_dict.items():
+            df_temp = pd.DataFrame(df.iloc[:, 4:].astype('int32').sum(axis=0))
+            df_temp.columns = [key]
+            global_df_list.append(df_temp)
+
+        # Combine DataFrames
+        global_dict = pd.concat(global_df_list, axis=1, sort=False).T.to_dict()
+        data = [{k: v} for k, v in global_dict.items()]
+
+        return data
+
     def get_time_series(self, case: str) -> Dict[str, Any]:
-        raw_data = self.df_time_series[case].T.to_dict()
-        data = self._extract_time_series(raw_data)
+        if case not in ['global']:
+            raw_data = self.df_time_series[case].T.to_dict()
+            data = self._extract_time_series(raw_data)
+        else:
+            raw_data = self.df_time_series
+            data = self._extract_time_series_global(raw_data)
 
         packed_data = self.scheme
         packed_data['data'] = data
