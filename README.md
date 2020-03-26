@@ -150,7 +150,7 @@ https://covid2019-api.herokuapp.com/v2/country/united%20kingdom
 
 8. Get time series
 ```python
-https://covid2019-api.herokuapp.com/v2/global
+https://covid2019-api.herokuapp.com/v2/timeseries/global
 {
   "data": [
     {
@@ -169,7 +169,7 @@ https://covid2019-api.herokuapp.com/v2/global
   "ts": 1585150669
 }
 
-https://covid2019-api.herokuapp.com/v2/confirmed
+https://covid2019-api.herokuapp.com/v2/timeseries/confirmed
 {
   "data": [
     {
