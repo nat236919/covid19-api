@@ -38,6 +38,8 @@ Send a request to the follwing URLs:
 | https://covid2019-api.herokuapp.com/v2/active | Get the total number of Active cases (Excluding Deaths and Recovered) |
 | https://covid2019-api.herokuapp.com/v2/country/china | Search a country by a key name (*space may be needed) |
 | https://covid2019-api.herokuapp.com/v2/country/kr | Search a country by an [ISO country code (alpha2)] (https://www.iban.com country-codes) |
+| https://covid2019-api.herokuapp.com/v2/timeseries/global |  Get the time series: global |
+| https://covid2019-api.herokuapp.com/v2/timeseries/{case} |  Get the time series: confirmed, deaths |
 
 #### Examples API (v2)
 
@@ -144,6 +146,49 @@ https://covid2019-api.herokuapp.com/v2/country/united%20kingdom
   "dt": "2020-03-24 23:41:50",
   "ts": 1585064510
 }
+```
+
+8. Get time series
+```python
+https://covid2019-api.herokuapp.com/v2/global
+{
+  "data": [
+    {
+      "1/22/20": {
+        "confirmed": 555,
+        "deaths": 17
+      }
+    },
+    {
+      "1/23/20": {
+        "confirmed": 654,
+        "deaths": 18
+      }
+    }...],
+  "dt": "2020-03-25 23:37:49",
+  "ts": 1585150669
+}
+
+https://covid2019-api.herokuapp.com/v2/confirmed
+{
+  "data": [
+    {
+      "Province/State": "",
+      "Country/Region": "Afghanistan",
+      "Coordinates": {
+        "Lat": 33,
+        "Long": 65
+      },
+      "TimeSeries": [
+        {
+          "1/22/20": 0
+        },
+        {
+          "1/23/20": 0
+        }...]
+    },
+  "dt": "2020-03-25 23:37:49",
+  "ts": 1585150669
 ```
 
 
