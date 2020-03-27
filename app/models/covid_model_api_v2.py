@@ -103,7 +103,7 @@ class NovelCoronaAPIv2:
             temp_dict['Coordinates'] = {'Lat': float(data['Lat']), 'Long': float(data['Long'])}
 
             temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
-            temp_dict['TimeSeries'] = [{k: v} for k, v in temp_time_series_dict.items()]
+            temp_dict['TimeSeries'] = [{'date': k, 'value': v} for k, v in temp_time_series_dict.items()]
             
             time_series_data.append(temp_dict)   
 

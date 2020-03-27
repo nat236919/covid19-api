@@ -181,10 +181,12 @@ https://covid2019-api.herokuapp.com/v2/timeseries/confirmed
       },
       "TimeSeries": [
         {
-          "1/22/20": 0
+          "date": "1/22/20",
+          "value": 0
         },
         {
-          "1/23/20": 0
+          "date": "1/23/20",
+          "value": 0
         }...]
     },
   "dt": "2020-03-25 23:37:49",
