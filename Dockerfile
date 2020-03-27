@@ -1,14 +1,13 @@
 FROM tiangolo/uvicorn-gunicorn:python3.7
 
-LABEL maintainer="Nuttaphat Arunoprayoch <nat236919@gmail.com>"
+# Open port
+EXPOSE 80
 
-RUN pip install fastapi
-RUN pip install uvicorn
-RUN pip install gunicorn
-RUN pip install pandas
-RUN pip install pycountry
-RUN pip install requests
-RUN pip install jinja2
-RUN pip install aiofiles
-
+# Setup work directory
+WORKDIR /app
 COPY ./app /app
+
+# Install dependencies
+COPY ./app/requirements.txt /requirements.txt
+RUN pip install --upgrade pip
+RUN pip install -r /requirements.txt
