@@ -25,6 +25,31 @@ https://github.com/CSSEGISandData/COVID-19
 5. Timeseries
 
 
+## How to install (Docker-compose)
+* Run the following command your command line
+```python
+docker-compose up
+```
+
+* Or run the server in the background
+```python
+docker-compose up -d
+```
+
+* The port can be changed at <b>docker-compose.override.yml</b> (currently set as 8000)
+```yml
+version: '3'
+services:
+  web:
+    container_name: "covid19_api_web_container"
+    volumes:
+      - ./app:/app
+    ports:
+      - "8000:80"
+    environment:
+      - 'RUN=uvicorn main:app'
+```
+
 ## How to use API (v2)
 Send a request to the follwing URLs:
 
