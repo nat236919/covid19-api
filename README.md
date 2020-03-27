@@ -26,7 +26,7 @@ https://github.com/CSSEGISandData/COVID-19
 
 
 ## How to install (Docker-compose)
-* Run the following command your command line
+* Run the following command in your command line to run the server
 ```python
 docker-compose up
 ```
