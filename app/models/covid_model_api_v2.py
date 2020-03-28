@@ -92,7 +92,7 @@ class NovelCoronaAPIv2:
         
         return packed_data
 
-    def _extract_time_series(self, time_series: Dict) -> List[Dict]:
+    def __extract_time_series(self, time_series: Dict) -> List[Dict]:
         time_series_data = []
 
         for data in time_series.values():
@@ -109,7 +109,7 @@ class NovelCoronaAPIv2:
 
         return time_series_data
 
-    def _extract_time_series_global(self, dataframe_dict: Dict[str, pd.DataFrame]) -> List[Dict]:
+    def __extract_time_series_global(self, dataframe_dict: Dict[str, pd.DataFrame]) -> List[Dict]:
         global_df_list = []
         for key, df in dataframe_dict.items():
             df_temp = pd.DataFrame(df.iloc[:, 4:].astype('int32').sum(axis=0))
@@ -125,10 +125,10 @@ class NovelCoronaAPIv2:
     def get_time_series(self, case: str) -> Dict[str, Any]:
         if case not in ['global']:
             raw_data = self.df_time_series[case].T.to_dict()
-            data = self._extract_time_series(raw_data)
+            data = self.__extract_time_series(raw_data)
         else:
             raw_data = self.df_time_series
-            data = self._extract_time_series_global(raw_data)
+            data = self.__extract_time_series_global(raw_data)
 
         packed_data = self.scheme
         packed_data['data'] = data
