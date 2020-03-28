@@ -15,7 +15,7 @@ from typing import Dict
 # Base URL for timeseries
 BASE_URL_TIME_SERIES = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_{}_global.csv'
 CATEGORIES = ['confirmed', 'deaths', 'recovered']
-NEW_CATEGORIES = ['confirmed', 'deaths']
+NEW_CATEGORIES = ['confirmed', 'deaths', 'recovered'] # Recovered will be deprecated by the source soon
 
 # Base URL for Daily Reports
 BASE_URL_DAILY_REPORTS = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv'

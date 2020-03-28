@@ -190,7 +190,9 @@ def get_country(country_name: str) -> Dict[str, Any]:
 @app.get('/v2/timeseries/{case}', tags=['v2'])
 @reload_model_api_v2
 def get_time_series(case: str) -> Dict[str, Any]:
-    """ Get the time series based on a given case: global, confirmed, deaths """
+    """ Get the time series based on a given case: global, confirmed, deaths, *recovered
+        * recovered will be deprecated by the source data soon
+    """
     if case.lower() not in ['global', 'confirmed', 'deaths']:
             raise HTTPException(status_code=404, detail="Item not found")
 
