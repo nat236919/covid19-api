@@ -193,7 +193,7 @@ def get_time_series(case: str) -> Dict[str, Any]:
     """ Get the time series based on a given case: global, confirmed, deaths, *recovered
         * recovered will be deprecated by the source data soon
     """
-    if case.lower() not in ['global', 'confirmed', 'deaths']:
+    if case.lower() not in ['global', 'confirmed', 'deaths', 'recovered']:
             raise HTTPException(status_code=404, detail="Item not found")
 
     data = novel_corona_api_v2.get_time_series(case.lower())
