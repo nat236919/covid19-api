@@ -16,6 +16,12 @@ This API provides the information regarding '2019 Novel Coronavirus (covid-19)'.
 #### References
 https://github.com/CSSEGISandData/COVID-19
 
+## Branches
+|  Branch           |     Feature                      |              Description                                     |
+| ----------------- | -------------------------------- |  ----------------------------------------------------------- |
+| master            | Docker + Web API                 | For deploying to a server                                    |
+| development       | Docker + Web API                 | For testing before merging to Master                         |
+| docker-redis      | Docker + Redis + Web API         | For deploying to a server with Redis via docker-compose      |
 
 ## Features
 1. The current data (daily updated)
@@ -46,8 +52,16 @@ services:
       - ./app:/app
     ports:
       - "8000:80"
+    depends_on: 
+      - redis
     environment:
-      - 'RUN=uvicorn main:app'
+      - "RUN=uvicorn main:app"
+  
+  redis:
+    container_name: "covid19_api_redis_container"
+    image: "redis"
+    ports:
+      - "6379:6379"
 ```
 
 ## How to use API (v2)
