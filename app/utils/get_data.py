@@ -20,29 +20,31 @@ NEW_CATEGORIES = ['confirmed', 'deaths', 'recovered'] # Recovered will be deprec
 # Base URL for Daily Reports
 BASE_URL_DAILY_REPORTS = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv'
 
+# Base URL for LookUp Table
+BASE_URL_LOOKUP_TABLE = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv'
+
 
 # Get data from daily reports
 def get_data_daily_reports() -> pd.DataFrame:
     """ Get data from BASE_URL_DAILY_REPORTS """
     current_datetime = datetime.utcnow().strftime('%m-%d-%Y')
-    url = BASE_URL_DAILY_REPORTS.format(current_datetime)
+    base_url = BASE_URL_DAILY_REPORTS.format(current_datetime)
+    lookup_table_url = BASE_URL_LOOKUP_TABLE
 
     # Check the latest file
-    if requests.get(url).status_code == 404:
+    if requests.get(base_url).status_code == 404:
         current_datetime = datetime.strftime(datetime.utcnow() - timedelta(1), '%m-%d-%Y')
-        url = BASE_URL_DAILY_REPORTS.format(current_datetime)
+        base_url = BASE_URL_DAILY_REPORTS.format(current_datetime)
 
-    if requests.get(url).status_code == 404:
+    if requests.get(base_url).status_code == 404:
         current_datetime = datetime.strftime(datetime.utcnow() - timedelta(2), '%m-%d-%Y')
-        url = BASE_URL_DAILY_REPORTS.format(current_datetime)
+        base_url = BASE_URL_DAILY_REPORTS.format(current_datetime)
 
-    # Extract data
-    res = requests.get(url)
-    text = res.text
+    # Extract all data
+    df = pd.read_csv(base_url)
+    # lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'iso3', 'Country_Region']]
+    # df = pd.merge(lookup_df, daily_report_df, on='Country_Region') # add iso2 and iso3 to the dataframe
 
-    data = list(csv.DictReader(text.splitlines()))
-    df = pd.DataFrame(data)
-    
     # Data pre-processing
     concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
     df[concerned_columns] = df[concerned_columns].fillna(0) # Replace empty cells with 0
