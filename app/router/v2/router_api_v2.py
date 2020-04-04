@@ -2,15 +2,14 @@
 FILE: router_api_v2.py
 DESCRIPTION: all routes for API v2
 AUTHOR: Nuttaphat Arunoprayoch
-DATE: 04-Aril-2020
+DATE: 04-April-2020
 """
 from functools import wraps
 from typing import Dict, Any
 
 from . import v2
-from models.covid_model_api_v2 import NovelCoronaAPIv2
-
 from utils.helper import lookup_country
+from models.covid_model_api_v2 import NovelCoronaAPIv2
 
 
 # Reload model (APIv2)
