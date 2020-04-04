@@ -8,11 +8,11 @@ DATE: 9-Feb-2020
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
-from utils.helper import get_data
+from utils.get_data import get_data
 
 
 # Create a model and its methods
-class NovelCoronaAPI:
+class NovelCoronaAPIv1:
     """ Model and Its methods """
     def __init__(self) -> None:
         """ Get data from helper -> the source data """

@@ -8,7 +8,7 @@ DATE: 14-March-2020
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
-from utils.helper import get_data_daily_reports, get_data_time_series
+from utils.get_data import get_data_daily_reports, get_data_time_series
 
 
 class NovelCoronaAPIv2:
