@@ -24,6 +24,19 @@ BASE_URL_DAILY_REPORTS = 'https://raw.githubusercontent.com/CSSEGISandData/COVID
 BASE_URL_LOOKUP_TABLE = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv'
 
 
+# Get Lookup table
+def get_data_lookup_table() -> Dict[str, str]:
+    """ Get lookup table (country references for iso2) """
+    lookup_table_url = BASE_URL_LOOKUP_TABLE
+    lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
+    
+    # Create referral dictionary
+    data = lookup_df.to_dict('records')
+    data = {v['iso2']: v['Country_Region'] for v in data}
+
+    return data
+
+
 # Get data from daily reports
 def get_data_daily_reports() -> pd.DataFrame:
     """ Get data from BASE_URL_DAILY_REPORTS """
@@ -40,10 +53,8 @@ def get_data_daily_reports() -> pd.DataFrame:
         current_datetime = datetime.strftime(datetime.utcnow() - timedelta(2), '%m-%d-%Y')
         base_url = BASE_URL_DAILY_REPORTS.format(current_datetime)
 
-    # Extract all data
+    # Extract the data
     df = pd.read_csv(base_url)
-    # lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'iso3', 'Country_Region']]
-    # df = pd.merge(lookup_df, daily_report_df, on='Country_Region') # add iso2 and iso3 to the dataframe
 
     # Data pre-processing
     concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
@@ -62,12 +73,9 @@ def get_data_time_series() -> Dict[str, pd.DataFrame]:
     # Iterate through all files
     for category in NEW_CATEGORIES:
         url = BASE_URL_TIME_SERIES.format(category)
-        res = requests.get(url)
-        text = res.text
 
         # Extract data
-        data = list(csv.DictReader(text.splitlines()))
-        df = pd.DataFrame(data)
+        df = pd.read_csv(url)
         dataframes[category] = df
 
     return dataframes
@@ -81,12 +89,9 @@ def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
     # Iterate through all files
     for category in CATEGORIES:
         url = BASE_URL_TIME_SERIES.format(category)
-        res = requests.get(url)
-        text = res.text
 
         # Extract data
-        data = list(csv.DictReader(text.splitlines()))
-        df = pd.DataFrame(data)
+        df = pd.read_csv(url)
         df['Country/Region'] = df['Country/Region'].apply(lambda country_name: country_name.strip()) # Eliminate whitespace
         df['Country/Region'] = df['Country/Region'].str.replace(' ', '_')
 

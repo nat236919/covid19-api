@@ -8,7 +8,7 @@ DATE: 14-March-2020
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
-from utils.get_data import get_data_daily_reports, get_data_time_series
+from utils.get_data import get_data_daily_reports, get_data_time_series, get_data_lookup_table
 
 
 class NovelCoronaAPIv2:
@@ -23,6 +23,7 @@ class NovelCoronaAPIv2:
         """ Initiate DataFrame """
         self.df = get_data_daily_reports()
         self.df_time_series = get_data_time_series()
+        self.lookup_table = get_data_lookup_table()
 
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
@@ -47,7 +48,22 @@ class NovelCoronaAPIv2:
         packed_data['data'] = data
 
         return packed_data
-    
+
+    def get_country(self, country_name: str) -> Dict[str, Any]:
+        """ Get a country data from its name or ISO 2 """
+        all_country_data = self.get_current()['data']
+
+        # Search for a given country
+        if country_name not in [country_data['location'].lower() for country_data in all_country_data]:
+            country_name = self.lookup_table[country_name.upper()] # translate country code to its name
+
+        data = [country_data for country_data in all_country_data
+                                if country_name.lower() == country_data['location'].lower()][0]
+        packed_data = self.scheme
+        packed_data['data'] = data
+
+        return packed_data
+
     def get_confirmed(self) -> Dict[str, Any]:
         """ Summation of all confirmed cases """
         data = self.df['Confirmed'].sum()

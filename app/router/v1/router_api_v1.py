@@ -6,6 +6,7 @@ DATE: 04-April-2020
 """
 from functools import wraps
 from typing import Dict, Any
+from fastapi import HTTPException
 
 from . import v1
 from utils.helper import lookup_country
