@@ -93,6 +93,7 @@ def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
 
         # Extract data
         df = pd.read_csv(url)
+        df = df.fillna('')
         df['Country/Region'] = df['Country/Region'].apply(lambda country_name: country_name.strip()) # Eliminate whitespace
         df['Country/Region'] = df['Country/Region'].str.replace(' ', '_')
 
