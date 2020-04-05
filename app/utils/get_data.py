@@ -24,6 +24,19 @@ BASE_URL_DAILY_REPORTS = 'https://raw.githubusercontent.com/CSSEGISandData/COVID
 BASE_URL_LOOKUP_TABLE = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv'
 
 
+# Get Lookup table
+def get_data_lookup_table() -> Dict[str, str]:
+    """ Get lookup table (country references for iso2) """
+    lookup_table_url = BASE_URL_LOOKUP_TABLE
+    lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
+    
+    # Create referral dictionary
+    data = lookup_df.to_dict('records')
+    data = {v['iso2']: v['Country_Region'] for v in data}
+
+    return data
+
+
 # Get data from daily reports
 def get_data_daily_reports() -> pd.DataFrame:
     """ Get data from BASE_URL_DAILY_REPORTS """

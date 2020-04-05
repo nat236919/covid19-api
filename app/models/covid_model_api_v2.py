@@ -23,6 +23,7 @@ class NovelCoronaAPIv2:
         """ Initiate DataFrame """
         self.df = get_data_daily_reports()
         self.df_time_series = get_data_time_series()
+        self.lookup_table = get_data_lookup_table()
 
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
