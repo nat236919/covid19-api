@@ -6,9 +6,9 @@ DATE: 04-April-2020
 """
 from functools import wraps
 from typing import Dict, Any
+from fastapi import HTTPException
 
 from . import v2
-from utils.helper import lookup_country
 from models.covid_model_api_v2 import NovelCoronaAPIv2
 
 
@@ -99,17 +99,10 @@ def get_active() -> Dict[str, int]:
 @reload_model_api_v2
 def get_country(country_name: str) -> Dict[str, Any]:
     """ Search by name or ISO (alpha2) """
-    raw_data = novel_corona_api_v2.get_current() # Get all current data
     try:
-        if country_name.lower() not in ['us', 'uk'] and len(country_name) in [2]:
-            country_name = lookup_country(country_name)
-            data = [i for i in raw_data['data'] if country_name.lower() in i.get("location").lower()]
-        else:
-            data = [i for i in raw_data['data'] if country_name.lower() == i.get("location").lower()]
-        
-        raw_data['data'] = data[0]
+        raw_data = novel_corona_api_v2.get_country(country_name.lower())
 
-    except:
+    except Exception as e:
         raise HTTPException(status_code=404, detail="Item not found")
 
     return raw_data
