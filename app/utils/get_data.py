@@ -76,6 +76,7 @@ def get_data_time_series() -> Dict[str, pd.DataFrame]:
 
         # Extract data
         df = pd.read_csv(url)
+        df = df.fillna('')
         dataframes[category] = df
 
     return dataframes
