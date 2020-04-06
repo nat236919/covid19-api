@@ -8,7 +8,8 @@ DATE: 14-March-2020
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
-from utils.get_data import get_data_daily_reports, get_data_time_series, get_data_lookup_table
+from utils.get_data import (get_data_daily_reports, get_data_time_series,
+                            get_US_time_series, get_data_lookup_table)
 
 
 class NovelCoronaAPIv2:
@@ -20,9 +21,10 @@ class NovelCoronaAPIv2:
         }
     """
     def __init__(self) -> None:
-        """ Initiate DataFrame """
+        """ Initiate DataFrames """
         self.df = get_data_daily_reports()
         self.df_time_series = get_data_time_series()
+        self.df_US_time_series = get_US_time_series()
         self.lookup_table = get_data_lookup_table()
 
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
@@ -125,8 +127,37 @@ class NovelCoronaAPIv2:
 
         return time_series_data
 
+    def __extract_US_time_series(self, time_series: Dict) -> List[Dict]:
+        time_series_data = []
+
+        for data in time_series.values():
+            excluded_cols = ['UID', 'iso2', 'iso3', 'code3', 'FIPS',
+                            'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_', 
+                            'Combined_Key','Population']
+
+            temp_dict = {}
+            temp_dict['Province_State'] = data['Province_State']
+            temp_dict['Country_Region'] = data['Country_Region']
+            temp_dict['Info'] = {
+                'UID': data['UID'],
+                'iso2': data['iso2'],
+                'iso3': data['iso3'],
+                'code3': data['code3'],
+                'FIPS': data['FIPS'],
+                'Admin2': data['Admin2']
+            }
+            temp_dict['Coordinates'] = {'Lat': float(data['Lat']), 'Long': float(data['Long_'])}
+
+            temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
+            temp_dict['TimeSeries'] = [{'date': k, 'value': v} for k, v in temp_time_series_dict.items()]
+            
+            time_series_data.append(temp_dict) 
+
+        return time_series_data
+
     def __extract_time_series_global(self, dataframe_dict: Dict[str, pd.DataFrame]) -> List[Dict]:
         global_df_list = []
+
         for key, df in dataframe_dict.items():
             df_temp = pd.DataFrame(df.iloc[:, 4:].astype('int32').sum(axis=0))
             df_temp.columns = [key]
@@ -146,6 +177,19 @@ class NovelCoronaAPIv2:
             raw_data = self.df_time_series
             data = self.__extract_time_series_global(raw_data)
 
+        packed_data = self.scheme
+        packed_data['data'] = data
+
+        return packed_data
+    
+    def get_US_time_series(self, case: str) -> Dict[str, Any]:
+        """ Get USA time series """
+        if case not in ['confirmed', 'deaths']:
+            data = []
+        else:
+            raw_data = self.df_US_time_series[case].T.to_dict()
+            data = self.__extract_US_time_series(raw_data)
+        
         packed_data = self.scheme
         packed_data['data'] = data
 
