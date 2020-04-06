@@ -14,6 +14,7 @@ from typing import Dict
 
 # Base URL for timeseries
 BASE_URL_TIME_SERIES = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_{}_global.csv'
+BASE_URL_US_TIME_SERIES = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_{}_US.csv'
 CATEGORIES = ['confirmed', 'deaths', 'recovered']
 NEW_CATEGORIES = ['confirmed', 'deaths', 'recovered'] # Recovered will be deprecated by the source soon
 
@@ -77,6 +78,24 @@ def get_data_time_series() -> Dict[str, pd.DataFrame]:
         # Extract data
         df = pd.read_csv(url)
         df = df.fillna('')
+        dataframes[category] = df
+
+    return dataframes
+
+
+# Get data from time series (US)
+def get_US_time_series() -> Dict[str, pd.DataFrame]:
+    """ Get the dataset of time series for USA """
+    dataframes = {}
+
+    # Iterate through categories
+    for category in NEW_CATEGORIES[:-1]:
+        url = BASE_URL_US_TIME_SERIES.format(category)
+        
+        # Extract data
+        df = pd.read_csv(url)
+        df = df.fillna('')
+        df[['Lat', 'Long_']] = df[['Lat', 'Long_']].astype(float)
         dataframes[category] = df
 
     return dataframes
