@@ -43,16 +43,13 @@ def get_data_daily_reports() -> pd.DataFrame:
     """ Get data from BASE_URL_DAILY_REPORTS """
     current_datetime = datetime.utcnow().strftime('%m-%d-%Y')
     base_url = BASE_URL_DAILY_REPORTS.format(current_datetime)
-    lookup_table_url = BASE_URL_LOOKUP_TABLE
 
     # Check the latest file
-    if requests.get(base_url).status_code == 404:
-        current_datetime = datetime.strftime(datetime.utcnow() - timedelta(1), '%m-%d-%Y')
+    time_delta = 1
+    while(requests.get(base_url).status_code == 404):
+        current_datetime = datetime.strftime(datetime.utcnow() - timedelta(time_delta), '%m-%d-%Y')
         base_url = BASE_URL_DAILY_REPORTS.format(current_datetime)
-
-    if requests.get(base_url).status_code == 404:
-        current_datetime = datetime.strftime(datetime.utcnow() - timedelta(2), '%m-%d-%Y')
-        base_url = BASE_URL_DAILY_REPORTS.format(current_datetime)
+        time_delta += 1
 
     # Extract the data
     df = pd.read_csv(base_url)
