@@ -79,7 +79,7 @@ Send a request to the follwing URLs:
 | https://covid2019-api.herokuapp.com/v2/country/kr | Search a country by an [ISO country code (alpha2)] (https://www.iban.com country-codes) |
 | https://covid2019-api.herokuapp.com/v2/timeseries/global |  Get the time series: global |
 | https://covid2019-api.herokuapp.com/v2/timeseries/{case} |  Get the time series: confirmed, deaths, recovered |
-| https://covid2019-api.herokuapp.com/v2/timeseries/US/{case} |  Get the time series: confirmed, deaths |
+| https://covid2019-api.herokuapp.com/v2/timeseries/US/{case} |  Get the time series (US): confirmed, deaths |
 
 #### Examples API (v2)
 
