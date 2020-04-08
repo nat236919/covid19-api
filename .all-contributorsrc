@@ -1,0 +1,29 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "nat236919",
+      "name": "Nuttaphat Arunoprayoch",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/9074112?v=4",
+      "profile": "http://nuttaphat.azurewebsites.net",
+      "contributions": [
+        "maintenance",
+        "code",
+        "bug",
+        "doc",
+        "ideas",
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Covid2019API",
+  "projectOwner": "nat236919",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
