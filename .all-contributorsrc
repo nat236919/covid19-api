@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "soapy1",
+      "name": "Sophia Castellarin",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/976973?v=4",
+      "profile": "https://github.com/soapy1",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Covid2019API",
+  "projectOwner": "nat236919",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
