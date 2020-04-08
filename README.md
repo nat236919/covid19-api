@@ -8,7 +8,9 @@
 [![forks](<https://img.shields.io/github/forks/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/forks)
 [![stars](<https://img.shields.io/github/stars/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/stars)
 [![license](<https://img.shields.io/github/license/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/blob/master/LICENCE)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 
+#### Example:
 https://covid2019-api.herokuapp.com/
 
 This API provides the information regarding '2019 Novel Coronavirus (covid-19)'. It contains a number of confirmed, death, and recovered cases based on the data provided by the Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE).
@@ -345,3 +347,25 @@ https://covid2019-api.herokuapp.com/timeseries/deaths
 https://covid2019-api.herokuapp.com/timeseries/recovered
 {"recovered":[{"Province/State":"Anhui","Country/Region":"Mainland_China","Lat":"31.825709999999997","Long":"117.2264","1/21/20 22:00":"","1/22/20 12:00":"","1/23/20 12:00":"","1/24/20 0:00":"","1/24/20 12:00":"","1/25/20 0:00":"","1/25/20 12:00":"","1/25/20 22:00":"","1/26/20 11:00":"","1/26/20 23:00":"","1/27/20 9:00":"","1/27/20 19:00":"","1/27/20 20:30":"","1/28/20 13:00":"","1/28/20 18:00":"","1/28/20 23:00":"","1/29/20 13:30":"2.0","1/29/20 14:30":"2.0","1/29/20 21:00":"2.0","1/30/20 11:00":"2.0","1/31/20 14:00":"3.0","2/1/20 10:00":"5.0","2/2/20 21:00":"7.0","2/3/20 21:00":"14.0","2/4/20 9:40":"14.0","2/4/20 22:00":"20.0","2/5/20 9:00":"23.0","2/5/20 23:00":"23.0","2/6/20 9:00":"34.0","2/6/20 14:20":"34.0","2/7/20 20:13":"47.0","2/7/20 22:50":"47.0","2/8/20 10:24":"59.0","2/8/20 23:04":"59.0","2/9/20 10:30":"72.0","2/9/20 23:20":"73.0","2/10/20 10:30":"88.0","2/10/20 19:30":"88.0","2/11/20 10:50":"105","2/11/20 20:44":"108","2/12/20 10:20":"127","2/12/20 22:00":"128".....n],"dt":"2/11/20 20:44","ts":1581425040.0}
 ```
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://nuttaphat.azurewebsites.net"><img src="https://avatars0.githubusercontent.com/u/9074112?v=4" width="100px;" alt=""/><br /><sub><b>Nuttaphat Arunoprayoch</b></sub></a><br /><a href="#maintenance-nat236919" title="Maintenance">🚧</a> <a href="https://github.com/nat236919/Covid2019API/commits?author=nat236919" title="Code">💻</a> <a href="https://github.com/nat236919/Covid2019API/issues?q=author%3Anat236919" title="Bug reports">🐛</a> <a href="https://github.com/nat236919/Covid2019API/commits?author=nat236919" title="Documentation">📖</a> <a href="#ideas-nat236919" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/nat236919/Covid2019API/pulls?q=is%3Apr+reviewed-by%3Anat236919" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/soapy1"><img src="https://avatars0.githubusercontent.com/u/976973?v=4" width="100px;" alt=""/><br /><sub><b>Sophia Castellarin</b></sub></a><br /><a href="https://github.com/nat236919/Covid2019API/commits?author=soapy1" title="Code">💻</a></td>
+    <td align="center"><a href="https://keybase.io/endoffile78"><img src="https://avatars2.githubusercontent.com/u/11342054?v=4" width="100px;" alt=""/><br /><sub><b>Jeremy</b></sub></a><br /><a href="https://github.com/nat236919/Covid2019API/commits?author=endoffile78" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/ChooseYourPlan"><img src="https://avatars2.githubusercontent.com/u/32968964?v=4" width="100px;" alt=""/><br /><sub><b>Tim</b></sub></a><br /><a href="#translation-ChooseYourPlan" title="Translation">🌍</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
