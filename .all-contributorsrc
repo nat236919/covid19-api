@@ -6,6 +6,20 @@
   "commit": false,
   "contributors": [
     {
+      "login": "nat236919",
+      "name": "Nuttaphat Arunoprayoch",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/9074112?v=4",
+      "profile": "http://nuttaphat.azurewebsites.net",
+      "contributions": [
+        "maintenance",
+        "code",
+        "bug",
+        "doc",
+        "ideas",
+        "review"
+      ]
+    },
+    {
       "login": "soapy1",
       "name": "Sophia Castellarin",
       "avatar_url": "https://avatars0.githubusercontent.com/u/976973?v=4",
@@ -13,8 +27,8 @@
       "contributions": [
         "code"
        ]
-     },
-     {
+    },
+    {
       "login": "endoffile78",
       "name": "Jeremy",
       "avatar_url": "https://avatars2.githubusercontent.com/u/11342054?v=4",
@@ -22,8 +36,8 @@
       "contributions": [
         "code"
        ]
-     },
-     {
+    },
+    {
       "login": "ChooseYourPlan",
       "name": "Tim",
       "avatar_url": "https://avatars2.githubusercontent.com/u/32968964?v=4",
