@@ -53,10 +53,8 @@ services:
       - ./app:/app
     ports:
       - "80:80"
-    depends_on: 
-      - redis
     environment:
-      - "RUN=uvicorn main:app"
+      - 'RUN=uvicorn main:app'
 ```
 
 ## How to use API (v2)
