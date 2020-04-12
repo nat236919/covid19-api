@@ -31,15 +31,21 @@ https://github.com/CSSEGISandData/COVID-19
 4. Individual affected country
 5. Timeseries
 
+## How to install
+* Run the following command in your command line to run the server
+{your_path}/app >
+```console
+uvicorn main:app
+```
 
 ## How to install (Docker-compose)
 * Run the following command in your command line to run the server
-```python
+```console
 docker-compose up
 ```
 
 * Or run the server in the background
-```python
+```console
 docker-compose up -d
 ```
 
