@@ -59,6 +59,7 @@ def get_data_daily_reports() -> pd.DataFrame:
     df[concerned_columns] = df[concerned_columns].fillna(0) # Replace empty cells with 0
     df[concerned_columns] = df[concerned_columns].replace('', 0) # Replace '' with 0
     df[concerned_columns] = df[concerned_columns].astype(int)
+    df['Last_Update'] = current_datetime # Replace Last_Update with its file name
     
     return df
 
