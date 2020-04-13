@@ -31,8 +31,9 @@ class NovelCoronaAPIv2:
         self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
         self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
 
+        # Timeformat: 04-13-2020.csv -> '%m-%d-%Y' based on the file name
         self.datetime = max(self.df['Last_Update'].tolist())
-        self.timestamp = datetime.strptime(self.datetime, '%Y-%m-%d %H:%M:%S').timestamp()
+        self.timestamp = datetime.strptime(self.datetime, '%m-%d-%Y').timestamp()
 
         self.scheme = {
             'data': None,
