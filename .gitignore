@@ -135,4 +135,4 @@ dmypy.json
 /.pytest_cache
 
 # log files
-/app/logs/*
+/app/logs/**
