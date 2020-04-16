@@ -86,7 +86,7 @@ def get_US_time_series() -> Dict[str, pd.DataFrame]:
     """ Get the dataset of time series for USA """
     dataframes = {}
 
-    # Iterate through categories
+    # Iterate through categories ('confirmed', 'deaths')
     for category in NEW_CATEGORIES[:-1]:
         url = BASE_URL_US_TIME_SERIES.format(category)
         
