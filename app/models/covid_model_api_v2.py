@@ -12,7 +12,7 @@ from utils.get_data import (get_data_daily_reports, get_data_time_series,
                             get_US_time_series, get_data_lookup_table)
 
 
-class NovelCoronaAPIv2:
+class CovidAPIv2:
     """ Covid-19 API v2 model and its methods
         SCHEMA: {
             "data": Any,

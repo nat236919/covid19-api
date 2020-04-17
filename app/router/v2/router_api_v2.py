@@ -11,7 +11,7 @@ from fastapi import HTTPException, BackgroundTasks
 from starlette.requests import Request
 
 from . import v2
-from models.covid_model_api_v2 import NovelCoronaAPIv2
+from models.covid_model_api_v2 import CovidAPIv2
 
 
 # Reload model (APIv2)
@@ -20,7 +20,7 @@ def reload_model_api_v2(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         global novel_corona_api_v2
-        novel_corona_api_v2 = NovelCoronaAPIv2()
+        novel_corona_api_v2 = CovidAPIv2()
         return func(*args, **kwargs)
     return wrapper
 
