@@ -11,24 +11,13 @@ import pandas as pd
 from datetime import datetime, timedelta
 from typing import Dict
 
-
-# Base URL for timeseries
-BASE_URL_TIME_SERIES = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_{}_global.csv'
-BASE_URL_US_TIME_SERIES = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_{}_US.csv'
-CATEGORIES = ['confirmed', 'deaths', 'recovered']
-NEW_CATEGORIES = ['confirmed', 'deaths', 'recovered'] # Recovered will be deprecated by the source soon
-
-# Base URL for Daily Reports
-BASE_URL_DAILY_REPORTS = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/{}.csv'
-
-# Base URL for LookUp Table
-BASE_URL_LOOKUP_TABLE = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv'
+from .file_paths import JHU_CSSE_FILE_PATHS
 
 
 # Get Lookup table
 def get_data_lookup_table() -> Dict[str, str]:
     """ Get lookup table (country references for iso2) """
-    lookup_table_url = BASE_URL_LOOKUP_TABLE
+    lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
     lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
     
     # Create referral dictionary
@@ -42,13 +31,13 @@ def get_data_lookup_table() -> Dict[str, str]:
 def get_data_daily_reports() -> pd.DataFrame:
     """ Get data from BASE_URL_DAILY_REPORTS """
     current_datetime = datetime.utcnow().strftime('%m-%d-%Y')
-    base_url = BASE_URL_DAILY_REPORTS.format(current_datetime)
+    base_url = JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'].format(current_datetime)
 
     # Check the latest file
     time_delta = 1
     while(requests.get(base_url).status_code == 404):
         current_datetime = datetime.strftime(datetime.utcnow() - timedelta(time_delta), '%m-%d-%Y')
-        base_url = BASE_URL_DAILY_REPORTS.format(current_datetime)
+        base_url = JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'].format(current_datetime)
         time_delta += 1
 
     # Extract the data
@@ -70,8 +59,8 @@ def get_data_time_series() -> Dict[str, pd.DataFrame]:
     dataframes = {}
 
     # Iterate through all files
-    for category in NEW_CATEGORIES:
-        url = BASE_URL_TIME_SERIES.format(category)
+    for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
+        url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
 
         # Extract data
         df = pd.read_csv(url)
@@ -86,9 +75,9 @@ def get_US_time_series() -> Dict[str, pd.DataFrame]:
     """ Get the dataset of time series for USA """
     dataframes = {}
 
-    # Iterate through categories
-    for category in NEW_CATEGORIES[:-1]:
-        url = BASE_URL_US_TIME_SERIES.format(category)
+    # Iterate through categories ('confirmed', 'deaths')
+    for category in JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1]:
+        url = JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES'].format(category)
         
         # Extract data
         df = pd.read_csv(url)
@@ -105,8 +94,8 @@ def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
     dataframes = {}
 
     # Iterate through all files
-    for category in CATEGORIES:
-        url = BASE_URL_TIME_SERIES.format(category)
+    for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
+        url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
 
         # Extract data
         df = pd.read_csv(url)
