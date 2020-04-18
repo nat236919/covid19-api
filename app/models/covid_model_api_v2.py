@@ -57,6 +57,7 @@ class CovidAPIv2:
         all_country_data = self.get_current()['data']
 
         # Search for a given country
+        ## In case a country name is not found, assume it's a country code (iso2) 
         if country_name not in [country_data['location'].lower() for country_data in all_country_data]:
             country_name = self.lookup_table[country_name.upper()] # translate country code to its name
 
@@ -112,6 +113,7 @@ class CovidAPIv2:
         return packed_data
 
     def __extract_time_series(self, time_series: Dict) -> List[Dict]:
+        """ Extract time series from a given case """
         time_series_data = []
 
         for data in time_series.values():
@@ -129,6 +131,7 @@ class CovidAPIv2:
         return time_series_data
 
     def __extract_US_time_series(self, time_series: Dict) -> List[Dict]:
+        """ Extract USA time series """
         time_series_data = []
 
         for data in time_series.values():
@@ -157,11 +160,14 @@ class CovidAPIv2:
         return time_series_data
 
     def __extract_time_series_global(self, dataframe_dict: Dict[str, pd.DataFrame]) -> List[Dict]:
+        """ Extract time series for global case
+            Iterating all cases from all time series
+        """
         global_df_list = []
 
         for key, df in dataframe_dict.items():
-            df_temp = pd.DataFrame(df.iloc[:, 4:].astype('int32').sum(axis=0))
-            df_temp.columns = [key]
+            df_temp = pd.DataFrame(df.iloc[:, 4:].astype('int32').sum(axis=0)) # Slice to select time series data (exclude country info)
+            df_temp.columns = [key] # A dataframe with one column named by a key (case), rows are time series
             global_df_list.append(df_temp)
 
         # Combine DataFrames
@@ -171,6 +177,10 @@ class CovidAPIv2:
         return data
 
     def get_time_series(self, case: str) -> Dict[str, Any]:
+        """ Get time series data from a given case
+            1.) global
+            2.) confirmed, deaths, recovered
+        """
         if case not in ['global']:
             raw_data = self.df_time_series[case].T.to_dict()
             data = self.__extract_time_series(raw_data)

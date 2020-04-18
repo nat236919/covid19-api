@@ -5,9 +5,10 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 17-April-2020
 """
 # Johns Hopkins CSSE - Datasets (https://github.com/CSSEGISandData/COVID-19)
-JHU_CSSE_DAILY_REPORT_PATH = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'
-JHU_CSSE_TIME_SERIES_PATH = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/'
-JHU_CSSE_LOOKUP_TABLE_PATH = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv'
+JHU_CSSE_BASE_PATH = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/'
+JHU_CSSE_DAILY_REPORT_PATH = JHU_CSSE_BASE_PATH + 'csse_covid_19_daily_reports/'
+JHU_CSSE_TIME_SERIES_PATH = JHU_CSSE_BASE_PATH + 'csse_covid_19_time_series/'
+JHU_CSSE_LOOKUP_TABLE_PATH = JHU_CSSE_BASE_PATH + 'UID_ISO_FIPS_LookUp_Table.csv'
 JHU_CSSE_CATEGORIES = ['confirmed', 'deaths', 'recovered']
 
 JHU_CSSE_FILE_PATHS = {

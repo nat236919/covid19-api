@@ -55,7 +55,7 @@ def get_data_daily_reports() -> pd.DataFrame:
 
 # Get data from time series
 def get_data_time_series() -> Dict[str, pd.DataFrame]:
-    """ Get the dataset from https://github.com/CSSEGISandData/COVID-19 """
+    """ Get the dataset from JHU CSSE """
     dataframes = {}
 
     # Iterate through all files
@@ -90,7 +90,7 @@ def get_US_time_series() -> Dict[str, pd.DataFrame]:
 
 # API v1
 def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
-    """ Get the dataset from https://github.com/CSSEGISandData/COVID-19 """
+    """ Get the dataset from JHU CSSE """
     dataframes = {}
 
     # Iterate through all files
