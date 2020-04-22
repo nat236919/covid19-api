@@ -82,6 +82,7 @@ def get_US_time_series() -> Dict[str, pd.DataFrame]:
         # Extract data
         df = pd.read_csv(url)
         df = df.fillna('')
+        df[['Lat', 'Long_']] = df[['Lat', 'Long_']].replace('', 0) # Replace '' with 0
         df[['Lat', 'Long_']] = df[['Lat', 'Long_']].astype(float)
         dataframes[category] = df
 
