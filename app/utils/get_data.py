@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 from typing import Dict
 
 from .file_paths import JHU_CSSE_FILE_PATHS
+from .helper import helper_df_cleaning, helper_df_cols_cleaning
 
 
 # Get Lookup table
@@ -35,7 +36,7 @@ def get_data_daily_reports() -> pd.DataFrame:
 
     # Check the latest file
     time_delta = 1
-    while(requests.get(base_url).status_code == 404):
+    while requests.get(base_url).status_code == 404:
         current_datetime = datetime.strftime(datetime.utcnow() - timedelta(time_delta), '%m-%d-%Y')
         base_url = JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'].format(current_datetime)
         time_delta += 1
@@ -45,9 +46,7 @@ def get_data_daily_reports() -> pd.DataFrame:
 
     # Data pre-processing
     concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-    df[concerned_columns] = df[concerned_columns].fillna(0) # Replace empty cells with 0
-    df[concerned_columns] = df[concerned_columns].replace('', 0) # Replace '' with 0
-    df[concerned_columns] = df[concerned_columns].astype(int)
+    df = helper_df_cols_cleaning(df, concerned_columns, int)
     df['Last_Update'] = current_datetime # Replace Last_Update with its file name
     
     return df
@@ -64,7 +63,7 @@ def get_data_time_series() -> Dict[str, pd.DataFrame]:
 
         # Extract data
         df = pd.read_csv(url)
-        df = df.fillna('')
+        df = helper_df_cleaning(df)
         dataframes[category] = df
 
     return dataframes
@@ -81,9 +80,9 @@ def get_US_time_series() -> Dict[str, pd.DataFrame]:
         
         # Extract data
         df = pd.read_csv(url)
-        df = df.fillna('')
-        df[['Lat', 'Long_']] = df[['Lat', 'Long_']].replace('', 0) # Replace '' with 0
-        df[['Lat', 'Long_']] = df[['Lat', 'Long_']].astype(float)
+        df = helper_df_cleaning(df)
+        concerned_columns = ['Lat', 'Long_']
+        df = helper_df_cols_cleaning(df, concerned_columns, float)
         dataframes[category] = df
 
     return dataframes
