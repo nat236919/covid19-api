@@ -35,7 +35,7 @@ def get_data_daily_reports() -> pd.DataFrame:
 
     # Check the latest file
     time_delta = 1
-    while(requests.get(base_url).status_code == 404):
+    while requests.get(base_url).status_code == 404:
         current_datetime = datetime.strftime(datetime.utcnow() - timedelta(time_delta), '%m-%d-%Y')
         base_url = JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'].format(current_datetime)
         time_delta += 1
