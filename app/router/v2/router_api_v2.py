@@ -48,7 +48,7 @@ def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str
     return data
 
 
-@v2.get('/US/current')
+@v2.get('/current/US')
 @reload_model_api_v2
 def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     try:
