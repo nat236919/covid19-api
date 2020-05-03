@@ -52,6 +52,31 @@ def get_data_daily_reports() -> pd.DataFrame:
     return df
 
 
+# Get data from daily reports (USA)
+def get_data_daily_reports_us() -> pd.DataFrame:
+    """ Get data from BASE_URL_DAILY_REPORTS """
+    current_datetime = datetime.utcnow().strftime('%m-%d-%Y')
+    base_url = JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'].format(current_datetime)
+
+    # Check the latest file
+    time_delta = 1
+    while requests.get(base_url).status_code == 404:
+        current_datetime = datetime.strftime(datetime.utcnow() - timedelta(time_delta), '%m-%d-%Y')
+        base_url = JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'].format(current_datetime)
+        time_delta += 1
+
+    # Extract the data
+    df = pd.read_csv(base_url)
+
+    # Data pre-processing
+    concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active', 'People_Tested',
+                        'People_Hospitalized']
+    df = helper_df_cols_cleaning(df, concerned_columns, int)
+    df['Last_Update'] = current_datetime # Replace Last_Update with its file name
+    
+    return df
+
+
 # Get data from time series
 def get_data_time_series() -> Dict[str, pd.DataFrame]:
     """ Get the dataset from JHU CSSE """

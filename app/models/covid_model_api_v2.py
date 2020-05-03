@@ -8,7 +8,7 @@ DATE: 14-March-2020
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Any
-from utils.get_data import (get_data_daily_reports, get_data_time_series,
+from utils.get_data import (get_data_daily_reports, get_data_daily_reports_us, get_data_time_series,
                             get_US_time_series, get_data_lookup_table)
 
 
@@ -22,10 +22,13 @@ class CovidAPIv2:
     """
     def __init__(self) -> None:
         """ Initiate DataFrames """
+        self.lookup_table = get_data_lookup_table()
+
         self.df = get_data_daily_reports()
+        self.df_US = get_data_daily_reports_us()
+
         self.df_time_series = get_data_time_series()
         self.df_US_time_series = get_US_time_series()
-        self.lookup_table = get_data_lookup_table()
 
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
@@ -47,6 +50,19 @@ class CovidAPIv2:
         df_grp_by_country = df_grp_by_country.reset_index()
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
         data = [v for v in df_grp_by_country.to_dict('index').values()]
+        packed_data = self.scheme
+        packed_data['data'] = data
+
+        return packed_data
+    
+    def get_current_US(self) -> Dict [str, Any]:
+        """ Get current data for USA's situation """
+        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active', 'People_Tested', 'People_Hospitalized']
+        df = self.df_US.groupby(['Province_State'])[concerned_columns].sum().sort_values(by='Confirmed', ascending=False)
+        df = df[concerned_columns].astype(int)
+        df = df.reset_index()
+        df.columns = ['Province_State'] + concerned_columns
+        data = [v for v in df.to_dict('index').values()]
         packed_data = self.scheme
         packed_data['data'] = data
 

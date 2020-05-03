@@ -11,10 +11,11 @@ Send a request to the follwing URLs:
 | http://localhost/v2/recovered | Get the total number of Recovered cases |
 | http://localhost/v2/active | Get the total number of Active cases (Excluding Deaths and Recovered) |
 | http://localhost/v2/country/china | Search a country by a key name (*space may be needed) |
-| http://localhost/v2/country/kr | Search a country by an [ISO country code (alpha2)] (https://www.iban.com country-codes) |
+| http://localhost/v2/country/kr | Search a country by an [ISO country code (alpha2)] |
 | http://localhost/v2/timeseries/global |  Get the time series: global |
 | http://localhost/v2/timeseries/{case} |  Get the time series: confirmed, deaths, recovered |
 | http://localhost/v2/timeseries/US/{case} |  Get the time series (US): confirmed, deaths |
+| http://localhost/v2/current/US |  Get all data from USA's current situation (List of Object) |
 
 #### Examples API (v2)
 
@@ -34,7 +35,7 @@ http://localhost/v2/current
       "deaths": 6820,
       "recovered": 8326,
       "active": 54030
-    }.....n],
+    }],
 "dt": "2020-03-24 23:41:50",
 "ts": 1585064510}
 ```
@@ -139,7 +140,7 @@ http://localhost/v2/timeseries/global
         "confirmed": 654,
         "deaths": 18
       }
-    }...],
+    }],
   "dt": "2020-03-25 23:37:49",
   "ts": 1585150669
 }
@@ -162,7 +163,7 @@ http://localhost/v2/timeseries/confirmed
         {
           "date": "1/23/20",
           "value": 0
-        }...]
+        }]
     }],
   "dt": "2020-03-25 23:37:49",
   "ts": 1585150669
@@ -190,7 +191,34 @@ http://localhost/v2/timeseries/US/confirmed
     "TimeSeries":[
       {"date":"1/22/20","value":0},
       {"date":"1/23/20","value":0},
-      {"date":"1/24/20","value":0}]}, ...n],
+      {"date":"1/24/20","value":0}]}],
+  "dt":"2020-04-05 23:13:44",
+  "ts":1586099624.0
+}
+```
+
+10. Get current (US)
+```json
+http://localhost/v2/current/US
+{
+  "data": [{
+      "Province_State": "New York",
+      "Confirmed": 312977,
+      "Deaths": 24198,
+      "Recovered": 57540,
+      "Active": 231239,
+      "People_Tested": 959071,
+      "People_Hospitalized": 67890
+    },
+    {
+      "Province_State": "New Jersey",
+      "Confirmed": 123717,
+      "Deaths": 7742,
+      "Recovered": 15642,
+      "Active": 100333,
+      "People_Tested": 262312,
+      "People_Hospitalized": 0
+    }],
   "dt":"2020-04-05 23:13:44",
   "ts":1586099624.0
 }

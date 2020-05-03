@@ -48,6 +48,19 @@ def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str
     return data
 
 
+@v2.get('/current/US')
+@reload_model_api_v2
+def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    try:
+        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        data = covid_api_v2.get_current_US()
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
+
+    return data
+
+
 @v2.get('/total')
 @reload_model_api_v2
 def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
