@@ -195,3 +195,30 @@ http://localhost/v2/timeseries/US/confirmed
   "ts":1586099624.0
 }
 ```
+
+10. Get current (US)
+```json
+http://localhost/v2/timeseries/US/current
+{
+  "data": [{
+      "Province_State": "New York",
+      "Confirmed": 312977,
+      "Deaths": 24198,
+      "Recovered": 57540,
+      "Active": 231239,
+      "People_Tested": 959071,
+      "People_Hospitalized": 67890
+    },
+    {
+      "Province_State": "New Jersey",
+      "Confirmed": 123717,
+      "Deaths": 7742,
+      "Recovered": 15642,
+      "Active": 100333,
+      "People_Tested": 262312,
+      "People_Hospitalized": 0
+    }],
+  "dt":"2020-04-05 23:13:44",
+  "ts":1586099624.0
+}
+```
