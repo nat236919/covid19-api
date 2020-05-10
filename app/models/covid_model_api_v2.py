@@ -23,16 +23,7 @@ class CovidAPIv2:
     def __init__(self) -> None:
         """ Initiate DataFrames """
         self.lookup_table = get_data_lookup_table()
-
-        self.df = get_data_daily_reports()
-        self.df_US = get_data_daily_reports_us()
-
-        self.df_time_series = get_data_time_series()
-        self.df_US_time_series = get_US_time_series()
-
-        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
-        self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
+        self.df = get_data_daily_reports() # Get base data
 
         # Timeformat: 04-13-2020.csv -> '%m-%d-%Y' based on the file name
         self.datetime = max(self.df['Last_Update'].tolist())
@@ -46,6 +37,10 @@ class CovidAPIv2:
     
     def get_current(self) -> Dict[str, Any]:
         """ Current data from all locations (Lastest date) """
+        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
+        self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
+        self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
+
         df_grp_by_country = self.df_grp_by_country.sort_values(by='Confirmed', ascending=False)
         df_grp_by_country = df_grp_by_country.reset_index()
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
@@ -57,6 +52,8 @@ class CovidAPIv2:
     
     def get_current_US(self) -> Dict [str, Any]:
         """ Get current data for USA's situation """
+        self.df_US = get_data_daily_reports_us() # Get base data
+
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active', 'People_Tested', 'People_Hospitalized']
         df = self.df_US.groupby(['Province_State'])[concerned_columns].sum().sort_values(by='Confirmed', ascending=False)
         df = df[concerned_columns].astype(int)
@@ -197,6 +194,8 @@ class CovidAPIv2:
             1.) global
             2.) confirmed, deaths, recovered
         """
+        self.df_time_series = get_data_time_series() # Get base data
+
         if case not in ['global']:
             raw_data = self.df_time_series[case].T.to_dict()
             data = self.__extract_time_series(raw_data)
@@ -214,6 +213,7 @@ class CovidAPIv2:
         if case not in ['confirmed', 'deaths']:
             data = []
         else:
+            self.df_US_time_series = get_US_time_series() # Get base data
             raw_data = self.df_US_time_series[case].T.to_dict()
             data = self.__extract_US_time_series(raw_data)
         
