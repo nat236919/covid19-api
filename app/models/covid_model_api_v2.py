@@ -143,32 +143,36 @@ class CovidAPIv2:
 
         return time_series_data
 
-    def __extract_US_time_series(self, time_series: Dict) -> List[Dict]:
+    def __extract_US_time_series(self, time_series: Dict[str, Any]) -> List[Dict]:
         """ Extract USA time series """
+
+        def __unpack_US_inner_time_series(time_series: Dict[str, Any]) -> Dict[str, Any]:
+            for data in time_series.values():
+                excluded_cols = ['UID', 'iso2', 'iso3', 'code3', 'FIPS',
+                                'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_', 
+                                'Combined_Key','Population']
+                temp_dict = {}
+                temp_dict['Province_State'] = data['Province_State']
+                temp_dict['Country_Region'] = data['Country_Region']
+                temp_dict['Info'] = {
+                    'UID': data['UID'],
+                    'iso2': data['iso2'],
+                    'iso3': data['iso3'],
+                    'code3': data['code3'],
+                    'FIPS': data['FIPS'],
+                    'Admin2': data['Admin2']
+                }
+                temp_dict['Coordinates'] = {'Lat': float(data['Lat']), 'Long': float(data['Long_'])}
+
+                temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
+                temp_dict['TimeSeries'] = [{'date': k, 'value': v} for k, v in temp_time_series_dict.items()]
+
+                yield temp_dict
+
+        # Extract the time series data
         time_series_data = []
-
-        for data in time_series.values():
-            excluded_cols = ['UID', 'iso2', 'iso3', 'code3', 'FIPS',
-                            'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_', 
-                            'Combined_Key','Population']
-
-            temp_dict = {}
-            temp_dict['Province_State'] = data['Province_State']
-            temp_dict['Country_Region'] = data['Country_Region']
-            temp_dict['Info'] = {
-                'UID': data['UID'],
-                'iso2': data['iso2'],
-                'iso3': data['iso3'],
-                'code3': data['code3'],
-                'FIPS': data['FIPS'],
-                'Admin2': data['Admin2']
-            }
-            temp_dict['Coordinates'] = {'Lat': float(data['Lat']), 'Long': float(data['Long_'])}
-
-            temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
-            temp_dict['TimeSeries'] = [{'date': k, 'value': v} for k, v in temp_time_series_dict.items()]
-            
-            time_series_data.append(temp_dict) 
+        for data in __unpack_US_inner_time_series(time_series):
+            time_series_data.append(data) 
 
         return time_series_data
 
