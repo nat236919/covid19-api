@@ -127,19 +127,24 @@ class CovidAPIv2:
 
     def __extract_time_series(self, time_series: Dict) -> List[Dict]:
         """ Extract time series from a given case """
+
+        def __unpack_inner_time_series(time_series: Dict[str, Any]) -> Dict[str, Any]:
+            for data in time_series.values():
+                excluded_cols = ['Province/State', 'Country/Region', 'Lat', 'Long']
+                temp_dict = {}
+                temp_dict['Province/State'] = data['Province/State']
+                temp_dict['Country/Region'] = data['Country/Region']
+                temp_dict['Coordinates'] = {'Lat': float(data['Lat']), 'Long': float(data['Long'])}
+
+                temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
+                temp_dict['TimeSeries'] = [{'date': k, 'value': v} for k, v in temp_time_series_dict.items()]
+
+                yield temp_dict
+
+        # Extract the time series data
         time_series_data = []
-
-        for data in time_series.values():
-            excluded_cols = ['Province/State', 'Country/Region', 'Lat', 'Long']
-            temp_dict = {}
-            temp_dict['Province/State'] = data['Province/State']
-            temp_dict['Country/Region'] = data['Country/Region']
-            temp_dict['Coordinates'] = {'Lat': float(data['Lat']), 'Long': float(data['Long'])}
-
-            temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
-            temp_dict['TimeSeries'] = [{'date': k, 'value': v} for k, v in temp_time_series_dict.items()]
-            
-            time_series_data.append(temp_dict)   
+        for data in __unpack_inner_time_series(time_series):
+            time_series_data.append(data) 
 
         return time_series_data
 
