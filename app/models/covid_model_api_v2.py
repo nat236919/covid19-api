@@ -23,30 +23,28 @@ class CovidAPIv2:
     def __init__(self) -> None:
         """ Initiate DataFrames """
         self.lookup_table = get_data_lookup_table()
-        self.df = get_data_daily_reports() # Get base data
-
-        # Timeformat: 04-13-2020.csv -> '%m-%d-%Y' based on the file name
-        self.datetime = max(self.df['Last_Update'].tolist())
-        self.timestamp = datetime.strptime(self.datetime, '%m-%d-%Y').timestamp()
-
         self.scheme = {
             'data': None,
-            'dt': self.datetime,
-            'ts': self.timestamp
+            'dt': None,
+            'ts': None
         }
     
     def get_current(self) -> Dict[str, Any]:
         """ Current data from all locations (Lastest date) """
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
+        self.df = get_data_daily_reports() # Get base data
         self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
         self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
 
         df_grp_by_country = self.df_grp_by_country.sort_values(by='Confirmed', ascending=False)
         df_grp_by_country = df_grp_by_country.reset_index()
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
+
         data = [v for v in df_grp_by_country.to_dict('index').values()]
         packed_data = self.scheme
         packed_data['data'] = data
+        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
+        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
         return packed_data
     
@@ -59,9 +57,12 @@ class CovidAPIv2:
         df = df[concerned_columns].astype(int)
         df = df.reset_index()
         df.columns = ['Province_State'] + concerned_columns
+
         data = [v for v in df.to_dict('index').values()]
         packed_data = self.scheme
         packed_data['data'] = data
+        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
+        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
         return packed_data
 
@@ -78,43 +79,63 @@ class CovidAPIv2:
                                 if country_name.lower() == country_data['location'].lower()][0]
         packed_data = self.scheme
         packed_data['data'] = data
+        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
+        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
         return packed_data
 
     def get_confirmed(self) -> Dict[str, Any]:
         """ Summation of all confirmed cases """
+        self.df = get_data_daily_reports() # Get base data
+
         data = self.df['Confirmed'].sum()
         packed_data = self.scheme
         packed_data['data'] = int(data)
+        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
+        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
         return packed_data
 
     def get_deaths(self) -> Dict[str, Any]:
         """ Summation of all deaths """
+        self.df = get_data_daily_reports() # Get base data
+
         data = self.df['Deaths'].sum()
         packed_data = self.scheme
         packed_data['data'] = int(data)
+        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
+        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
         return packed_data
     
     def get_recovered(self) -> Dict[str, Any]:
         """ Summation of all recovers """
+        self.df = get_data_daily_reports() # Get base data
+
         data = self.df['Recovered'].sum()
         packed_data = self.scheme
         packed_data['data'] = int(data)
+        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
+        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
         return packed_data
 
     def get_active(self) -> Dict[str, Any]:
         """ Summation of all actives """
+        self.df = get_data_daily_reports() # Get base data
+
         data = self.df['Active'].sum()
         packed_data = self.scheme
         packed_data['data'] = int(data)
+        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
+        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
         return packed_data
     
     def get_total(self) -> Dict[str, Any]:
         """ Summation of Confirmed, Deaths, Recovered, Active """
+        self.df = get_data_daily_reports() # Get base data
+
         packed_data = self.scheme
         packed_data['data'] = {
             'confirmed': int(self.df['Confirmed'].sum()),
@@ -122,6 +143,8 @@ class CovidAPIv2:
             'recovered': int(self.df['Recovered'].sum()),
             'active': int(self.df['Active'].sum())
         }
+        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
+        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
         
         return packed_data
 
@@ -214,6 +237,8 @@ class CovidAPIv2:
 
         packed_data = self.scheme
         packed_data['data'] = data
+        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
+        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
         return packed_data
     
@@ -228,5 +253,7 @@ class CovidAPIv2:
         
         packed_data = self.scheme
         packed_data['data'] = data
+        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
+        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
         return packed_data
