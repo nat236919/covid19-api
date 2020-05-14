@@ -42,14 +42,14 @@ SECTION: Default routes
 DESCRIPTION: Routes to the landing page and APi documentation
 """
 # Landing page
-@app.get('/')
+@app.get('/', include_in_schema=False)
 def read_root(request: Request):
     """ Landing page """
     return templates.TemplateResponse('index.html', {"request": request})
 
 
 # API documentation
-@app.get('/docs')
+@app.get('/docs', include_in_schema=False)
 def read_docs() -> None:
     """ API documentation """
     return RedirectResponse(url='/docs')
