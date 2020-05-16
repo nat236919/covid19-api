@@ -11,8 +11,17 @@
 
 This API provides the information regarding '2019 Novel Coronavirus (covid-19)'. It contains a number of confirmed, death, and recovered cases based on the data provided by the Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE).
 
-#### Example:
-https://covid2019-api.herokuapp.com/
+#### Examples:
+* https://covid2019-api.herokuapp.com/
+* https://covid2019-api.azurewebsites.net/
+
+#### Applications:
+* [Coronavirus App by YaseenAbdullah](https://github.com/YaseenAbdullah/coronavirus)
+* [COVID-19 Visual Explorer by FitnessAI](https://www.fitnessai.com/covid-19-charts-coronavirus-growth-rate-visual-explorer)
+* [BAILAM (Data and API Integration)](https://www.bailam.com/covid19)
+* [Coronavirus Tech Handbook (Data Tools)](https://coronavirustechhandbook.com/data-tools)
+
+
 
 #### References
 https://github.com/CSSEGISandData/COVID-19
