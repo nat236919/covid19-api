@@ -21,7 +21,11 @@ from router.v1 import v1
 from router.v2 import v2
 
 # Setup application
-app = FastAPI()
+app = FastAPI(
+    title='COVID-19 API',
+    description='Simply FAST API for COVID-19 cases exploration',
+    version='2.0.0'
+)
 
 # Setup CORS (https://fastapi.tiangolo.com/tutorial/cors/)
 app.add_middleware(

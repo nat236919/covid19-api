@@ -31,6 +31,15 @@ def write_log(requested_path: str, client_ip: str) -> None:
 
 @v2.get('/current')
 async def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    """
+    Get the current situation data from all reported countries
+
+    - **location**: a country's name
+    - **confirmed**: confirmed cases
+    - **deaths**:  death cases
+    - **recovered**: recovered cases
+    - **active**: active cases
+    """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_current()
@@ -43,6 +52,17 @@ async def get_current(request: Request, background_tasks: BackgroundTasks) -> Di
 
 @v2.get('/current/US')
 async def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    """
+    Get all data from USA's current situation
+
+    - **Province_State**: State's name
+    - **Confirmed**: confirmed cases
+    - **Deaths**: death cases
+    - **Recovered**: recovered cases
+    - **Active**: active cases
+    - **People_Tested**: a total number of tested people
+    - **People_Hospitalized**: a total number of hospitalised people
+    """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_current_US()
@@ -55,6 +75,14 @@ async def get_current(request: Request, background_tasks: BackgroundTasks) -> Di
 
 @v2.get('/total')
 async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    """
+    Get the total numbers of all cases
+
+    - **confirmed**: confirmed cases
+    - **deaths**:  death cases
+    - **recovered**: recovered cases
+    - **active**: active cases
+    """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_total()
@@ -67,6 +95,11 @@ async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict
 
 @v2.get('/confirmed')
 async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
+    """
+    Get the total numbers of confirmed cases
+
+    - **confirmed**: confirmed cases
+    """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_confirmed()
@@ -79,6 +112,11 @@ async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> 
 
 @v2.get('/deaths')
 async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
+    """
+    Get the total numbers of death cases
+
+    - **deaths**:  death cases
+    """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_deaths()
@@ -91,6 +129,11 @@ async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dic
 
 @v2.get('/recovered')
 async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
+    """
+    Get the total numbers of recovered cases
+
+    - **recovered**: recovered case
+    """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_recovered()
@@ -103,6 +146,11 @@ async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> 
 
 @v2.get('/active')
 async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
+    """
+    Get the total numbers of active cases
+
+    - **active**: active case
+    """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_active()
@@ -115,7 +163,15 @@ async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dic
 
 @v2.get('/country/{country_name}')
 async def get_country(country_name: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """ Search by name or ISO (alpha2) """
+    """
+    Get the data based on a county's name or its ISO code
+
+    - **location**: a country's name
+    - **confirmed**: confirmed cases
+    - **deaths**:  death cases
+    - **recovered**: recovered cases
+    - **active**: active cases
+    """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
         raw_data = COVID_API_V2.get_country(country_name.lower())
@@ -128,8 +184,20 @@ async def get_country(country_name: str, request: Request, background_tasks: Bac
 
 @v2.get('/timeseries/{case}')
 async def get_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """ Get the time series based on a given case: global, confirmed, deaths, *recovered
-        * recovered will be deprecated by the source data soon
+    """
+    Get the time series based on a given case: global, confirmed, deaths, recovered
+    
+    global
+    - **key**: datetime
+    - **confirmed**: confirmed cases
+    - **deaths**:  death cases
+    - **recovered**: recovered case
+
+    confimred, deaths, recovered
+    - **Province/State**: State's name
+    - **Country/Region**: Country's name
+    - **Coordinates**: {"Lat": int, "Long": int}
+    - **TimeSeries**: [{"date": datetime, "value": int}]
     """
     background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
 
@@ -143,7 +211,28 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
 
 @v2.get('/timeseries/US/{case}')
 async def get_US_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """ Get the USA time series based on a given case: confirmed, deaths """
+    """
+    Get the USA time series based on a given case: confirmed, deaths
+
+    confirmed, deaths
+    - **Province_State**: State's name
+    - **Country_Region**: Country's name
+    - **Info**:{
+        - **UID**: UID
+        - **iso2**: ISO2
+        - **iso3**: ISO3
+        - **code3**: CODE3
+        - **FIPS**: FIPS
+        - **Admin2**: Admin2
+    }
+    - **Coordinates**: {
+        - **Lat**: int
+        - **Long**: int
+    }
+    - **TimeSeries**: [
+        - {"date: datetime, "value": int}
+    ]
+    """
     background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
 
     if case.lower() not in ['confirmed', 'deaths']:
