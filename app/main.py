@@ -21,7 +21,11 @@ from router.v1 import v1
 from router.v2 import v2
 
 # Setup application
-app = FastAPI()
+app = FastAPI(
+    title='COVID-19 API',
+    description='Simply FAST API for COVID-19 cases exploration',
+    version='2.0.0'
+)
 
 # Setup CORS (https://fastapi.tiangolo.com/tutorial/cors/)
 app.add_middleware(
@@ -42,14 +46,14 @@ SECTION: Default routes
 DESCRIPTION: Routes to the landing page and APi documentation
 """
 # Landing page
-@app.get('/')
+@app.get('/', include_in_schema=False)
 def read_root(request: Request):
     """ Landing page """
     return templates.TemplateResponse('index.html', {"request": request})
 
 
 # API documentation
-@app.get('/docs')
+@app.get('/docs', include_in_schema=False)
 def read_docs() -> None:
     """ API documentation """
     return RedirectResponse(url='/docs')

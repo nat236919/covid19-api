@@ -132,13 +132,15 @@ http://localhost/v2/timeseries/global
     {
       "1/22/20": {
         "confirmed": 555,
-        "deaths": 17
+        "deaths": 17,
+        "recovered": 0
       }
     },
     {
       "1/23/20": {
         "confirmed": 654,
-        "deaths": 18
+        "deaths": 18,
+        "recovered": 0
       }
     }],
   "dt": "2020-03-25 23:37:49",
