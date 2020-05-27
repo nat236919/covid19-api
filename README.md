@@ -17,6 +17,7 @@ This API provides the information regarding '2019 Novel Coronavirus (covid-19)'.
 
 #### Applications:
 * [Coronavirus App by YaseenAbdullah](https://github.com/YaseenAbdullah/coronavirus)
+* [Covid 19 App - Map, info & help by DavidBarbaran](https://github.com/DavidBarbaran/Covid19App)
 * [COVID-19 Visual Explorer by FitnessAI](https://www.fitnessai.com/covid-19-charts-coronavirus-growth-rate-visual-explorer)
 * [BAILAM (Data and API Integration)](https://www.bailam.com/covid19)
 * [Coronavirus Tech Handbook (Data Tools)](https://coronavirustechhandbook.com/data-tools)
