@@ -15,7 +15,6 @@ from models.covid_model_api_v2 import CovidAPIv2
 
 
 # Initiate Model
-global COVID_API_V2
 COVID_API_V2 = CovidAPIv2()
 
 
