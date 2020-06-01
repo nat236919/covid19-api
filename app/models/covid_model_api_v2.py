@@ -6,6 +6,7 @@ DATE: 14-March-2020
 """
 # Import libraries
 import pandas as pd
+from functools import wraps
 from datetime import datetime
 from typing import Dict, List, Any
 from utils.get_data import (get_data_daily_reports, get_data_daily_reports_us, get_data_time_series,
@@ -29,6 +30,23 @@ class CovidAPIv2:
             'ts': None
         }
     
+    def wrap_data(func) -> Dict[str, Any]:
+        """ Wrap a result in a schemed data """
+        @wraps(func)
+        def wrapper(self, *args, **kwargs) -> Dict[str, Any]:
+            packed_data = self.scheme
+            packed_data['data'] = []
+            try:
+                packed_data['data'] = func(self, *args, **kwargs)
+            except Exception as e:
+                print(e)
+            finally:
+                packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
+                packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
+            return packed_data
+        return wrapper
+    
+    @wrap_data
     def get_current(self) -> Dict[str, Any]:
         """ Current data from all locations (Lastest date) """
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
@@ -41,13 +59,10 @@ class CovidAPIv2:
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
 
         data = [v for v in df_grp_by_country.to_dict('index').values()]
-        packed_data = self.scheme
-        packed_data['data'] = data
-        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
-        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
-        return packed_data
+        return data
     
+    @wrap_data
     def get_current_US(self) -> Dict [str, Any]:
         """ Get current data for USA's situation """
         self.df_US = get_data_daily_reports_us() # Get base data
@@ -59,13 +74,10 @@ class CovidAPIv2:
         df.columns = ['Province_State'] + concerned_columns
 
         data = [v for v in df.to_dict('index').values()]
-        packed_data = self.scheme
-        packed_data['data'] = data
-        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
-        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
-        return packed_data
-
+        return data
+    
+    @wrap_data
     def get_country(self, country_name: str) -> Dict[str, Any]:
         """ Get a country data from its name or ISO 2 """
         all_country_data = self.get_current()['data']
@@ -77,76 +89,53 @@ class CovidAPIv2:
 
         data = [country_data for country_data in all_country_data
                                 if country_name.lower() == country_data['location'].lower()][0]
-        packed_data = self.scheme
-        packed_data['data'] = data
-        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
-        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
-        return packed_data
+        return data
 
+    @wrap_data
     def get_confirmed(self) -> Dict[str, Any]:
         """ Summation of all confirmed cases """
         self.df = get_data_daily_reports() # Get base data
+        data = int(self.df['Confirmed'].sum())
 
-        data = self.df['Confirmed'].sum()
-        packed_data = self.scheme
-        packed_data['data'] = int(data)
-        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
-        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
+        return data
 
-        return packed_data
-
+    @wrap_data
     def get_deaths(self) -> Dict[str, Any]:
         """ Summation of all deaths """
         self.df = get_data_daily_reports() # Get base data
+        data = int(self.df['Deaths'].sum())
 
-        data = self.df['Deaths'].sum()
-        packed_data = self.scheme
-        packed_data['data'] = int(data)
-        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
-        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
-
-        return packed_data
+        return data
     
+    @wrap_data
     def get_recovered(self) -> Dict[str, Any]:
         """ Summation of all recovers """
         self.df = get_data_daily_reports() # Get base data
+        data = int(self.df['Recovered'].sum())
 
-        data = self.df['Recovered'].sum()
-        packed_data = self.scheme
-        packed_data['data'] = int(data)
-        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
-        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
+        return data
 
-        return packed_data
-
+    @wrap_data
     def get_active(self) -> Dict[str, Any]:
         """ Summation of all actives """
         self.df = get_data_daily_reports() # Get base data
+        data = int(self.df['Active'].sum())
 
-        data = self.df['Active'].sum()
-        packed_data = self.scheme
-        packed_data['data'] = int(data)
-        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
-        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
-
-        return packed_data
+        return data
     
+    @wrap_data
     def get_total(self) -> Dict[str, Any]:
         """ Summation of Confirmed, Deaths, Recovered, Active """
         self.df = get_data_daily_reports() # Get base data
-
-        packed_data = self.scheme
-        packed_data['data'] = {
+        data = {
             'confirmed': int(self.df['Confirmed'].sum()),
             'deaths': int(self.df['Deaths'].sum()),
             'recovered': int(self.df['Recovered'].sum()),
             'active': int(self.df['Active'].sum())
         }
-        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
-        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
         
-        return packed_data
+        return data
 
     def __extract_time_series(self, time_series: Dict) -> List[Dict]:
         """ Extract time series from a given case """
@@ -220,7 +209,8 @@ class CovidAPIv2:
         data = [{k: v} for k, v in global_dict.items()]
 
         return data
-
+    
+    @wrap_data
     def get_time_series(self, case: str) -> Dict[str, Any]:
         """ Get time series data from a given case
             1.) global
@@ -235,13 +225,9 @@ class CovidAPIv2:
             raw_data = self.df_time_series
             data = self.__extract_time_series_global(raw_data)
 
-        packed_data = self.scheme
-        packed_data['data'] = data
-        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
-        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
-
-        return packed_data
+        return data
     
+    @wrap_data
     def get_US_time_series(self, case: str) -> Dict[str, Any]:
         """ Get USA time series """
         if case not in ['confirmed', 'deaths']:
@@ -250,10 +236,5 @@ class CovidAPIv2:
             self.df_US_time_series = get_US_time_series() # Get base data
             raw_data = self.df_US_time_series[case].T.to_dict()
             data = self.__extract_US_time_series(raw_data)
-        
-        packed_data = self.scheme
-        packed_data['data'] = data
-        packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
-        packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
 
-        return packed_data
+        return data
