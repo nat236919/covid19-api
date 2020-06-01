@@ -211,9 +211,10 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
 @v2.get('/timeseries/US/{case}')
 async def get_US_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
-    Get the USA time series based on a given case: confirmed, deaths
+    Get the USA time series based on a given case:
 
-    confirmed, deaths
+    **confirmed**, **deaths**
+
     - **Province_State**: State's name
     - **Country_Region**: Country's name
     - **Info**:{
