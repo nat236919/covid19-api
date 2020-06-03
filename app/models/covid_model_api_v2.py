@@ -41,8 +41,9 @@ class CovidAPIv2:
             except Exception as e:
                 print(e)
             finally:
-                packed_data['dt'] = datetime.utcnow().strftime('%m-%d-%Y')
-                packed_data['ts'] = datetime.strptime(packed_data['dt'], '%m-%d-%Y').timestamp()
+                time_format = '%m-%d-%Y'
+                packed_data['dt'] = datetime.utcnow().strftime(time_format)
+                packed_data['ts'] = datetime.strptime(packed_data['dt'], time_format).timestamp()
             return packed_data
         return wrapper
     
