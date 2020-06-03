@@ -20,9 +20,10 @@ COVID_API_V2 = CovidAPIv2()
 
 # Logging
 def write_log(requested_path: str, client_ip: str) -> None:
-    file_name = datetime.now().strftime('%d-%b-%Y')
+    time_format = '%d-%b-%Y'
+    file_name = datetime.now().strftime(time_format)
     with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
-        date_time_message = datetime.now().strftime('%d-%b-%Y, %H:%M:%S | ')
+        date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
         message = date_time_message + requested_path + ' | ' + client_ip + '\n'
         log_file.write(message)
     return None

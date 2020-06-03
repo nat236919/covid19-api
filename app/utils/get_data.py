@@ -5,14 +5,12 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 9-Feb-2020
 """
 # Import libraries
-import requests
 import csv
 import pandas as pd
-from datetime import datetime, timedelta
 from typing import Dict
 
 from .file_paths import JHU_CSSE_FILE_PATHS
-from .helper import helper_df_cleaning, helper_df_cols_cleaning
+from .helper import helper_df_cleaning, helper_df_cols_cleaning, helper_get_latest_data_url
 
 
 # Get Lookup table
@@ -31,23 +29,16 @@ def get_data_lookup_table() -> Dict[str, str]:
 # Get data from daily reports
 def get_data_daily_reports() -> pd.DataFrame:
     """ Get data from BASE_URL_DAILY_REPORTS """
-    current_datetime = datetime.utcnow().strftime('%m-%d-%Y')
-    base_url = JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'].format(current_datetime)
-
     # Check the latest file
-    time_delta = 1
-    while requests.get(base_url).status_code == 404:
-        current_datetime = datetime.strftime(datetime.utcnow() - timedelta(time_delta), '%m-%d-%Y')
-        base_url = JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'].format(current_datetime)
-        time_delta += 1
+    latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
 
     # Extract the data
-    df = pd.read_csv(base_url)
+    df = pd.read_csv(latest_base_url)
 
     # Data pre-processing
     concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
     df = helper_df_cols_cleaning(df, concerned_columns, int)
-    df['Last_Update'] = current_datetime # Replace Last_Update with its file name
+    # df['Last_Update'] = current_datetime # Replace Last_Update with its file name
     
     return df
 
@@ -55,24 +46,17 @@ def get_data_daily_reports() -> pd.DataFrame:
 # Get data from daily reports (USA)
 def get_data_daily_reports_us() -> pd.DataFrame:
     """ Get data from BASE_URL_DAILY_REPORTS """
-    current_datetime = datetime.utcnow().strftime('%m-%d-%Y')
-    base_url = JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'].format(current_datetime)
-
     # Check the latest file
-    time_delta = 1
-    while requests.get(base_url).status_code == 404:
-        current_datetime = datetime.strftime(datetime.utcnow() - timedelta(time_delta), '%m-%d-%Y')
-        base_url = JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'].format(current_datetime)
-        time_delta += 1
+    latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
 
     # Extract the data
-    df = pd.read_csv(base_url)
+    df = pd.read_csv(latest_base_url)
 
     # Data pre-processing
     concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active', 'People_Tested',
                         'People_Hospitalized']
     df = helper_df_cols_cleaning(df, concerned_columns, int)
-    df['Last_Update'] = current_datetime # Replace Last_Update with its file name
+    # df['Last_Update'] = current_datetime # Replace Last_Update with its file name
     
     return df
 
