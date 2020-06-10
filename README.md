@@ -32,7 +32,6 @@ https://github.com/CSSEGISandData/COVID-19
 | ----------------- | -------------------------------- |  ----------------------------------------------------------- |
 | master            | Docker + Web API                 | For deploying to a server                                    |
 | development       | Docker + Web API                 | For testing before merging to Master                         |
-| docker-redis      | Docker + Redis + Web API         | For deploying to a server with Redis via docker-compose      |
 
 ## Features
 1. The current data (daily updated)
