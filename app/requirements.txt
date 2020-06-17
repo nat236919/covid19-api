@@ -6,5 +6,4 @@ aiofiles
 pandas
 requests
 pycountry
-redis
 pytest
