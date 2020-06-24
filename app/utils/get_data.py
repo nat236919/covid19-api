@@ -38,7 +38,6 @@ def get_data_daily_reports() -> pd.DataFrame:
     # Data pre-processing
     concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
     df = helper_df_cols_cleaning(df, concerned_columns, int)
-    # df['Last_Update'] = current_datetime # Replace Last_Update with its file name
     
     return df
 
@@ -56,7 +55,6 @@ def get_data_daily_reports_us() -> pd.DataFrame:
     concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active', 'People_Tested',
                         'People_Hospitalized']
     df = helper_df_cols_cleaning(df, concerned_columns, int)
-    # df['Last_Update'] = current_datetime # Replace Last_Update with its file name
     
     return df
 
