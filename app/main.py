@@ -41,7 +41,6 @@ DESCRIPTION: Route to API documentation
 """
 # API documentation
 @app.get('/', include_in_schema=False)
-@app.get('/docs', include_in_schema=False)
 def read_docs() -> None:
     """ API documentation """
     return RedirectResponse(url='/docs')
