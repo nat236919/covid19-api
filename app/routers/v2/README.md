@@ -19,7 +19,8 @@ Send a request to the follwing URLs:
 
 #### Examples API (v2)
 
-1. Get current data
+Get current data
+
 ```json
 http://localhost/v2/current
 {"data": [{
@@ -40,7 +41,8 @@ http://localhost/v2/current
 "ts": 1585064510}
 ```
 
-2. Get total data
+Get total data
+
 ```json
 http://localhost/v2/total
 {
@@ -55,7 +57,8 @@ http://localhost/v2/total
 }
 ```
 
-3. Get confirmed cases
+Get confirmed cases
+
 ```json
 http://localhost/v2/confirmed
 {
@@ -65,7 +68,8 @@ http://localhost/v2/confirmed
 }
 ```
 
-4. Get deaths
+Get deaths
+
 ```json
 http://localhost/v2/deaths
 {
@@ -75,7 +79,8 @@ http://localhost/v2/deaths
 }
 ```
 
-5. Get recovered cases
+Get recovered cases
+
 ```json
 http://localhost/v2/recovered
 {
@@ -85,7 +90,8 @@ http://localhost/v2/recovered
 }
 ```
 
-6. Get active cases
+Get active cases
+
 ```json
 http://localhost/v2/recovered
 {
@@ -95,7 +101,8 @@ http://localhost/v2/recovered
 }
 ```
 
-7. Get a country data
+Get a country data
+
 ```json
 http://localhost/v2/country/th
 {
@@ -124,7 +131,8 @@ http://localhost/v2/country/united%20kingdom
 }
 ```
 
-8. Get time series
+Get time series
+
 ```json
 http://localhost/v2/timeseries/global
 {
@@ -171,7 +179,8 @@ http://localhost/v2/timeseries/confirmed
   "ts": 1585150669
 ```
 
-9. Get time series (US)
+Get time series (US)
+
 ```json
 http://localhost/v2/timeseries/US/confirmed
 {
@@ -199,7 +208,8 @@ http://localhost/v2/timeseries/US/confirmed
 }
 ```
 
-10. Get current (US)
+Get current (US)
+
 ```json
 http://localhost/v2/current/US
 {

@@ -73,10 +73,10 @@ services:
 ```
 
 ## How to use API (v2)
-Check it out [here](./app/router/v2/README.md)
+Check it out [here](./app/routers/v2/README.md)
 
 ## How to use API (v1)
-Check it out [here](./app/router/v1/README.md)
+Check it out [here](./app/routers/v1/README.md)
 
 ## Contributors ✨
 

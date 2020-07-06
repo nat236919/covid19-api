@@ -15,8 +15,8 @@ from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from starlette.middleware.cors import CORSMiddleware
 
-from router.v1 import v1
-from router.v2 import v2
+from routers.v1 import v1
+from routers.v2 import v2
 
 # Setup application
 app = FastAPI(
