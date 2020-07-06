@@ -439,9 +439,7 @@
 </tbody>
 </table>
 <h4 id="examples-api-v1">Examples API (v1)</h4>
-<ol>
-<li>Get current data</li>
-</ol>
+<p>Get current data</p>
 <pre><code class="json">http://localhost/current
 {&quot;Mainland_China&quot;:{&quot;confirmed&quot;:44641,&quot;deaths&quot;:1113,&quot;recovered&quot;:4730},&quot;Thailand&quot;:{&quot;confirmed&quot;:33,&quot;deaths&quot;:0,&quot;recovered&quot;:10},&quot;Japan&quot;:{&quot;confirmed&quot;:26,&quot;deaths&quot;:0,&quot;recovered&quot;:9},&quot;South_Korea&quot;:{&quot;confirmed&quot;:28,&quot;deaths&quot;:0,&quot;recovered&quot;:4},&quot;Taiwan&quot;:{&quot;confirmed&quot;:18,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;US&quot;:{&quot;confirmed&quot;:13,&quot;deaths&quot;:0,&quot;recovered&quot;:3},&quot;Macau&quot;:{&quot;confirmed&quot;:10,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Hong_Kong&quot;:{&quot;confirmed&quot;:49,&quot;deaths&quot;:1,&quot;recovered&quot;:0},&quot;Singapore&quot;:{&quot;confirmed&quot;:47,&quot;deaths&quot;:0,&quot;recovered&quot;:9},&quot;Vietnam&quot;:{&quot;confirmed&quot;:15,&quot;deaths&quot;:0,&quot;recovered&quot;:6},&quot;France&quot;:{&quot;confirmed&quot;:11,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Nepal&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Malaysia&quot;:{&quot;confirmed&quot;:18,&quot;deaths&quot;:0,&quot;recovered&quot;:3},&quot;Canada&quot;:{&quot;confirmed&quot;:7,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Australia&quot;:{&quot;confirmed&quot;:15,&quot;deaths&quot;:0,&quot;recovered&quot;:2},&quot;Cambodia&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Sri_Lanka&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Germany&quot;:{&quot;confirmed&quot;:16,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Finland&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;United_Arab_Emirates&quot;:{&quot;confirmed&quot;:8,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Philippines&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:1,&quot;recovered&quot;:0},&quot;India&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Italy&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;UK&quot;:{&quot;confirmed&quot;:8,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Russia&quot;:{&quot;confirmed&quot;:2,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Sweden&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Spain&quot;:{&quot;confirmed&quot;:2,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Belgium&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Others&quot;:{&quot;confirmed&quot;:135,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 
@@ -449,44 +447,32 @@ http://localhost/current_list
 {&quot;countries&quot;:[{&quot;Mainland_China&quot;:{&quot;confirmed&quot;:66292,&quot;deaths&quot;:1520,&quot;recovered&quot;:7973},&quot;Thailand&quot;:{&quot;confirmed&quot;:33,&quot;deaths&quot;:0,&quot;recovered&quot;:12},&quot;Japan&quot;:{&quot;confirmed&quot;:29,&quot;deaths&quot;:1,&quot;recovered&quot;:9},&quot;South_Korea&quot;:{&quot;confirmed&quot;:28,&quot;deaths&quot;:0,&quot;recovered&quot;:7},&quot;Taiwan&quot;:{&quot;confirmed&quot;:18,&quot;deaths&quot;:0,&quot;recovered&quot;:2},&quot;US&quot;:{&quot;confirmed&quot;:15,&quot;deaths&quot;:0,&quot;recovered&quot;:3},&quot;Macau&quot;:{&quot;confirmed&quot;:10,&quot;deaths&quot;:0,&quot;recovered&quot;:3},&quot;Hong_Kong&quot;:{&quot;confirmed&quot;:56,&quot;deaths&quot;:1,&quot;recovered&quot;:1},&quot;Singapore&quot;:{&quot;confirmed&quot;:67,&quot;deaths&quot;:0,&quot;recovered&quot;:17},&quot;Vietnam&quot;:{&quot;confirmed&quot;:16,&quot;deaths&quot;:0,&quot;recovered&quot;:7},&quot;France&quot;:{&quot;confirmed&quot;:11,&quot;deaths&quot;:0,&quot;recovered&quot;:2},&quot;Nepal&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Malaysia&quot;:{&quot;confirmed&quot;:19,&quot;deaths&quot;:0,&quot;recovered&quot;:3},&quot;Canada&quot;:{&quot;confirmed&quot;:7,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Australia&quot;:{&quot;confirmed&quot;:15,&quot;deaths&quot;:0,&quot;recovered&quot;:8},&quot;Cambodia&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Sri_Lanka&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Germany&quot;:{&quot;confirmed&quot;:16,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Finland&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;United_Arab_Emirates&quot;:{&quot;confirmed&quot;:8,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Philippines&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:1,&quot;recovered&quot;:1},&quot;India&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Italy&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;UK&quot;:{&quot;confirmed&quot;:9,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Russia&quot;:{&quot;confirmed&quot;:2,&quot;deaths&quot;:0,&quot;recovered&quot;:2},&quot;Sweden&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Spain&quot;:{&quot;confirmed&quot;:2,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Belgium&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Others&quot;:{&quot;confirmed&quot;:218,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Egypt&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0}}],&quot;dt&quot;:&quot;2/14/20&quot;,&quot;ts&quot;:1581609600.0}
 </code></pre>
 
-<ol>
-<li>Get total data</li>
-</ol>
+<p>Get total data</p>
 <pre><code class="json">http://localhost/total
 {&quot;confirmed&quot;:45117,&quot;deaths&quot;:1115,&quot;recovered&quot;:4781,&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<ol>
-<li>Get confirmed cases</li>
-</ol>
+<p>Get confirmed cases</p>
 <pre><code class="json">http://localhost/confirmed
 {&quot;confirmed&quot;:45117,&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<ol>
-<li>Get deaths</li>
-</ol>
+<p>Get deaths</p>
 <pre><code class="json">http://localhost/deaths
 {&quot;deaths&quot;:1115,&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<ol>
-<li>Get recovered cases</li>
-</ol>
+<p>Get recovered cases</p>
 <pre><code class="json">http://localhost/recovered
 {&quot;recovered&quot;:4781,&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<ol>
-<li>Get all the affected countries (Note: Others -&gt; Diamond Princess cruise ship)</li>
-</ol>
+<p>Get all the affected countries (Note: Others -&gt; Diamond Princess cruise ship)</p>
 <pre><code class="json">http://localhost/countries
 {&quot;countries&quot;:[&quot;Mainland_China&quot;,&quot;Thailand&quot;,&quot;Japan&quot;,&quot;South_Korea&quot;,&quot;Taiwan&quot;,&quot;US&quot;,&quot;Macau&quot;,&quot;Hong_Kong&quot;,&quot;Singapore&quot;,&quot;Vietnam&quot;,&quot;France&quot;,&quot;Nepal&quot;,&quot;Malaysia&quot;,&quot;Canada&quot;,&quot;Australia&quot;,&quot;Cambodia&quot;,&quot;Sri_Lanka&quot;,&quot;Germany&quot;,&quot;Finland&quot;,&quot;United_Arab_Emirates&quot;,&quot;Philippines&quot;,&quot;India&quot;,&quot;Italy&quot;,&quot;UK&quot;,&quot;Russia&quot;,&quot;Sweden&quot;,&quot;Spain&quot;,&quot;Belgium&quot;,&quot;Others&quot;],&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<ol>
-<li>Get a country by its key name (small letters) or ISO code (Alpha-2 code)</li>
-</ol>
+<p>Get a country by its key name (small letters) or ISO code (Alpha-2 code)</p>
 <pre><code class="json">http://localhost/country/mainland_china
 {&quot;Mainland_China&quot;:{&quot;confirmed&quot;:44641,&quot;deaths&quot;:1113,&quot;recovered&quot;:4730},&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 
@@ -497,9 +483,7 @@ http://localhost/country/kr
 {&quot;South_Korea&quot;:{&quot;confirmed&quot;:28,&quot;deaths&quot;:0,&quot;recovered&quot;:4},&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<ol>
-<li>Get a time series data from cases (confirmed, deaths, recovered)</li>
-</ol>
+<p>Get a time series data from cases (confirmed, deaths, recovered)</p>
 <pre><code class="json">http://localhost/timeseries/confirmed
 {&quot;confirmed&quot;:[{&quot;Province/State&quot;:&quot;Anhui&quot;,&quot;Country/Region&quot;:&quot;Mainland_China&quot;,&quot;Lat&quot;:&quot;31.825709999999997&quot;,&quot;Long&quot;:&quot;117.2264&quot;,&quot;1/21/20 22:00&quot;:&quot;&quot;,&quot;1/22/20 12:00&quot;:&quot;1.0&quot;,&quot;1/23/20 12:00&quot;:&quot;9.0&quot;,&quot;1/24/20 0:00&quot;:&quot;15.0&quot;,&quot;1/24/20 12:00&quot;:&quot;15.0&quot;,&quot;1/25/20 0:00&quot;:&quot;39.0&quot;,&quot;1/25/20 12:00&quot;:&quot;39.0&quot;,&quot;1/25/20 22:00&quot;:&quot;60.0&quot;,&quot;1/26/20 11:00&quot;:&quot;60.0&quot;,&quot;1/26/20 23:00&quot;:&quot;70.0&quot;,&quot;1/27/20 9:00&quot;:&quot;70.0&quot;,&quot;1/27/20 19:00&quot;:&quot;70.0&quot;,&quot;1/27/20 20:30&quot;:&quot;106.0&quot;,&quot;1/28/20 13:00&quot;:&quot;106.0&quot;,&quot;1/28/20 18:00&quot;:&quot;106.0&quot;,&quot;1/28/20 23:00&quot;:&quot;152.0&quot;,&quot;1/29/20 13:30&quot;:&quot;152.0&quot;,&quot;1/29/20 14:30&quot;:&quot;152.0&quot;,&quot;1/29/20 21:00&quot;:&quot;200.0&quot;,&quot;1/30/20 11:00&quot;:&quot;200.0&quot;,&quot;1/31/20 14:00&quot;:&quot;237.0&quot;,&quot;2/1/20 10:00&quot;:&quot;297.0&quot;,&quot;2/2/20 21:00&quot;:&quot;408.0&quot;,&quot;2/3/20 21:00&quot;:&quot;480.0&quot;,&quot;2/4/20 9:40&quot;:&quot;480.0&quot;,&quot;2/4/20 22:00&quot;:&quot;530.0&quot;,&quot;2/5/20 9:00&quot;:&quot;530.0&quot;,&quot;2/5/20 23:00&quot;:&quot;591.0&quot;,&quot;2/6/20 9:00&quot;:&quot;591.0&quot;,&quot;2/6/20 14:20&quot;:&quot;591.0&quot;,&quot;2/7/20 20:13&quot;:&quot;665.0&quot;,&quot;2/7/20 22:50&quot;:&quot;733.0&quot;,&quot;2/8/20 10:24&quot;:&quot;733.0&quot;,&quot;2/8/20 23:04&quot;:&quot;779.0&quot;,&quot;2/9/20 10:30&quot;:&quot;779.0&quot;,&quot;2/9/20 23:20&quot;:&quot;830.0&quot;,&quot;2/10/20 10:30&quot;:&quot;830.0&quot;,&quot;2/10/20 19:30&quot;:&quot;830.0&quot;,&quot;2/11/20 10:50&quot;:&quot;860&quot;,&quot;2/11/20 20:44&quot;:&quot;889&quot;,&quot;2/12/20 10:20&quot;:&quot;889&quot;,&quot;2/12/20 22:00&quot;:&quot;910&quot;....n],&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 
