@@ -171,6 +171,8 @@ async def get_country(country_name: str, request: Request, background_tasks: Bac
     - **deaths**:  death cases
     - **recovered**: recovered cases
     - **active**: active cases
+    \f
+    :param country_name: A country name or its ISO code (ALPHA-2)
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
@@ -198,6 +200,8 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
     - **Country/Region**: Country's name
     - **Coordinates**: {"Lat": int, "Long": int}
     - **TimeSeries**: [{"date": datetime, "value": int}]
+    \f
+    param: case: string case -> global, confirmed, deaths, recovered
     """
     background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
 
@@ -233,6 +237,8 @@ async def get_US_time_series(case: str, request: Request, background_tasks: Back
     - **TimeSeries**: [
         - {"date: datetime, "value": int}
     ]
+    \f
+    param: case: string case -> confirmed, deaths
     """
     background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
 

@@ -1,0 +1,2 @@
+01-Jul-2020, 09:08:15 | http://localhost:8000/v2/current | Address(host='127.0.0.1', port=57784)
+01-Jul-2020, 09:08:45 | http://localhost:8000/v2/total | Address(host='127.0.0.1', port=57810)

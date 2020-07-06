@@ -14,11 +14,9 @@ from fastapi import FastAPI, HTTPException
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 from starlette.middleware.cors import CORSMiddleware
-from starlette.staticfiles import StaticFiles
-from starlette.templating import Jinja2Templates
 
-from router.v1 import v1
-from router.v2 import v2
+from routers.v1 import v1
+from routers.v2 import v2
 
 # Setup application
 app = FastAPI(
@@ -36,24 +34,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Setup Template
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
-
 
 """
-SECTION: Default routes
-DESCRIPTION: Routes to the landing page and APi documentation
+SECTION: Default route
+DESCRIPTION: Route to API documentation
 """
-# Landing page
-@app.get('/', include_in_schema=False)
-def read_root(request: Request):
-    """ Landing page """
-    return templates.TemplateResponse('index.html', {"request": request})
-
-
 # API documentation
-@app.get('/docs', include_in_schema=False)
+@app.get('/', include_in_schema=False)
 def read_docs() -> None:
     """ API documentation """
     return RedirectResponse(url='/docs')
