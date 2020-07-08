@@ -72,12 +72,6 @@ services:
       - 'RUN=uvicorn main:app'
 ```
 
-## How to use API (v2)
-Check it out [here](./app/routers/v2/README.md)
-
-## How to use API (v1)
-Check it out [here](./app/routers/v1/README.md)
-
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
