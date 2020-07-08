@@ -7,7 +7,7 @@ DATE: 04-April-2020
 import requests
 import pycountry
 import pandas as pd
-from typing import List
+from typing import List, TypeVar
 from datetime import datetime, timedelta
 
 
@@ -18,7 +18,8 @@ def helper_df_cleaning(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # Data preprocessing (DataFrame's columns)
-def helper_df_cols_cleaning(df: pd.DataFrame, cols: List[str], ensure_dtype: None) -> pd.DataFrame:
+var_types = TypeVar('ensure_dtype', int, float, str)
+def helper_df_cols_cleaning(df: pd.DataFrame, cols: List[str], ensure_dtype: var_types = None) -> pd.DataFrame:
     """ Clean certain colomns in a DataFrame """
     df[cols] = df[cols].fillna(0) # Replace empty cells with 0
     df[cols] = df[cols].replace('', 0) # Replace '' with 0
