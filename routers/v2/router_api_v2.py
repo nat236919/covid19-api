@@ -195,7 +195,7 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
     - **deaths**:  death cases
     - **recovered**: recovered case
 
-    confimred, deaths, recovered
+    confirmed, deaths, recovered
     - **Province/State**: State's name
     - **Country/Region**: Country's name
     - **Coordinates**: {"Lat": int, "Long": int}

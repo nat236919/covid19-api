@@ -1,1 +1,0 @@
-02-Jul-2020, 17:47:09 | http://localhost:8000/v2/current | Address(host='127.0.0.1', port=49566)
