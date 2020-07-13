@@ -42,19 +42,18 @@ class NovelCoronaAPIv1:
         current_data = {country: {'confirmed': 0, 'deaths': 0, 'recovered': 0} for country in countries}
 
         # Extractor
-        def extractor(col: str, df: pd.DataFrame) -> None:
+        def _extractor(col: str, df: pd.DataFrame) -> None:
             temp_data = df.T.to_dict()
             for data in temp_data.values():
                 try:
                     current_data[data['Country/Region']][col] += int(data[col])
                 except:
-                    None
-
+                    pass
             return None
 
         # Add data to current_data
         df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered}
-        [extractor(col, df) for col, df in df_list.items()]
+        [_extractor(col, df) for col, df in df_list.items()]
 
         # Sort by Confirmed
         current_data = {country_name: country_data for country_name, country_data
