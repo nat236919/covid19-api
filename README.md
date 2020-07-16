@@ -1,14 +1,27 @@
 <p align="center">
-    <img src="https://cdn2.iconfinder.com/data/icons/covid-19-2/64/29-Doctor-256.png">
+  <a href="https://nat236919.github.io/covid19-api/"><img src="https://i.ibb.co/tPJRFxT/COVID19-API-LOGO.png"></a>
 </p>
 
-<h1>COVID19-API</h1>
+<p align="center">
+    <em>API for exploring covid-19 cases around the globe powered by FastAPI framework</em>
+</p>
 
-[![issues](<https://img.shields.io/github/issues/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/issues)
-[![forks](<https://img.shields.io/github/forks/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/forks)
-[![stars](<https://img.shields.io/github/stars/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/stars)
-[![license](<https://img.shields.io/github/license/nat236919/Covid2019API>)](https://github.com/nat236919/Covid2019API/blob/master/LICENCE)
+<p align="center">
+  <a href="https://github.com/nat236919/Covid2019API/issues" target="_blank">
+      <img src="https://img.shields.io/github/issues/nat236919/Covid2019API" alt="issues">
+  </a>
+  <a href="https://github.com/nat236919/Covid2019API/forks" target="_blank">
+      <img src="https://img.shields.io/github/forks/nat236919/Covid2019API" alt="forks">
+  </a>
+  <a href="https://github.com/nat236919/Covid2019API/stars" target="_blank">
+      <img src="https://img.shields.io/github/stars/nat236919/Covid2019API" alt="starts">
+  </a>
+  <a href="https://github.com/nat236919/Covid2019API/blob/master/LICENCE" target="_blank">
+      <img src="https://img.shields.io/github/license/nat236919/Covid2019API" alt="licence">
+  </a>
+</p>
 
+#### Introduction
 This API provides the information regarding '2019 Novel Coronavirus (covid-19)'. It contains a number of confirmed, death, and recovered cases based on the data provided by the Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE).
 
 #### Examples:

@@ -10,8 +10,7 @@ import sys
 from functools import wraps
 from typing import Dict, Any
 
-from fastapi import FastAPI, HTTPException
-from starlette.requests import Request
+from fastapi import FastAPI
 from starlette.responses import RedirectResponse
 from starlette.middleware.cors import CORSMiddleware
 
