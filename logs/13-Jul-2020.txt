@@ -1,0 +1,7 @@
+13-Jul-2020, 14:26:37 | http://localhost:8000/v2/current | Address(host='127.0.0.1', port=60232)
+13-Jul-2020, 14:26:56 | http://localhost:8000/v2/current | Address(host='127.0.0.1', port=60253)
+13-Jul-2020, 14:28:12 | http://localhost:8000/v2/current | Address(host='127.0.0.1', port=60314)
+13-Jul-2020, 14:28:21 | http://localhost:8000/v2/current | Address(host='127.0.0.1', port=60316)
+13-Jul-2020, 14:28:28 | http://localhost:8000/v2/current | Address(host='127.0.0.1', port=60316)
+13-Jul-2020, 14:28:37 | http://localhost:8000/v2/total | Address(host='127.0.0.1', port=60340)
+13-Jul-2020, 14:28:48 | http://localhost:8000/v2/active | Address(host='127.0.0.1', port=60343)

@@ -1,1 +1,0 @@
-18-Jun-2020, 22:23:41 | http://localhost:8000/v2/current/US | Address(host='127.0.0.1', port=60948)
