@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://nat236919.github.io/covid19-api/"><img src="https://i.ibb.co/tPJRFxT/COVID19-API-LOGO.png"></a>
+  <a href="https://nat236919.github.io/covid19-api/"><img src="https://i.ibb.co/Wg2yPBq/covid19-api-logo.png"></a>
 </p>
 
 <p align="center">
