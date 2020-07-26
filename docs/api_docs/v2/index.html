@@ -21,7 +21,7 @@
     
     
       
-        <title>V2 - COVID-19 API</title>
+        <title>API v2 - COVID-19 API</title>
       
     
     
@@ -96,7 +96,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              V2
+              API v2
             
           </span>
         </div>
@@ -158,14 +158,16 @@
         
           
 
-<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  
+
+<nav class="md-tabs md-tabs--active" aria-label="Tabs" data-md-component="tabs">
   <div class="md-tabs__inner md-grid">
     <ul class="md-tabs__list">
       
         
   <li class="md-tabs__item">
     
-      <a href="../../.." class="md-tabs__link md-tabs__link--active">
+      <a href="../../.." class="md-tabs__link">
         Home
       </a>
     
@@ -173,11 +175,13 @@
 
       
         
+      
+        
   
   
     <li class="md-tabs__item">
       
-        <a href="../../../routers/v1/README.md" class="md-tabs__link">
+        <a href="../v1/" class="md-tabs__link md-tabs__link--active">
           API documentation
         </a>
       
@@ -240,18 +244,32 @@
       
 
 
-  <li class="md-nav__item md-nav__item--nested">
+  <li class="md-nav__item">
+    <a href="../../installation/" title="Installation" class="md-nav__link">
+      Installation
+    </a>
+  </li>
+
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-    <label class="md-nav__link" for="nav-2">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
       API documentation
       <span class="md-nav__icon md-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"/></svg>
       </span>
     </label>
     <nav class="md-nav" aria-label="API documentation" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
+      <label class="md-nav__title" for="nav-3">
         <span class="md-nav__icon md-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
         </span>
@@ -266,7 +284,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../routers/v1/README.md" title="API v1" class="md-nav__link">
+    <a href="../v1/" title="API v1" class="md-nav__link">
       API v1
     </a>
   </li>
@@ -276,11 +294,132 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../../../routers/v2/README.md" title="API v2" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        API v2
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="API v2" class="md-nav__link md-nav__link--active">
       API v2
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-api-v2" class="md-nav__link">
+    How to use API (v2)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples-api-v2" class="md-nav__link">
+    Examples API (v2)
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples API (v2)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-current-data" class="md-nav__link">
+    Get current data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-total-data" class="md-nav__link">
+    Get total data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-confirmed-cases" class="md-nav__link">
+    Get confirmed cases
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-deaths" class="md-nav__link">
+    Get deaths
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-recovered-cases" class="md-nav__link">
+    Get recovered cases
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-active-cases" class="md-nav__link">
+    Get active cases
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-country-data" class="md-nav__link">
+    Get a country data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-time-series" class="md-nav__link">
+    Get time series
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-time-series-us" class="md-nav__link">
+    Get time series (US)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-current-us" class="md-nav__link">
+    Get current (US)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -422,7 +561,7 @@
                   
                 
                 
-                  <h1>V2</h1>
+                  <h1>API v2</h1>
                 
                 <h2 id="how-to-use-api-v2">How to use API (v2)</h2>
 <p>Send a request to the follwing URLs:</p>
@@ -695,6 +834,27 @@ http://localhost/v2/timeseries/confirmed
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../v1/" title="API v1" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                API v1
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
