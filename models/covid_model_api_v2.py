@@ -88,8 +88,8 @@ class CovidAPIv2:
         if country_name not in [country_data['location'].lower() for country_data in all_country_data]:
             country_name = self.lookup_table[country_name.upper()] # translate country code to its name
 
-        data = [country_data for country_data in all_country_data
-                                if country_name.lower() == country_data['location'].lower()][0]
+        data = [country_data for country_data in all_country_data if country_name.lower() == country_data['location'].lower()]
+        data = data[0] if data else data
 
         return data
 

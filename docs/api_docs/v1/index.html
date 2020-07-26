@@ -11,23 +11,23 @@
         <meta name="description" content="Simply Fast API for covid-19 cases exploration">
       
       
-        <link rel="canonical" href="https://nat236919.github.io/covid19-api/routers/v1/">
+        <link rel="canonical" href="https://nat236919.github.io/covid19-api/docs/api_docs/v1/">
       
       
         <meta name="author" content="Nuttaphat Arunoprayoch">
       
-      <link rel="shortcut icon" href="../../assets/favicon.png">
+      <link rel="shortcut icon" href="../../../assets/favicon.png">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.3.0">
     
     
       
-        <title>API v1 - COVID-19 API</title>
+        <title>V1 - COVID-19 API</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.545621a7.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.545621a7.min.css">
       
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.36d1b78f.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.36d1b78f.min.css">
       
       
         
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#examples-api-v1" class="md-skip">
+        <a href="#how-to-use-api-v1" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +96,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              API v1
+              V1
             
           </span>
         </div>
@@ -158,16 +158,14 @@
         
           
 
-  
-
-<nav class="md-tabs md-tabs--active" aria-label="Tabs" data-md-component="tabs">
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-tabs__inner md-grid">
     <ul class="md-tabs__list">
       
         
   <li class="md-tabs__item">
     
-      <a href="../.." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link md-tabs__link--active">
         Home
       </a>
     
@@ -179,7 +177,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="./" class="md-tabs__link md-tabs__link--active">
+        <a href="../../../routers/v1/README.md" class="md-tabs__link">
           API documentation
         </a>
       
@@ -231,7 +229,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../.." title="Home" class="md-nav__link">
+    <a href="../../.." title="Home" class="md-nav__link">
       Home
     </a>
   </li>
@@ -241,12 +239,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
     
     <label class="md-nav__link" for="nav-2">
       API documentation
@@ -268,49 +264,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        API v1
-        <span class="md-nav__icon md-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
-        </span>
-      </label>
-    
-    <a href="./" title="API v1" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../../../routers/v1/README.md" title="API v1" class="md-nav__link">
       API v1
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#examples-api-v1" class="md-nav__link">
-    Examples API (v1)
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -320,7 +278,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../v2/" title="API v2" class="md-nav__link">
+    <a href="../../../routers/v2/README.md" title="API v2" class="md-nav__link">
       API v2
     </a>
   </li>
@@ -355,9 +313,78 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#how-to-use-api-v1" class="md-nav__link">
+    How to use API (v1)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#examples-api-v1" class="md-nav__link">
     Examples API (v1)
   </a>
+  
+    <nav class="md-nav" aria-label="Examples API (v1)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-current-data" class="md-nav__link">
+    Get current data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-total-data" class="md-nav__link">
+    Get total data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-confirmed-cases" class="md-nav__link">
+    Get confirmed cases
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-deaths" class="md-nav__link">
+    Get deaths
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-recovered-cases" class="md-nav__link">
+    Get recovered cases
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-all-the-affected-countries-note-others-diamond-princess-cruise-ship" class="md-nav__link">
+    Get all the affected countries (Note: Others -&gt; Diamond Princess cruise ship)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-country-by-its-key-name-small-letters-or-iso-code-alpha-2-code" class="md-nav__link">
+    Get a country by its key name (small letters) or ISO code (Alpha-2 code)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-time-series-data-from-cases-confirmed-deaths-recovered" class="md-nav__link">
+    Get a time series data from cases (confirmed, deaths, recovered)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -373,7 +400,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/nat236919/covid19-api/edit/master/docs/routers/v1/README.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/nat236919/covid19-api/edit/master/docs/docs/api_docs/v1.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -381,9 +408,11 @@
                   
                 
                 
-                  <h1>API v1</h1>
+                  <h1>V1</h1>
                 
                 <p>Send a request to the follwing URLs:</p>
+<h2 id="how-to-use-api-v1">How to use API (v1)</h2>
+<p>Send a request to the follwing URLs:</p>
 <table>
 <thead>
 <tr>
@@ -442,8 +471,8 @@
 </tr>
 </tbody>
 </table>
-<h4 id="examples-api-v1">Examples API (v1)</h4>
-<p>Get current data</p>
+<h2 id="examples-api-v1">Examples API (v1)</h2>
+<h5 id="get-current-data">Get current data</h5>
 <pre><code class="json">http://localhost/current
 {&quot;Mainland_China&quot;:{&quot;confirmed&quot;:44641,&quot;deaths&quot;:1113,&quot;recovered&quot;:4730},&quot;Thailand&quot;:{&quot;confirmed&quot;:33,&quot;deaths&quot;:0,&quot;recovered&quot;:10},&quot;Japan&quot;:{&quot;confirmed&quot;:26,&quot;deaths&quot;:0,&quot;recovered&quot;:9},&quot;South_Korea&quot;:{&quot;confirmed&quot;:28,&quot;deaths&quot;:0,&quot;recovered&quot;:4},&quot;Taiwan&quot;:{&quot;confirmed&quot;:18,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;US&quot;:{&quot;confirmed&quot;:13,&quot;deaths&quot;:0,&quot;recovered&quot;:3},&quot;Macau&quot;:{&quot;confirmed&quot;:10,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Hong_Kong&quot;:{&quot;confirmed&quot;:49,&quot;deaths&quot;:1,&quot;recovered&quot;:0},&quot;Singapore&quot;:{&quot;confirmed&quot;:47,&quot;deaths&quot;:0,&quot;recovered&quot;:9},&quot;Vietnam&quot;:{&quot;confirmed&quot;:15,&quot;deaths&quot;:0,&quot;recovered&quot;:6},&quot;France&quot;:{&quot;confirmed&quot;:11,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Nepal&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Malaysia&quot;:{&quot;confirmed&quot;:18,&quot;deaths&quot;:0,&quot;recovered&quot;:3},&quot;Canada&quot;:{&quot;confirmed&quot;:7,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Australia&quot;:{&quot;confirmed&quot;:15,&quot;deaths&quot;:0,&quot;recovered&quot;:2},&quot;Cambodia&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Sri_Lanka&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Germany&quot;:{&quot;confirmed&quot;:16,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Finland&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;United_Arab_Emirates&quot;:{&quot;confirmed&quot;:8,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Philippines&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:1,&quot;recovered&quot;:0},&quot;India&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Italy&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;UK&quot;:{&quot;confirmed&quot;:8,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Russia&quot;:{&quot;confirmed&quot;:2,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Sweden&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Spain&quot;:{&quot;confirmed&quot;:2,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Belgium&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Others&quot;:{&quot;confirmed&quot;:135,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 
@@ -451,32 +480,32 @@ http://localhost/current_list
 {&quot;countries&quot;:[{&quot;Mainland_China&quot;:{&quot;confirmed&quot;:66292,&quot;deaths&quot;:1520,&quot;recovered&quot;:7973},&quot;Thailand&quot;:{&quot;confirmed&quot;:33,&quot;deaths&quot;:0,&quot;recovered&quot;:12},&quot;Japan&quot;:{&quot;confirmed&quot;:29,&quot;deaths&quot;:1,&quot;recovered&quot;:9},&quot;South_Korea&quot;:{&quot;confirmed&quot;:28,&quot;deaths&quot;:0,&quot;recovered&quot;:7},&quot;Taiwan&quot;:{&quot;confirmed&quot;:18,&quot;deaths&quot;:0,&quot;recovered&quot;:2},&quot;US&quot;:{&quot;confirmed&quot;:15,&quot;deaths&quot;:0,&quot;recovered&quot;:3},&quot;Macau&quot;:{&quot;confirmed&quot;:10,&quot;deaths&quot;:0,&quot;recovered&quot;:3},&quot;Hong_Kong&quot;:{&quot;confirmed&quot;:56,&quot;deaths&quot;:1,&quot;recovered&quot;:1},&quot;Singapore&quot;:{&quot;confirmed&quot;:67,&quot;deaths&quot;:0,&quot;recovered&quot;:17},&quot;Vietnam&quot;:{&quot;confirmed&quot;:16,&quot;deaths&quot;:0,&quot;recovered&quot;:7},&quot;France&quot;:{&quot;confirmed&quot;:11,&quot;deaths&quot;:0,&quot;recovered&quot;:2},&quot;Nepal&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Malaysia&quot;:{&quot;confirmed&quot;:19,&quot;deaths&quot;:0,&quot;recovered&quot;:3},&quot;Canada&quot;:{&quot;confirmed&quot;:7,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Australia&quot;:{&quot;confirmed&quot;:15,&quot;deaths&quot;:0,&quot;recovered&quot;:8},&quot;Cambodia&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Sri_Lanka&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Germany&quot;:{&quot;confirmed&quot;:16,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Finland&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;United_Arab_Emirates&quot;:{&quot;confirmed&quot;:8,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Philippines&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:1,&quot;recovered&quot;:1},&quot;India&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Italy&quot;:{&quot;confirmed&quot;:3,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;UK&quot;:{&quot;confirmed&quot;:9,&quot;deaths&quot;:0,&quot;recovered&quot;:1},&quot;Russia&quot;:{&quot;confirmed&quot;:2,&quot;deaths&quot;:0,&quot;recovered&quot;:2},&quot;Sweden&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Spain&quot;:{&quot;confirmed&quot;:2,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Belgium&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Others&quot;:{&quot;confirmed&quot;:218,&quot;deaths&quot;:0,&quot;recovered&quot;:0},&quot;Egypt&quot;:{&quot;confirmed&quot;:1,&quot;deaths&quot;:0,&quot;recovered&quot;:0}}],&quot;dt&quot;:&quot;2/14/20&quot;,&quot;ts&quot;:1581609600.0}
 </code></pre>
 
-<p>Get total data</p>
+<h5 id="get-total-data">Get total data</h5>
 <pre><code class="json">http://localhost/total
 {&quot;confirmed&quot;:45117,&quot;deaths&quot;:1115,&quot;recovered&quot;:4781,&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<p>Get confirmed cases</p>
+<h5 id="get-confirmed-cases">Get confirmed cases</h5>
 <pre><code class="json">http://localhost/confirmed
 {&quot;confirmed&quot;:45117,&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<p>Get deaths</p>
+<h5 id="get-deaths">Get deaths</h5>
 <pre><code class="json">http://localhost/deaths
 {&quot;deaths&quot;:1115,&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<p>Get recovered cases</p>
+<h5 id="get-recovered-cases">Get recovered cases</h5>
 <pre><code class="json">http://localhost/recovered
 {&quot;recovered&quot;:4781,&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<p>Get all the affected countries (Note: Others -&gt; Diamond Princess cruise ship)</p>
+<h5 id="get-all-the-affected-countries-note-others-diamond-princess-cruise-ship">Get all the affected countries (Note: Others -&gt; Diamond Princess cruise ship)</h5>
 <pre><code class="json">http://localhost/countries
 {&quot;countries&quot;:[&quot;Mainland_China&quot;,&quot;Thailand&quot;,&quot;Japan&quot;,&quot;South_Korea&quot;,&quot;Taiwan&quot;,&quot;US&quot;,&quot;Macau&quot;,&quot;Hong_Kong&quot;,&quot;Singapore&quot;,&quot;Vietnam&quot;,&quot;France&quot;,&quot;Nepal&quot;,&quot;Malaysia&quot;,&quot;Canada&quot;,&quot;Australia&quot;,&quot;Cambodia&quot;,&quot;Sri_Lanka&quot;,&quot;Germany&quot;,&quot;Finland&quot;,&quot;United_Arab_Emirates&quot;,&quot;Philippines&quot;,&quot;India&quot;,&quot;Italy&quot;,&quot;UK&quot;,&quot;Russia&quot;,&quot;Sweden&quot;,&quot;Spain&quot;,&quot;Belgium&quot;,&quot;Others&quot;],&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<p>Get a country by its key name (small letters) or ISO code (Alpha-2 code)</p>
+<h5 id="get-a-country-by-its-key-name-small-letters-or-iso-code-alpha-2-code">Get a country by its key name (small letters) or ISO code (Alpha-2 code)</h5>
 <pre><code class="json">http://localhost/country/mainland_china
 {&quot;Mainland_China&quot;:{&quot;confirmed&quot;:44641,&quot;deaths&quot;:1113,&quot;recovered&quot;:4730},&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 
@@ -487,7 +516,7 @@ http://localhost/country/kr
 {&quot;South_Korea&quot;:{&quot;confirmed&quot;:28,&quot;deaths&quot;:0,&quot;recovered&quot;:4},&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 </code></pre>
 
-<p>Get a time series data from cases (confirmed, deaths, recovered)</p>
+<h5 id="get-a-time-series-data-from-cases-confirmed-deaths-recovered">Get a time series data from cases (confirmed, deaths, recovered)</h5>
 <pre><code class="json">http://localhost/timeseries/confirmed
 {&quot;confirmed&quot;:[{&quot;Province/State&quot;:&quot;Anhui&quot;,&quot;Country/Region&quot;:&quot;Mainland_China&quot;,&quot;Lat&quot;:&quot;31.825709999999997&quot;,&quot;Long&quot;:&quot;117.2264&quot;,&quot;1/21/20 22:00&quot;:&quot;&quot;,&quot;1/22/20 12:00&quot;:&quot;1.0&quot;,&quot;1/23/20 12:00&quot;:&quot;9.0&quot;,&quot;1/24/20 0:00&quot;:&quot;15.0&quot;,&quot;1/24/20 12:00&quot;:&quot;15.0&quot;,&quot;1/25/20 0:00&quot;:&quot;39.0&quot;,&quot;1/25/20 12:00&quot;:&quot;39.0&quot;,&quot;1/25/20 22:00&quot;:&quot;60.0&quot;,&quot;1/26/20 11:00&quot;:&quot;60.0&quot;,&quot;1/26/20 23:00&quot;:&quot;70.0&quot;,&quot;1/27/20 9:00&quot;:&quot;70.0&quot;,&quot;1/27/20 19:00&quot;:&quot;70.0&quot;,&quot;1/27/20 20:30&quot;:&quot;106.0&quot;,&quot;1/28/20 13:00&quot;:&quot;106.0&quot;,&quot;1/28/20 18:00&quot;:&quot;106.0&quot;,&quot;1/28/20 23:00&quot;:&quot;152.0&quot;,&quot;1/29/20 13:30&quot;:&quot;152.0&quot;,&quot;1/29/20 14:30&quot;:&quot;152.0&quot;,&quot;1/29/20 21:00&quot;:&quot;200.0&quot;,&quot;1/30/20 11:00&quot;:&quot;200.0&quot;,&quot;1/31/20 14:00&quot;:&quot;237.0&quot;,&quot;2/1/20 10:00&quot;:&quot;297.0&quot;,&quot;2/2/20 21:00&quot;:&quot;408.0&quot;,&quot;2/3/20 21:00&quot;:&quot;480.0&quot;,&quot;2/4/20 9:40&quot;:&quot;480.0&quot;,&quot;2/4/20 22:00&quot;:&quot;530.0&quot;,&quot;2/5/20 9:00&quot;:&quot;530.0&quot;,&quot;2/5/20 23:00&quot;:&quot;591.0&quot;,&quot;2/6/20 9:00&quot;:&quot;591.0&quot;,&quot;2/6/20 14:20&quot;:&quot;591.0&quot;,&quot;2/7/20 20:13&quot;:&quot;665.0&quot;,&quot;2/7/20 22:50&quot;:&quot;733.0&quot;,&quot;2/8/20 10:24&quot;:&quot;733.0&quot;,&quot;2/8/20 23:04&quot;:&quot;779.0&quot;,&quot;2/9/20 10:30&quot;:&quot;779.0&quot;,&quot;2/9/20 23:20&quot;:&quot;830.0&quot;,&quot;2/10/20 10:30&quot;:&quot;830.0&quot;,&quot;2/10/20 19:30&quot;:&quot;830.0&quot;,&quot;2/11/20 10:50&quot;:&quot;860&quot;,&quot;2/11/20 20:44&quot;:&quot;889&quot;,&quot;2/12/20 10:20&quot;:&quot;889&quot;,&quot;2/12/20 22:00&quot;:&quot;910&quot;....n],&quot;dt&quot;:&quot;2/11/20 20:44&quot;,&quot;ts&quot;:1581425040.0}
 
@@ -511,41 +540,6 @@ http://localhost/timeseries/recovered
       
         
 <footer class="md-footer">
-  
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
-        
-          <a href="../.." title="Home" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-            </div>
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                Home
-              </div>
-            </div>
-          </a>
-        
-        
-          <a href="../v2/" title="API v2" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                API v2
-              </div>
-            </div>
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -607,15 +601,15 @@ http://localhost/timeseries/recovered
       
     </div>
     
-      <script src="../../assets/javascripts/vendor.de50e36d.min.js"></script>
-      <script src="../../assets/javascripts/bundle.5ad6861d.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      <script src="../../../assets/javascripts/vendor.de50e36d.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.5ad6861d.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
       
       <script>
         app = initialize({
-          base: "../..",
+          base: "../../..",
           features: ["tabs"],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.7a2ea5ba.min.js"
+            worker: "../../../assets/javascripts/worker/search.7a2ea5ba.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>
