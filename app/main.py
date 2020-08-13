@@ -25,6 +25,8 @@ app = FastAPI(
 )
 
 # Setup CORS (https://fastapi.tiangolo.com/tutorial/cors/)
+# **Note: Wild-card setup is used here for demonstration only,
+#         Please change the setting in accordance with your application
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
