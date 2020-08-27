@@ -5,9 +5,11 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 9-Feb-2020
 """
 # Import libraries
-import pandas as pd
 from datetime import datetime
-from typing import Dict, List, Any
+from typing import Any, Dict, List
+
+import pandas as pd
+
 from utils.get_data import get_data
 
 

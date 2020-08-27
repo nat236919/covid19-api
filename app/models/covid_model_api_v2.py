@@ -5,12 +5,15 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 14-March-2020
 """
 # Import libraries
-import pandas as pd
-from functools import wraps
 from datetime import datetime
-from typing import Dict, List, Any
-from utils.get_data import (get_data_daily_reports, get_data_daily_reports_us, get_data_time_series,
-                            get_US_time_series, get_data_lookup_table)
+from functools import wraps
+from typing import Any, Dict, List
+
+import pandas as pd
+
+from utils.get_data import (get_data_daily_reports, get_data_daily_reports_us,
+                            get_data_lookup_table, get_data_time_series,
+                            get_US_time_series)
 
 
 class CovidAPIv2:

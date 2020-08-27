@@ -6,11 +6,13 @@ DATE: 9-Feb-2020
 """
 # Import libraries
 import csv
-import pandas as pd
 from typing import Dict
 
+import pandas as pd
+
 from .file_paths import JHU_CSSE_FILE_PATHS
-from .helper import helper_df_cleaning, helper_df_cols_cleaning, helper_get_latest_data_url
+from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
+                     helper_get_latest_data_url)
 
 
 # Get Lookup table
