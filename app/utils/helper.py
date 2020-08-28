@@ -4,11 +4,14 @@ DESCRIPTION: All functions for helping small tasks
 AUTHOR: Nuttaphat Arunoprayoch
 DATE: 04-April-2020
 """
-import requests
-import pycountry
-import pandas as pd
-from typing import List, TypeVar
+# Import libraries
 from datetime import datetime, timedelta
+from typing import List, TypeVar
+
+import pandas as pd
+
+import pycountry
+import requests
 
 
 # Data preprocessing (DataFrame)

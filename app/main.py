@@ -8,14 +8,13 @@ RUN SERVER: uvicorn main:app --reload
 # Import libraries
 import sys
 from functools import wraps
-from typing import Dict, Any
+from typing import Any, Dict
 
 from fastapi import FastAPI
-from starlette.responses import RedirectResponse
-from starlette.middleware.cors import CORSMiddleware
-
 from routers.v1 import v1
 from routers.v2 import v2
+from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import RedirectResponse
 
 # Setup application
 app = FastAPI(
@@ -25,7 +24,7 @@ app = FastAPI(
 )
 
 # Setup CORS (https://fastapi.tiangolo.com/tutorial/cors/)
-# **Note: Wild-card setup is used here for demonstration only,
+# ** Note: Wild-card setup is used here for demonstration only,
 #         Please change the setting in accordance with your application
 app.add_middleware(
     CORSMiddleware,
