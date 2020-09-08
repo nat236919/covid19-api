@@ -22,31 +22,35 @@
 </p>
 
 #### Introduction
+
 This API provides the information regarding '2019 Novel Coronavirus (covid-19)'. It contains a number of confirmed, death, and recovered cases based on the data provided by the Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE).
 
-#### Examples:
+#### Example
+
 * https://covid2019-api.herokuapp.com/
 * https://covid2019-api.azurewebsites.net/
 
-#### Applications:
+#### Applications
+
 * [Coronavirus App by YaseenAbdullah](https://github.com/YaseenAbdullah/coronavirus)
 * [Covid 19 App - Map, info & help by DavidBarbaran](https://github.com/DavidBarbaran/Covid19App)
 * [COVID-19 Visual Explorer by FitnessAI](https://www.fitnessai.com/covid-19-charts-coronavirus-growth-rate-visual-explorer)
 * [BAILAM (Data and API Integration)](https://www.bailam.com/covid19)
 * [Coronavirus Tech Handbook (Data Tools)](https://coronavirustechhandbook.com/data-tools)
 
-
-
 #### References
+
 https://github.com/CSSEGISandData/COVID-19
 
 ## Branches
+
 |  Branch           |     Feature                      |              Description                                     |
 | ----------------- | -------------------------------- |  ----------------------------------------------------------- |
 | master            | Docker + Web API                 | For deploying to a server                                    |
 | development       | Docker + Web API                 | For testing before merging to Master                         |
 
 ## Features
+
 1. The current data (daily updated)
 2. Confirmed, Deaths, Recovered
 3. The affected countries
@@ -54,24 +58,29 @@ https://github.com/CSSEGISandData/COVID-19
 5. Timeseries
 
 ## How to install
+
 * Run the following command in your command line to run the server
-{your_path}/app >
+
 ```console
 uvicorn main:app
 ```
 
 ## How to install (Docker-compose)
+
 * Run the following command in your command line to run the server
+
 ```console
 docker-compose up
 ```
 
 * Or run the server in the background
+
 ```console
 docker-compose up -d
 ```
 
 * The port can be changed at <b>docker-compose.override.yml</b>
+
 ```yml
 version: '3'
 services:
@@ -85,10 +94,26 @@ services:
       - 'RUN=uvicorn main:app'
 ```
 
+## How to install (from Dockerhub)
+
+* Download the latest image
+
+```console
+docker pull nat236919/covid19-api:latest
+```
+
+* Create a container and run
+
+```console
+docker run nat236919/covid19-api
+```
+
 ## How to use API (v2)
+
 Check it out [here](./app/routers/v2/README.md)
 
 ## How to use API (v1)
+
 Check it out [here](./app/routers/v1/README.md)
 
 ## Contributors ✨
@@ -114,4 +139,5 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 ## Sponsor this project
+
 <a href="https://www.buymeacoffee.com/HdYFLQU" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
