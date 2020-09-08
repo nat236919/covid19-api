@@ -4,15 +4,16 @@ DESCRIPTION: all routes for API v2
 AUTHOR: Nuttaphat Arunoprayoch
 DATE: 04-April-2020
 """
-from functools import wraps
+# Import libraries
 from datetime import datetime
-from typing import Dict, Any
-from fastapi import HTTPException, BackgroundTasks
+from functools import wraps
+from typing import Any, Dict
+
+from fastapi import BackgroundTasks, HTTPException
+from models.covid_model_api_v2 import CovidAPIv2
 from starlette.requests import Request
 
 from . import v2
-from models.covid_model_api_v2 import CovidAPIv2
-
 
 # Initiate Model
 COVID_API_V2 = CovidAPIv2()

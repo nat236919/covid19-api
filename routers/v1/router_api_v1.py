@@ -4,13 +4,15 @@ DESCRIPTION: all routes for API v1
 AUTHOR: Nuttaphat Arunoprayoch
 DATE: 04-April-2020
 """
+# Import libraries
 from functools import wraps
-from typing import Dict, Any
+from typing import Any, Dict
+
 from fastapi import HTTPException
+from models.covid_model_api_v1 import NovelCoronaAPIv1
+from utils.helper import helper_lookup_country
 
 from . import v1
-from utils.helper import helper_lookup_country
-from models.covid_model_api_v1 import NovelCoronaAPIv1
 
 
 # Reload model (APIv1)

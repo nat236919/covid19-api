@@ -236,6 +236,8 @@
     
     <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     
+      
+    
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
         Home
@@ -252,6 +254,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon">
@@ -262,30 +266,29 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
-    Introduction
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    Examples:
+  <a href="#example" class="md-nav__link">
+    Example
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#applications" class="md-nav__link">
-    Applications:
+    Applications
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Applications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#references" class="md-nav__link">
     References
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -318,8 +321,36 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-to-install-from-dockerhub" class="md-nav__link">
+    How to install (from Dockerhub)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-api-v2" class="md-nav__link">
+    How to use API (v2)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-api-v1" class="md-nav__link">
+    How to use API (v1)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#contributors" class="md-nav__link">
     Contributors ✨
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sponsor-this-project" class="md-nav__link">
+    Sponsor this project
   </a>
   
 </li>
@@ -411,6 +442,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon">
@@ -421,30 +454,29 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
-    Introduction
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    Examples:
+  <a href="#example" class="md-nav__link">
+    Example
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#applications" class="md-nav__link">
-    Applications:
+    Applications
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Applications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#references" class="md-nav__link">
     References
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -477,8 +509,36 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-to-install-from-dockerhub" class="md-nav__link">
+    How to install (from Dockerhub)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-api-v2" class="md-nav__link">
+    How to use API (v2)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-api-v1" class="md-nav__link">
+    How to use API (v1)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#contributors" class="md-nav__link">
     Contributors ✨
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sponsor-this-project" class="md-nav__link">
+    Sponsor this project
   </a>
   
 </li>
@@ -503,8 +563,6 @@
                   
                 
                 
-                  <h1>Home</h1>
-                
                 <p align="center">
   <a href="https://nat236919.github.io/covid19-api/"><img src="https://i.ibb.co/Wg2yPBq/covid19-api-logo.png"></a>
 </p>
@@ -528,14 +586,14 @@
   </a>
 </p>
 
-<h4 id="introduction">Introduction</h4>
+<h1 id="introduction">Introduction</h1>
 <p>This API provides the information regarding '2019 Novel Coronavirus (covid-19)'. It contains a number of confirmed, death, and recovered cases based on the data provided by the Johns Hopkins University Center for Systems Science and Engineering (JHU CSSE).</p>
-<h4 id="examples">Examples:</h4>
+<h2 id="example">Example</h2>
 <ul>
 <li>https://covid2019-api.herokuapp.com/</li>
 <li>https://covid2019-api.azurewebsites.net/</li>
 </ul>
-<h4 id="applications">Applications:</h4>
+<h2 id="applications">Applications</h2>
 <ul>
 <li><a href="https://github.com/YaseenAbdullah/coronavirus">Coronavirus App by YaseenAbdullah</a></li>
 <li><a href="https://github.com/DavidBarbaran/Covid19App">Covid 19 App - Map, info &amp; help by DavidBarbaran</a></li>
@@ -543,7 +601,7 @@
 <li><a href="https://www.bailam.com/covid19">BAILAM (Data and API Integration)</a></li>
 <li><a href="https://coronavirustechhandbook.com/data-tools">Coronavirus Tech Handbook (Data Tools)</a></li>
 </ul>
-<h4 id="references">References</h4>
+<h3 id="references">References</h3>
 <p>https://github.com/CSSEGISandData/COVID-19</p>
 <h2 id="branches">Branches</h2>
 <table>
@@ -577,8 +635,7 @@
 </ol>
 <h2 id="how-to-install">How to install</h2>
 <ul>
-<li>Run the following command in your command line to run the server
-{your_path}/app &gt;</li>
+<li>Run the following command in your command line to run the server</li>
 </ul>
 <pre><code class="console">uvicorn main:app
 </code></pre>
@@ -611,6 +668,23 @@ services:
       - 'RUN=uvicorn main:app'
 </code></pre>
 
+<h2 id="how-to-install-from-dockerhub">How to install (from Dockerhub)</h2>
+<ul>
+<li>Download the latest image</li>
+</ul>
+<pre><code class="console">docker pull nat236919/covid19-api:latest
+</code></pre>
+
+<ul>
+<li>Create a container and run</li>
+</ul>
+<pre><code class="console">docker run nat236919/covid19-api
+</code></pre>
+
+<h2 id="how-to-use-api-v2">How to use API (v2)</h2>
+<p>Check it out <a href="./app/routers/v2/README.md">here</a></p>
+<h2 id="how-to-use-api-v1">How to use API (v1)</h2>
+<p>Check it out <a href="./app/routers/v1/README.md">here</a></p>
 <h2 id="contributors">Contributors ✨</h2>
 <p>Thanks goes to these wonderful people (<a href="https://allcontributors.org/docs/en/emoji-key">emoji key</a>):</p>
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
@@ -635,6 +709,8 @@ services:
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 <p>This project follows the <a href="https://github.com/all-contributors/all-contributors">all-contributors</a> specification. Contributions of any kind welcome!</p>
+<h2 id="sponsor-this-project">Sponsor this project</h2>
+<p><a href="https://www.buymeacoffee.com/HdYFLQU" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a></p>
                 
               
               
