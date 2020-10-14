@@ -20,9 +20,9 @@ def reload_model_api_v1(func):
     """ Reload a model for each quest """
     @wraps(func)
     def wrapper(*args, **kwargs):
-        global novel_corona_api, dt, ts
-        novel_corona_api = CovidAPIv1()
-        dt, ts = novel_corona_api.datetime_raw, novel_corona_api.timestamp
+        global COVID_API_V1, dt, ts
+        COVID_API_V1 = CovidAPIv1()
+        dt, ts = COVID_API_V1.datetime_raw, COVID_API_V1.timestamp
         return func(*args, **kwargs)
     return wrapper
 
@@ -30,7 +30,7 @@ def reload_model_api_v1(func):
 @v1.get('/current')
 @reload_model_api_v1
 def current_status() -> Dict[str, int]:
-    data = novel_corona_api.get_current_status()
+    data = COVID_API_V1.get_current_status()
     return data
 
 
@@ -38,42 +38,42 @@ def current_status() -> Dict[str, int]:
 @reload_model_api_v1
 def current_status_list() -> Dict[str, Any]:
     """ Coutries are kept in a List """
-    data = novel_corona_api.get_current_status(list_required=True)
+    data = COVID_API_V1.get_current_status(list_required=True)
     return data
 
 
 @v1.get('/total')
 @reload_model_api_v1
 def total() -> Dict[str, Any]:
-    data = novel_corona_api.get_total()
+    data = COVID_API_V1.get_total()
     return data
 
 
 @v1.get('/confirmed')
 @reload_model_api_v1
 def confirmed_cases() -> Dict[str, int]:
-    data = novel_corona_api.get_confirmed_cases()
+    data = COVID_API_V1.get_confirmed_cases()
     return data
 
 
 @v1.get('/deaths')
 @reload_model_api_v1
 def deaths() -> Dict[str, int]:
-    data = novel_corona_api.get_deaths()
+    data = COVID_API_V1.get_deaths()
     return data
 
 
 @v1.get('/recovered')
 @reload_model_api_v1
 def recovered() -> Dict[str, int]:
-    data = novel_corona_api.get_recovered()
+    data = COVID_API_V1.get_recovered()
     return data
 
 
 @v1.get('/countries')
 @reload_model_api_v1
 def affected_countries() -> Dict[int, str]:
-    data = novel_corona_api.get_affected_countries()
+    data = COVID_API_V1.get_affected_countries()
     return data
 
 
@@ -81,7 +81,7 @@ def affected_countries() -> Dict[int, str]:
 @reload_model_api_v1
 def country(country_name: str) -> Dict[str, Any]:
     """ Search by name or ISO (alpha2) """
-    raw_data = novel_corona_api.get_current_status() # Get all current data
+    raw_data = COVID_API_V1.get_current_status() # Get all current data
     try:
         if country_name.lower() not in ['us', 'uk'] and len(country_name) in [2]:
             country_name = helper_lookup_country(country_name)
@@ -103,7 +103,7 @@ def country(country_name: str) -> Dict[str, Any]:
 @reload_model_api_v1
 def timeseries(case: str) -> Dict[str, Any]:
     """ Get the time series based on a given case: confirmed, deaths, recovered """
-    raw_data = novel_corona_api.get_time_series()
+    raw_data = COVID_API_V1.get_time_series()
     case = case.lower()
 
     if case in ['confirmed', 'deaths', 'recovered']:
