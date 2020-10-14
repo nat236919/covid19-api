@@ -9,7 +9,7 @@ from functools import wraps
 from typing import Any, Dict
 
 from fastapi import HTTPException
-from models.covid_model_api_v1 import NovelCoronaAPIv1
+from models.covid_model_api_v1 import CovidAPIv1
 from utils.helper import helper_lookup_country
 
 from . import v1
@@ -21,7 +21,7 @@ def reload_model_api_v1(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         global novel_corona_api, dt, ts
-        novel_corona_api = NovelCoronaAPIv1()
+        novel_corona_api = CovidAPIv1()
         dt, ts = novel_corona_api.datetime_raw, novel_corona_api.timestamp
         return func(*args, **kwargs)
     return wrapper
