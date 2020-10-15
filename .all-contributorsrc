@@ -26,7 +26,7 @@
       "profile": "https://github.com/soapy1",
       "contributions": [
         "code"
-       ]
+      ]
     },
     {
       "login": "endoffile78",
@@ -35,7 +35,7 @@
       "profile": "https://keybase.io/endoffile78",
       "contributions": [
         "code"
-       ]
+      ]
     },
     {
       "login": "ChooseYourPlan",
@@ -45,10 +45,19 @@
       "contributions": [
         "translation"
       ]
+    },
+    {
+      "login": "melsaa",
+      "name": "melsaa",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/32761948?v=4",
+      "profile": "https://github.com/melsaa",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "projectName": "Covid2019API",
+  "projectName": "covid19-api",
   "projectOwner": "nat236919",
   "repoType": "github",
   "repoHost": "https://github.com",
