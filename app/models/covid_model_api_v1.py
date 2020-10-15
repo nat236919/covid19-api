@@ -14,7 +14,7 @@ from utils.get_data import get_data
 
 
 # Create a model and its methods
-class NovelCoronaAPIv1:
+class CovidAPIv1:
     """ Model and Its methods """
     def __init__(self) -> None:
         """ Get data from helper -> the source data """

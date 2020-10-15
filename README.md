@@ -110,11 +110,11 @@ docker run nat236919/covid19-api
 
 ## How to use API (v2)
 
-Check it out [here](./app/routers/v2/README.md)
+Check it out [here](./app/docs/api_docs/v2.md)
 
 ## How to use API (v1)
 
-Check it out [here](./app/routers/v1/README.md)
+Check it out [here](./app/docs/api_docs/v1.md)
 
 ## Contributors ✨
 
@@ -125,10 +125,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://nuttaphat.azurewebsites.net"><img src="https://avatars0.githubusercontent.com/u/9074112?v=4" width="100px;" alt=""/><br /><sub><b>Nuttaphat Arunoprayoch</b></sub></a><br /><a href="#maintenance-nat236919" title="Maintenance">🚧</a> <a href="https://github.com/nat236919/Covid2019API/commits?author=nat236919" title="Code">💻</a> <a href="https://github.com/nat236919/Covid2019API/commits?author=nat236919" title="Documentation">📖</a> <a href="https://github.com/nat236919/Covid2019API/pulls?q=is%3Apr+reviewed-by%3Anat236919" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/soapy1"><img src="https://avatars0.githubusercontent.com/u/976973?v=4" width="100px;" alt=""/><br /><sub><b>Sophia Castellarin</b></sub></a><br /><a href="https://github.com/nat236919/Covid2019API/commits?author=soapy1" title="Code">💻</a></td>
-    <td align="center"><a href="https://keybase.io/endoffile78"><img src="https://avatars2.githubusercontent.com/u/11342054?v=4" width="100px;" alt=""/><br /><sub><b>Jeremy</b></sub></a><br /><a href="https://github.com/nat236919/Covid2019API/commits?author=endoffile78" title="Code">💻</a></td>
+    <td align="center"><a href="http://nuttaphat.azurewebsites.net"><img src="https://avatars0.githubusercontent.com/u/9074112?v=4" width="100px;" alt=""/><br /><sub><b>Nuttaphat Arunoprayoch</b></sub></a><br /><a href="#maintenance-nat236919" title="Maintenance">🚧</a> <a href="https://github.com/nat236919/covid19-api/commits?author=nat236919" title="Code">💻</a> <a href="https://github.com/nat236919/covid19-api/issues?q=author%3Anat236919" title="Bug reports">🐛</a> <a href="https://github.com/nat236919/covid19-api/commits?author=nat236919" title="Documentation">📖</a> <a href="#ideas-nat236919" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/nat236919/covid19-api/pulls?q=is%3Apr+reviewed-by%3Anat236919" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/soapy1"><img src="https://avatars0.githubusercontent.com/u/976973?v=4" width="100px;" alt=""/><br /><sub><b>Sophia Castellarin</b></sub></a><br /><a href="https://github.com/nat236919/covid19-api/commits?author=soapy1" title="Code">💻</a></td>
+    <td align="center"><a href="https://keybase.io/endoffile78"><img src="https://avatars2.githubusercontent.com/u/11342054?v=4" width="100px;" alt=""/><br /><sub><b>Jeremy</b></sub></a><br /><a href="https://github.com/nat236919/covid19-api/commits?author=endoffile78" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ChooseYourPlan"><img src="https://avatars2.githubusercontent.com/u/32968964?v=4" width="100px;" alt=""/><br /><sub><b>Tim</b></sub></a><br /><a href="#translation-ChooseYourPlan" title="Translation">🌍</a></td>
+    <td align="center"><a href="https://github.com/melsaa"><img src="https://avatars0.githubusercontent.com/u/32761948?v=4" width="100px;" alt=""/><br /><sub><b>melsaa</b></sub></a><br /><a href="https://github.com/nat236919/covid19-api/commits?author=melsaa" title="Code">💻</a></td>
   </tr>
 </table>
 
