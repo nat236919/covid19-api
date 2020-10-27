@@ -10,7 +10,6 @@ from functools import wraps
 from typing import Any, Dict, List
 
 import pandas as pd
-
 from utils.get_data import (get_data_daily_reports, get_data_daily_reports_us,
                             get_data_lookup_table, get_data_time_series,
                             get_US_time_series)

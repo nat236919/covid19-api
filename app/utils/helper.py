@@ -9,7 +9,6 @@ from datetime import datetime, timedelta
 from typing import List, TypeVar
 
 import pandas as pd
-
 import pycountry
 import requests
 

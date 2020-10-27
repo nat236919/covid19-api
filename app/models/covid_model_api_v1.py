@@ -9,7 +9,6 @@ from datetime import datetime
 from typing import Any, Dict, List
 
 import pandas as pd
-
 from utils.get_data import get_data
 
 
