@@ -11,10 +11,11 @@ from functools import wraps
 from typing import Any, Dict
 
 from fastapi import FastAPI
-from routers.v1 import v1
-from routers.v2 import v2
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
+
+from routers.v1 import v1
+from routers.v2 import v2
 
 # Setup application
 app = FastAPI(
