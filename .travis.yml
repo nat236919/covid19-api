@@ -10,3 +10,6 @@ install:
 script:
   - pytest app/tests/test_get_data.py
   - pytest app/tests/test_helper.py
+# codecov
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
