@@ -30,8 +30,8 @@ This API provides the information regarding '2019 Novel Coronavirus (covid-19)'.
 
 ## Example
 
+* https://covid19.nuttaphat.com/
 * https://covid2019-api.herokuapp.com/
-* https://covid2019-api.azurewebsites.net/
 
 ## Applications
 
