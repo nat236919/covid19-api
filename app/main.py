@@ -14,14 +14,16 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 
+from config import CONFIG
 from routers.v1 import v1
 from routers.v2 import v2
 
 # Setup application
+# Note: Please visit config.py for modification
 app = FastAPI(
-    title='COVID-19 API',
-    description='Simply FAST API for COVID-19 cases exploration',
-    version='2.0.3'
+    title=CONFIG['app'].get('title'),
+    description=CONFIG['app'].get('description'),
+    version=CONFIG['app'].get('version')
 )
 
 # Setup CORS (https://fastapi.tiangolo.com/tutorial/cors/)
