@@ -54,6 +54,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "owen-duncan-snobel",
+      "name": "owen-duncan-snobel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43126781?v=4",
+      "profile": "https://github.com/owen-duncan-snobel",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
