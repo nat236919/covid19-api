@@ -61,8 +61,6 @@ async def get_current_us(request: Request, background_tasks: BackgroundTasks) ->
     - **Deaths**: death cases
     - **Recovered**: recovered cases
     - **Active**: active cases
-    - **People_Tested**: a total number of tested people
-    - **People_Hospitalized**: a total number of hospitalised people
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))

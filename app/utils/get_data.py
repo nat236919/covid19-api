@@ -54,8 +54,7 @@ def get_data_daily_reports_us() -> pd.DataFrame:
     df = pd.read_csv(latest_base_url)
 
     # Data pre-processing
-    concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active', 'People_Tested',
-                        'People_Hospitalized']
+    concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
     df = helper_df_cols_cleaning(df, concerned_columns, int)
     
     return df
