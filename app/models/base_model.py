@@ -5,7 +5,7 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 01-March-2021
 """
 # Import libraries
-from typing import Any, List
+from typing import Any, Dict, List
 
 from pydantic import BaseModel
 
@@ -14,6 +14,6 @@ from pydantic import BaseModel
 # ResponseModel
 #######################################
 class ResponseModel(BaseModel):
-    data: List[Any]
+    data: Any
     dt: str
     ts: int

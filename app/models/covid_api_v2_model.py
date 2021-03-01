@@ -5,6 +5,8 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 01-March-2021
 """
 # Import libraries
+from typing import List
+
 from pydantic import BaseModel
 
 
@@ -83,7 +85,56 @@ class CountryModel(BaseModel):
 # TimeseriesGlobalModel
 #######################################
 class TimeseriesGlobalModel(BaseModel):
-    key: str
     confirmed: int
     deaths: int
     recovered: int
+
+
+#######################################
+# TimeseriesCaseModel
+#######################################
+class TimeseriesCaseCoordinatesModel(BaseModel):
+    Lat: float
+    Long: float
+
+
+class TimeseriesCaseDataModel(BaseModel):
+    date: str
+    value: int
+
+
+class TimeseriesCaseModel(BaseModel):
+    Province_State: str
+    Country_Region: str
+    Coordinates: TimeseriesCaseCoordinatesModel
+    TimeSeries: List[TimeseriesCaseDataModel]
+
+
+#######################################
+# TimeseriesUSModel
+#######################################
+class TimeseriesUSInfoModel(BaseModel):
+    UID: str
+    iso2: str
+    iso3: str
+    code3: str
+    FIPS: str
+    Admin2: str
+
+
+class TimeseriesUSCoordinatesModel(BaseModel):
+    Lat: float
+    Long: float
+
+
+class TimeseriesUSDataModel(BaseModel):
+    date: str
+    value: int
+
+
+class TimeseriesUSModel(BaseModel):
+    Province_State: str
+    Country_Region: str
+    Info: TimeseriesUSInfoModel
+    Coordinates: TimeseriesUSCoordinatesModel
+    TimeSeries: List[TimeseriesUSDataModel]

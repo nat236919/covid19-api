@@ -10,13 +10,13 @@ from functools import wraps
 from typing import Any, Dict
 
 from fastapi import BackgroundTasks, HTTPException
-from models.covid_model_api_v2 import CovidAPIv2
+from integrators.covid_api_v2_integrator import CovidAPIv2Integrator
 from starlette.requests import Request
 
 from . import v2
 
-# Initiate Model
-COVID_API_V2 = CovidAPIv2()
+# Initiate Integrator
+COVID_API_V2 = CovidAPIv2Integrator()
 
 
 # Logging
@@ -195,8 +195,8 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
     - **recovered**: recovered case
 
     confirmed, deaths, recovered
-    - **Province/State**: State's name
-    - **Country/Region**: Country's name
+    - **Province_State**: State's name
+    - **Country_Region**: Country's name
     - **Coordinates**: {"Lat": int, "Long": int}
     - **TimeSeries**: [{"date": datetime, "value": int}]
     \f
@@ -230,8 +230,8 @@ async def get_US_time_series(case: str, request: Request, background_tasks: Back
         - **Admin2**: Admin2
     }
     - **Coordinates**: {
-        - **Lat**: int
-        - **Long**: int
+        - **Lat**: float
+        - **Long**: float
     }
     - **TimeSeries**: [
         - {"date: datetime, "value": int}
