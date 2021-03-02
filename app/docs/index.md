@@ -113,11 +113,11 @@ docker run nat236919/covid19-api
 
 ## How to use API (v2)
 
-Check it out [here](./docs/api_docs/v2.md)
+Check it out [here](./api_docs/v2.md)
 
 ## How to use API (v1)
 
-Check it out [here](./docs/api_docs/v1.md)
+Check it out [here](./api_docs/v1.md)
 
 ## Contributors ✨
 
