@@ -9,14 +9,14 @@ from functools import wraps
 from typing import Any, Dict
 
 from fastapi import HTTPException
-from models.covid_model_api_v1 import CovidAPIv1
-from utils.helper import helper_lookup_country
 
+from integrators.covid_api_v1_integrator import CovidAPIv1
+from utils.helper import helper_lookup_country
 from . import v1
 
 
-# Reload model (APIv1)
-def reload_model_api_v1(func):
+# Reload Integrator (APIv1)
+def reload_api_v1_integrator(func):
     """ Reload a model for each quest """
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -28,14 +28,14 @@ def reload_model_api_v1(func):
 
 
 @v1.get('/current')
-@reload_model_api_v1
+@reload_api_v1_integrator
 def current_status() -> Dict[str, int]:
     data = COVID_API_V1.get_current_status()
     return data
 
 
 @v1.get('/current_list')
-@reload_model_api_v1
+@reload_api_v1_integrator
 def current_status_list() -> Dict[str, Any]:
     """ Coutries are kept in a List """
     data = COVID_API_V1.get_current_status(list_required=True)
@@ -43,42 +43,42 @@ def current_status_list() -> Dict[str, Any]:
 
 
 @v1.get('/total')
-@reload_model_api_v1
+@reload_api_v1_integrator
 def total() -> Dict[str, Any]:
     data = COVID_API_V1.get_total()
     return data
 
 
 @v1.get('/confirmed')
-@reload_model_api_v1
+@reload_api_v1_integrator
 def confirmed_cases() -> Dict[str, int]:
     data = COVID_API_V1.get_confirmed_cases()
     return data
 
 
 @v1.get('/deaths')
-@reload_model_api_v1
+@reload_api_v1_integrator
 def deaths() -> Dict[str, int]:
     data = COVID_API_V1.get_deaths()
     return data
 
 
 @v1.get('/recovered')
-@reload_model_api_v1
+@reload_api_v1_integrator
 def recovered() -> Dict[str, int]:
     data = COVID_API_V1.get_recovered()
     return data
 
 
 @v1.get('/countries')
-@reload_model_api_v1
+@reload_api_v1_integrator
 def affected_countries() -> Dict[int, str]:
     data = COVID_API_V1.get_affected_countries()
     return data
 
 
 @v1.get('/country/{country_name}')
-@reload_model_api_v1
+@reload_api_v1_integrator
 def country(country_name: str) -> Dict[str, Any]:
     """ Search by name or ISO (alpha2) """
     raw_data = COVID_API_V1.get_current_status() # Get all current data
@@ -100,7 +100,7 @@ def country(country_name: str) -> Dict[str, Any]:
 
 
 @v1.get('/timeseries/{case}')
-@reload_model_api_v1
+@reload_api_v1_integrator
 def timeseries(case: str) -> Dict[str, Any]:
     """ Get the time series based on a given case: confirmed, deaths, recovered """
     raw_data = COVID_API_V1.get_time_series()
