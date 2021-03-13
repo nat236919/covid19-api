@@ -105,9 +105,19 @@ class CovidAPIv2Integrator:
     # GET - Country
     #######################################################################################
     @wrap_data
-    def get_country(self, country_name: str) -> Dict[str, Any]:
+    def get_country(self, country_name: str) -> CountryModel:
         """ Get a country data from its name or ISO 2 """
-        all_country_data = self.get_current().data
+        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
+        self.df = get_data_daily_reports() # Get base data
+        self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
+        self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
+
+        df_grp_by_country = self.df_grp_by_country.sort_values(by='Confirmed', ascending=False)
+        df_grp_by_country = df_grp_by_country.reset_index()
+        df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
+
+        all_country_data = [CountryModel(**v) for v in df_grp_by_country.to_dict('index').values()]
+
 
         # Check input
         if not isinstance(country_name, str) or not country_name.isalpha():
