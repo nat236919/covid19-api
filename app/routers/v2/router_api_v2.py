@@ -14,9 +14,11 @@ from integrators.covid_api_v2_integrator import CovidAPIv2Integrator
 from starlette.requests import Request
 
 from . import v2
+from utils.get_data import DataTimeSeries
 
 # Initiate Integrator
-COVID_API_V2 = CovidAPIv2Integrator()
+DATA_TIME_SERIES = DataTimeSeries()
+COVID_API_V2 = CovidAPIv2Integrator(DataTimeSeries)
 
 
 # Logging
