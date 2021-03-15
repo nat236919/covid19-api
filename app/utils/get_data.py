@@ -29,36 +29,21 @@ def get_data_lookup_table() -> Dict[str, str]:
 
 
 # Get data from daily reports
-def get_data_daily_reports() -> pd.DataFrame:
-    """ Get data from BASE_URL_DAILY_REPORTS """
-    # Check the latest file
-    latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+class get_data_daily_reports:
+    def get_data_daily_reports(US=False) -> Dict[str, pd.DataFrame]:
+        """ Get data from BASE_URL_DAILY_REPORTS """
+        # Check the latest file
+        if US is False:
+            latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
+        else:
+            latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+        # Extract the data
+        df = pd.read_csv(latest_base_url)
+        # Data pre-processing
+        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
+        df = helper_df_cols_cleaning(df, concerned_columns, int)
 
-    # Extract the data
-    df = pd.read_csv(latest_base_url)
-
-    # Data pre-processing
-    concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-    df = helper_df_cols_cleaning(df, concerned_columns, int)
-    
-    return df
-
-
-# Get data from daily reports (USA)
-def get_data_daily_reports_us() -> pd.DataFrame:
-    """ Get data from BASE_URL_DAILY_REPORTS """
-    # Check the latest file
-    latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
-
-    # Extract the data
-    df = pd.read_csv(latest_base_url)
-
-    # Data pre-processing
-    concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-    df = helper_df_cols_cleaning(df, concerned_columns, int)
-    
-    return df
-
+        return df
 
 # Get data from time series
 def get_data_time_series() -> Dict[str, pd.DataFrame]:
