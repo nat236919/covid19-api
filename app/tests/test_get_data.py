@@ -24,6 +24,13 @@ def test_get_data_daily_reports() -> None:
     assert isinstance(result, pd.DataFrame) is True 
 
 
+# Test - Get data from daily reports (US)
+def test_get_data_daily_reports_US() -> None:
+    result = daily_reports.get_data_daily_reports(US=True)
+    assert len(result) > 0
+    assert isinstance(result, pd.DataFrame) is True 
+
+
 # Test - Get data from time series
 def test_get_data_time_series() -> None:
     result = get_data_time_series()

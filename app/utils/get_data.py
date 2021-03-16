@@ -27,23 +27,25 @@ def get_data_lookup_table() -> Dict[str, str]:
 
     return data
 
+
+# Get Daily Reports Data (General and US)
 class DailyReports:
     def __init__(self) -> None: 
         self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+        self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
 
     # Get data from daily reports
-    def get_data_daily_reports(self, US=False) -> pd.DataFrame:
+    def get_data_daily_reports(self, US: bool = False) -> pd.DataFrame:
         """ Get data from BASE_URL_DAILY_REPORTS """
         # Extract the data
-        if US is False:
-            df = pd.read_csv(self.latest_base_url)
-        else: 
-             df = pd.read_csv(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
+        df = pd.read_csv(self.latest_base_US_url) if US else pd.read_csv(self.latest_base_url)
+
         # Data pre-processing
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         df = helper_df_cols_cleaning(df, concerned_columns, int)
         
         return df
+
 
 # Get data from time series
 def get_data_time_series() -> Dict[str, pd.DataFrame]:
