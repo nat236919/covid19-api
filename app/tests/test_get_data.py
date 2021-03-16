@@ -6,9 +6,11 @@ DATE: 11-April-2020
 """
 # Import libraries
 import pandas as pd
-from ..utils.get_data import get_data, DataTimeSeries, get_data_lookup_table, get_data_daily_reports
+from ..utils.get_data import get_data, DataTimeSeries, get_data_lookup_table, DailyReports
 
+daily_reports = DailyReports()
 time_series = DataTimeSeries()
+
 # Test - Get Lookup table
 def test_get_data_lookup_table() -> None:
     result = get_data_lookup_table()
@@ -18,7 +20,14 @@ def test_get_data_lookup_table() -> None:
 
 # Test - Get data from daily reports
 def test_get_data_daily_reports() -> None:
-    result = get_data_daily_reports()
+    result = daily_reports.get_data_daily_reports()
+    assert len(result) > 0
+    assert isinstance(result, pd.DataFrame) is True 
+
+
+# Test - Get data from daily reports (US)
+def test_get_data_daily_reports_US() -> None:
+    result = daily_reports.get_data_daily_reports(US=True)
     assert len(result) > 0
     assert isinstance(result, pd.DataFrame) is True 
 
