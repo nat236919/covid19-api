@@ -48,7 +48,7 @@ class DailyReports:
 
 class DataTimeSeries:
     # Get data from time series
-    def get_data_time_series(self, US=False) -> Dict[str, pd.DataFrame]:
+    def get_data_time_series(self, US: bool = False) -> Dict[str, pd.DataFrame]:
         """ Get the dataset from JHU CSSE """
         dataframes = {}
 
