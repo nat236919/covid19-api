@@ -108,7 +108,7 @@ class CovidAPIv2Integrator:
     def get_country(self, country_name: str) -> CountryModel:
         """ Get a country data from its name or ISO 2 """
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        self.df = get_data_daily_reports() # Get base data
+        self.df = self.daily_reports.get_data_daily_reports() # Get base data
         self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
         self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
 
