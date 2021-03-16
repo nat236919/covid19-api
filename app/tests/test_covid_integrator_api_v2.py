@@ -116,7 +116,7 @@ def test_get_time_series() -> None:
     assert isinstance(result[0]['TimeSeries'], list) is True
 
 
-# Test - Get Time Series (US)
+# Test - Get Time Series (US) 
 def test_get_US_time_series() -> None:
     result = INTEGRATOR.get_US_time_series('gibberish')
     assert bool(result['data']) is False

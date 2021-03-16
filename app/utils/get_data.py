@@ -47,41 +47,35 @@ class DailyReports:
         return df
 
 
-# Get data from time series
-def get_data_time_series() -> Dict[str, pd.DataFrame]:
-    """ Get the dataset from JHU CSSE """
-    dataframes = {}
+# get data from time series
+class TimeSeries:
+    # Get data from time series (US and other countries)
+    def get_data_time_series(self, US: bool = False) -> Dict[str, pd.DataFrame]:
+        """ Get the dataset from JHU CSSE """
+        dataframes = {}
 
-    # Iterate through all files
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
+        if US is True:
+            # categories ('confirmed', 'deaths')
+            categories = JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1]
+            url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES']
+        else: 
+            # all files
+            categories = JHU_CSSE_FILE_PATHS['CATEGORIES']
+            url = JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES']
 
-        # Extract data
-        df = pd.read_csv(url)
-        df = helper_df_cleaning(df)
-        dataframes[category] = df
+        # Iterate through categories 
+        for category in categories:
+            url = url.format(category)
 
-    return dataframes
+            # Extract data
+            df = pd.read_csv(url)
+            df = helper_df_cleaning(df)
+            if US is True:
+                concerned_columns = ['Lat', 'Long_']
+                df = helper_df_cols_cleaning(df, concerned_columns, float)
+            dataframes[category] = df
 
-
-# Get data from time series (US)
-def get_US_time_series() -> Dict[str, pd.DataFrame]:
-    """ Get the dataset of time series for USA """
-    dataframes = {}
-
-    # Iterate through categories ('confirmed', 'deaths')
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1]:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES'].format(category)
-        
-        # Extract data
-        df = pd.read_csv(url)
-        df = helper_df_cleaning(df)
-        concerned_columns = ['Lat', 'Long_']
-        df = helper_df_cols_cleaning(df, concerned_columns, float)
-        dataframes[category] = df
-
-    return dataframes
-
+        return dataframes
 
 # API v1
 def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
