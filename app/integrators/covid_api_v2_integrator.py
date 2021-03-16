@@ -24,8 +24,7 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          TimeseriesUSDataModel,
                                          TimeseriesUSInfoModel,
                                          TimeseriesUSModel, TotalModel)
-from utils.get_data import (DailyReports, get_data_lookup_table,
-                              get_data_time_series, get_US_time_series)
+from utils.get_data import (DailyReports, DataGetter)
 
 
 class CovidAPIv2Integrator:
@@ -36,9 +35,10 @@ class CovidAPIv2Integrator:
             "ts": int = "{timestamp}
         }
     """
-    def __init__(self, daily_reports: DailyReports) -> None:
+    def __init__(self, daily_reports: DailyReports, data_getter: DataGetter) -> None:
         """ Initiate instances """
-        self.lookup_table = get_data_lookup_table()
+        self.data_getter = data_getter
+        self.lookup_table = data_getter.get_data_lookup_table()
         self.scheme = {
             'data': None,
             'dt': None,

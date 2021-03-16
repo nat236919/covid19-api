@@ -15,18 +15,6 @@ from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
                      helper_get_latest_data_url)
 
 
-# Get Lookup table
-def get_data_lookup_table() -> Dict[str, str]:
-    """ Get lookup table (country references for iso2) """
-    lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
-    lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
-    
-    # Create referral dictionary
-    data = lookup_df.to_dict('records')
-    data = {v['iso2']: v['Country_Region'] for v in data}
-
-    return data
-
 
 # Get Daily Reports Data (General and US)
 class DailyReports:
@@ -46,41 +34,60 @@ class DailyReports:
         
         return df
 
-
-# Get data from time series
-def get_data_time_series() -> Dict[str, pd.DataFrame]:
-    """ Get the dataset from JHU CSSE """
-    dataframes = {}
-
-    # Iterate through all files
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
-
-        # Extract data
-        df = pd.read_csv(url)
-        df = helper_df_cleaning(df)
-        dataframes[category] = df
-
-    return dataframes
+class DataGetter:
+    def __init__(self) -> None:
+        self.latest_lookup_table_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE'])
+        self.latest_time_series = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'])
+        self.latest_us_time_series = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES'])
 
 
-# Get data from time series (US)
-def get_US_time_series() -> Dict[str, pd.DataFrame]:
-    """ Get the dataset of time series for USA """
-    dataframes = {}
-
-    # Iterate through categories ('confirmed', 'deaths')
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1]:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES'].format(category)
+    # Get Lookup table
+    def get_data_lookup_table(self) -> Dict[str, str]:
+        """ Get lookup table (country references for iso2) """
+        lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
+        lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
         
-        # Extract data
-        df = pd.read_csv(url)
-        df = helper_df_cleaning(df)
-        concerned_columns = ['Lat', 'Long_']
-        df = helper_df_cols_cleaning(df, concerned_columns, float)
-        dataframes[category] = df
+        # Create referral dictionary
+        data = lookup_df.to_dict('records')
+        data = {v['iso2']: v['Country_Region'] for v in data}
 
-    return dataframes
+        return data
+
+
+    # Get data from time series
+    def get_data_time_series(self) -> Dict[str, pd.DataFrame]:
+        """ Get the dataset from JHU CSSE """
+        dataframes = {}
+
+        # Iterate through all files
+        for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
+            url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
+
+            # Extract data
+            df = pd.read_csv(url)
+            df = helper_df_cleaning(df)
+            dataframes[category] = df
+
+        return dataframes
+
+
+    # Get data from time series (US)
+    def get_US_time_series(self) -> Dict[str, pd.DataFrame]:
+        """ Get the dataset of time series for USA """
+        dataframes = {}
+
+        # Iterate through categories ('confirmed', 'deaths')
+        for category in JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1]:
+            url = JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES'].format(category)
+            
+            # Extract data
+            df = pd.read_csv(url)
+            df = helper_df_cleaning(df)
+            concerned_columns = ['Lat', 'Long_']
+            df = helper_df_cols_cleaning(df, concerned_columns, float)
+            dataframes[category] = df
+
+        return dataframes
 
 
 # API v1
