@@ -72,6 +72,7 @@ class DataGetter:
         return dataframes
 
 
+
     # Get data from time series (US)
     def get_US_time_series(self) -> Dict[str, pd.DataFrame]:
         """ Get the dataset of time series for USA """
