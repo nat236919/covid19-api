@@ -138,3 +138,59 @@ class TimeseriesUSModel(BaseModel):
     Info: TimeseriesUSInfoModel
     Coordinates: TimeseriesUSCoordinatesModel
     TimeSeries: List[TimeseriesUSDataModel]
+
+class TimeseriesUSModelBuilder(object):
+    """
+    a builder class for TimeseriesUSModel that can be used in
+    covid_api_v2_integrator.py : CovidAPIv2Integrator.get_US_time_series()
+    to make code reading and updating easier
+    """
+
+    def __init__(self, data):
+        # set the basic fields
+        self.Province_State = data['Province_State']
+        self.Country_Region = data['Country_Region']
+
+        # extract all the aggregate fields
+        self.set_info_model(
+            UID=data['UID'],
+            iso2=data['iso2'],
+            iso3=data['iso3'],
+            code3=data['code3'],
+            FIPS=data['FIPS'],
+            Admin2=data['Admin2'],
+        )
+        self.set_coordinates_model(
+            Lat=float(data['Lat']) if data['Lat'] else 0,
+            Long=float(data['Long_']) if data['Long_'] else 0
+        )
+        self.extract_timeseries(data)
+
+    def set_info_model(self, UID, iso2, iso3, code3, FIPS, Admin2):
+        self.info_model = TimeseriesUSInfoModel(
+            UID=UID,
+            iso2=iso2,
+            iso3=iso3,
+            code3=code3,
+            FIPS=FIPS,
+            Admin2=Admin2,
+        )
+
+    def set_coordinates_model(self, Lat, Long):
+        self.coordinates_model = TimeseriesUSCoordinatesModel(Lat=Lat, Long=Long)
+
+    def extract_timeseries(self, data):
+        excluded_cols = ['UID', 'iso2', 'iso3', 'code3', 'FIPS',
+                        'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_',
+                        'Combined_Key','Population']
+        temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
+        self.timeseries_data_model_list = [TimeseriesUSDataModel(date=k, value=v) for k, v in temp_time_series_dict.items()]
+
+    def build(self) -> TimeseriesUSModel:
+        return TimeseriesUSModel(
+            Province_State=self.Province_State,
+            Country_Region=self.Country_Region,
+            Info=self.info_model,
+            Coordinates=self.coordinates_model,
+            TimeSeries=self.timeseries_data_model_list
+        )
