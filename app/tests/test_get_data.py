@@ -6,7 +6,8 @@ DATE: 11-April-2020
 """
 # Import libraries
 import pandas as pd
-from ..utils import get_data
+from ..utils import get_data_ 
+from ..utils import get_data_US
 
 
 # Test - Get Lookup table
@@ -32,7 +33,7 @@ def test_get_data_time_series() -> None:
 
 # Test - Get data from time series (US)
 def test_get_US_time_series() -> None:
-    result = get_data.get_US_time_series()
+    result = get_data_US.get_US_time_series()
     assert len(result) > 0
     assert isinstance(result, dict) is True
 

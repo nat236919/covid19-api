@@ -6,6 +6,7 @@ DATE: 9-Feb-2020
 """
 # Import libraries
 import csv
+import datetime
 from typing import Dict
 
 import pandas as pd
@@ -16,30 +17,26 @@ from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
 
 
 class data:
-    # Get Lookup table
     def __init__(self) -> None:
-        """ Get data from helper -> the source data """
-        list_of_dataframes = data.get_data()
-        self.df_confirmed = list_of_dataframes['confirmed']
-        self.df_deaths = list_of_dataframes['deaths']
-        self.df_recovered = list_of_dataframes['recovered']
+        """ Initiate DataFrames """
+        self.lookup_table = data.get_data_lookup_table()
+        self.scheme = {
+            'data': None,
+            'dt': None,
+            'ts': None
+        }
 
-        list_of_time_series = data.get_data(time_series=True)
-        self.df_time_series_confirmed = list_of_time_series['confirmed']
-        self.df_time_series_deaths = list_of_time_series['deaths']
-        self.df_time_series_recovered = list_of_time_series['recovered']
-
-        self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
-        self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y').timestamp()
-  def get_data_lookup_table() -> Dict[str, str]:
+    # Get Lookup table
+    def get_data_lookup_table() -> Dict[str, str]:
         """ Get lookup table (country references for iso2) """
         lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
         lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
-    
-     # Create referral dictionary
-    data = lookup_df.to_dict('records')
-    data = {v['iso2']: v['Country_Region'] for v in data}
-     return data
+
+        # Create referral dictionary
+        data = lookup_df.to_dict('records')
+        data = {v['iso2']: v['Country_Region'] for v in data}
+
+        return data
 
 
     # Get data from daily reports
@@ -57,9 +54,7 @@ class data:
     
     return df
 
-
-
- # Get data from time series
+    # Get data from time series
     def get_data_time_series() -> Dict[str, pd.DataFrame]:
     """ Get the dataset from JHU CSSE """
     dataframes = {}
@@ -74,9 +69,6 @@ class data:
         dataframes[category] = df
 
     return dataframes
-
-
-
 
     # API v1
     def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:

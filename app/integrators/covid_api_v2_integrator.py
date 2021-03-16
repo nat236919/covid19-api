@@ -24,9 +24,8 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          TimeseriesUSDataModel,
                                          TimeseriesUSInfoModel,
                                          TimeseriesUSModel, TotalModel)
-from utils.get_data import (get_data_daily_reports,
-                              get_data_daily_reports_us, get_data_lookup_table,
-                              get_data_time_series, get_US_time_series)
+from utils.get_data import data
+from utils.get_data_US import data_US
 
 
 class CovidAPIv2Integrator:
@@ -37,9 +36,9 @@ class CovidAPIv2Integrator:
             "ts": int = "{timestamp}
         }
     """
-    def __init__(self) -> None:
+    def __init__(self) -> None:  
         """ Initiate DataFrames """
-        self.lookup_table = get_data_lookup_table()
+        self.lookup_table = data.get_data_lookup_table()
         self.scheme = {
             'data': None,
             'dt': None,
@@ -71,7 +70,7 @@ class CovidAPIv2Integrator:
     def get_current(self) -> List[CurrentModel]:
         """ Current data from all locations (Lastest date) """
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        self.df = get_data_daily_reports() # Get base data
+        self.df = data.get_data_daily_reports() # Get base data
         self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
         self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
 
@@ -89,7 +88,7 @@ class CovidAPIv2Integrator:
     @wrap_data
     def get_current_US(self) -> List[CurrentUSModel]:
         """ Get current data for USA's situation """
-        self.df_US = get_data_daily_reports_us() # Get base data
+        self.df_US = data_US.get_data_daily_reports_us() # Get base data
 
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         df = self.df_US.groupby(['Province_State'])[concerned_columns].sum().sort_values(by='Confirmed', ascending=False)
