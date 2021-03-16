@@ -28,6 +28,8 @@ from utils.get_data import (get_data_daily_reports,
                               get_data_daily_reports_us, get_data_lookup_table,
                               get_data_time_series, get_US_time_series)
 
+from app.models.covid_api_v2_model import AggregatedConcernedColumns
+
 
 class CovidAPIv2Integrator:
     """ Covid-19 API v2 methods
@@ -45,7 +47,7 @@ class CovidAPIv2Integrator:
             'dt': None,
             'ts': None
         }
-    
+
     def wrap_data(func) -> ResponseModel:
         """ Wrap a result in a schemed data """
         @wraps(func)
@@ -63,7 +65,7 @@ class CovidAPIv2Integrator:
                 reponse_model = ResponseModel(**packed_data)
             return reponse_model
         return wrapper
-    
+
     #######################################################################################
     # GET - Current
     #######################################################################################
@@ -82,7 +84,7 @@ class CovidAPIv2Integrator:
         data = [CurrentModel(**v) for v in df_grp_by_country.to_dict('index').values()]
 
         return data
-    
+
     #######################################################################################
     # GET - Current US
     #######################################################################################
@@ -100,7 +102,7 @@ class CovidAPIv2Integrator:
         data = [CurrentUSModel(**v) for v in df.to_dict('index').values()]
 
         return data
-    
+
     #######################################################################################
     # GET - Country
     #######################################################################################
@@ -131,70 +133,58 @@ class CovidAPIv2Integrator:
         data = data[0] if data else {}
 
         return data
-    
+
     #######################################################################################
     # GET - Confirm
     #######################################################################################
     @wrap_data
     def get_confirmed(self) -> ConfirmedModel:
         """ Summation of all confirmed cases """
-        self.df = get_data_daily_reports() # Get base data
-        data = ConfirmedModel(
-            confirmed=int(self.df['Confirmed'].sum())
-        )
+        data = AggregatedConcernedColumns()
+        data.get_confirmed()
         return data
 
     #######################################################################################
     # GET - Deaths
     #######################################################################################
     @wrap_data
+    @wrap_data
     def get_deaths(self) -> DeathsModel:
         """ Summation of all deaths """
-        self.df = get_data_daily_reports() # Get base data
-        data = DeathsModel(
-            deaths=int(self.df['Deaths'].sum())
-        )
+        data = AggregatedConcernedColumns()
+        data.get_deaths()
         return data
-    
+
     #######################################################################################
     # GET - Recovered
     #######################################################################################
     @wrap_data
     def get_recovered(self) -> RecoveredModel:
         """ Summation of all recovers """
-        self.df = get_data_daily_reports() # Get base data
-        data = RecoveredModel(
-            recovered=int(self.df['Recovered'].sum())
-        )
+        data = AggregatedConcernedColumns()
+        data.get_recovered()
         return data
-    
+
     #######################################################################################
     # GET - Active
     #######################################################################################
     @wrap_data
     def get_active(self) -> ActiveModel:
         """ Summation of all actives """
-        self.df = get_data_daily_reports() # Get base data
-        data = ActiveModel(
-            active=int(self.df['Active'].sum())
-        )
+        data = AggregatedConcernedColumns()
+        data.get_active()
         return data
-    
+
     #######################################################################################
     # GET - Total
     #######################################################################################
     @wrap_data
     def get_total(self) -> TotalModel:
         """ Summation of Confirmed, Deaths, Recovered, Active """
-        self.df = get_data_daily_reports() # Get base data
-        data = TotalModel(
-            confirmed=int(self.df['Confirmed'].sum()),
-            deaths=int(self.df['Deaths'].sum()),
-            recovered=int(self.df['Recovered'].sum()),
-            active=int(self.df['Active'].sum())
-        )
+        data = AggregatedConcernedColumns()
+        data.get_total()
         return data
-    
+
     #######################################################################################
     # GET - Timeseries
     #######################################################################################
@@ -214,7 +204,7 @@ class CovidAPIv2Integrator:
             data = self.__extract_time_series_global(raw_data)
 
         return data
-    
+
     def __extract_time_series(self, time_series: Dict) -> List[TimeseriesCaseModel]:
         """ Extract time series from a given case """
 
@@ -242,10 +232,10 @@ class CovidAPIv2Integrator:
         # Extract the time series data
         time_series_data = []
         for data in __unpack_inner_time_series(time_series):
-            time_series_data.append(data) 
+            time_series_data.append(data)
 
         return time_series_data
-    
+
     def __extract_time_series_global(self, dataframe_dict: Dict[str, pd.DataFrame]) -> List[TimeseriesGlobalModel]:
         """ Extract time series for global case
             Iterating all cases from all time series
@@ -262,7 +252,7 @@ class CovidAPIv2Integrator:
         data = [{k: TimeseriesGlobalModel(**v)} for k, v in global_dict.items()]
 
         return data
-    
+
     #######################################################################################
     # GET - Timeseries US
     #######################################################################################
@@ -284,7 +274,7 @@ class CovidAPIv2Integrator:
         def __unpack_US_inner_time_series(time_series: Dict[str, Any]) -> TimeseriesUSModel:
             for data in time_series.values():
                 excluded_cols = ['UID', 'iso2', 'iso3', 'code3', 'FIPS',
-                                'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_', 
+                                'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_',
                                 'Combined_Key','Population']
                 # Info
                 timeseries_US_info_model = TimeseriesUSInfoModel(

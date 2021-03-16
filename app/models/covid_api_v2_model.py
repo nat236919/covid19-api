@@ -13,6 +13,9 @@ from pydantic import BaseModel
 #######################################
 # CurrentModel
 #######################################
+from app.utils.get_data import get_data_daily_reports
+
+
 class CurrentModel(BaseModel):
     location: str
     confirmed: int
@@ -68,6 +71,53 @@ class RecoveredModel(BaseModel):
 #######################################
 class ActiveModel(BaseModel):
     active: int
+
+
+#######################################
+# AggregatedConcernedColumns
+#######################################
+class AggregatedConcernedColumns:
+
+    def __init__(self):
+        self.df = get_data_daily_reports()  # Get base data
+
+    def get_confirmed(self) -> ConfirmedModel:
+        """ Summation of all confirmed cases """
+        data = ConfirmedModel(
+            confirmed=int(self.df['Confirmed'].sum())
+        )
+        return data
+
+    def get_deaths(self) -> DeathsModel:
+        """ Summation of all deaths """
+        data = DeathsModel(
+            deaths=int(self.df['Deaths'].sum())
+        )
+        return data
+
+    def get_recovered(self) -> RecoveredModel:
+        """ Summation of all recovers """
+        data = RecoveredModel(
+            recovered=int(self.df['Recovered'].sum())
+        )
+        return data
+
+    def get_active(self) -> ActiveModel:
+        """ Summation of all actives """
+        data = ActiveModel(
+            active=int(self.df['Active'].sum())
+        )
+        return data
+
+    def get_total(self) -> TotalModel:
+        """ Summation of Confirmed, Deaths, Recovered, Active """
+        data = TotalModel(
+            confirmed=int(self.df['Confirmed'].sum()),
+            deaths=int(self.df['Deaths'].sum()),
+            recovered=int(self.df['Recovered'].sum()),
+            active=int(self.df['Active'].sum())
+        )
+        return data
 
 
 #######################################
