@@ -6,13 +6,15 @@ DATE: 02-Sep-2020
 """
 # Import libraries
 import pandas as pd
-from ..utils import helper, file_paths
+from ..utils.helper import API_Helper
+from ..utils import file_paths
 
 
 # Test DataFrame
 DATA = {'col_1': list(range(5)), 'col_2': [1, None, '', None, None]}
 DF = pd.DataFrame(DATA)
 
+helper = API_Helper()
 
 # Test df cleaning
 def test_helper_df_cleaning() -> None:

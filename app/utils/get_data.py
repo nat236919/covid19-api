@@ -11,16 +11,17 @@ from typing import Dict
 import pandas as pd
 
 from .file_paths import JHU_CSSE_FILE_PATHS
-from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
-                     helper_get_latest_data_url)
+from .helper import API_Helper
+
+helper = API_Helper()
 
 
 
 # Get Daily Reports Data (General and US)
 class DailyReports:
     def __init__(self) -> None: 
-        self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
-        self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
+        self.latest_base_url = helper.helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+        self.latest_base_US_url = helper.helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
 
     # Get data from daily reports
     def get_data_daily_reports(self, US: bool = False) -> pd.DataFrame:
@@ -30,15 +31,15 @@ class DailyReports:
 
         # Data pre-processing
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        df = helper_df_cols_cleaning(df, concerned_columns, int)
+        df = helper.helper_df_cols_cleaning(df, concerned_columns, int)
         
         return df
 
 class DataGetter:
     def __init__(self) -> None:
-        self.latest_lookup_table_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE'])
-        self.latest_time_series = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'])
-        self.latest_us_time_series = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES'])
+        self.latest_lookup_table_url = helper.helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE'])
+        self.latest_time_series = helper.helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'])
+        self.latest_us_time_series = helper.helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES'])
 
 
     # Get Lookup table
@@ -65,7 +66,7 @@ class DataGetter:
 
             # Extract data
             df = pd.read_csv(url)
-            df = helper_df_cleaning(df)
+            df = helper.helper_df_cleaning(df)
             dataframes[category] = df
 
         return dataframes
@@ -82,9 +83,9 @@ class DataGetter:
             
             # Extract data
             df = pd.read_csv(url)
-            df = helper_df_cleaning(df)
+            df = helper.helper_df_cleaning(df)
             concerned_columns = ['Lat', 'Long_']
-            df = helper_df_cols_cleaning(df, concerned_columns, float)
+            df = helper.helper_df_cols_cleaning(df, concerned_columns, float)
             dataframes[category] = df
 
         return dataframes

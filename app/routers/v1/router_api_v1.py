@@ -11,9 +11,10 @@ from typing import Any, Dict
 from fastapi import HTTPException
 
 from integrators.covid_api_v1_integrator import CovidAPIv1
-from utils.helper import helper_lookup_country
+from ..utils.helper import API_Helper
 from . import v1
 
+helper = API_Helper()
 
 # Reload Integrator (APIv1)
 def reload_api_v1_integrator(func):
@@ -84,7 +85,7 @@ def country(country_name: str) -> Dict[str, Any]:
     raw_data = COVID_API_V1.get_current_status() # Get all current data
     try:
         if country_name.lower() not in ['us', 'uk'] and len(country_name) in [2]:
-            country_name = helper_lookup_country(country_name)
+            country_name = helper.helper_lookup_country(country_name)
             data = {k: v for k, v in raw_data.items() if country_name.lower() in k.lower()}
         else:
             data = {k: v for k, v in raw_data.items() if country_name.lower() == k.lower()}
