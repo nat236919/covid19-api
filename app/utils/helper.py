@@ -24,8 +24,11 @@ class API_Helper:
 
 
     # Data preprocessing (DataFrame's columns)
-    def helper_df_cols_cleaning(self, df: pd.DataFrame, cols: List[str], ensure_dtype: var_types = None) -> pd.DataFrame:
+    def helper_df_cols_cleaning(self, df: pd.DataFrame, cols: List[str]) -> pd.DataFrame:
         """ Clean certain colomns in a DataFrame """
+
+        ensure_dtype = self.var_types
+
         df[cols] = df[cols].fillna(0) # Replace empty cells with 0
         df[cols] = df[cols].replace('', 0) # Replace '' with 0
 
