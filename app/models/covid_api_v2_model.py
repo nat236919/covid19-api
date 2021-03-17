@@ -13,7 +13,7 @@ from pydantic import BaseModel
 #######################################
 # CurrentModel
 #######################################
-class CurrentModel(BaseModel):
+class CurrentModel(BaseModel, ConfirmedModel, DeathsModel, RecoveredModel, ActiveModel, CountryModel): #changes made right here
     location: str
     confirmed: int
     deaths: int
