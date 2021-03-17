@@ -6,7 +6,7 @@ DATE: 02-Sep-2020
 """
 # Import libraries
 import pandas as pd
-from ..utils import helper, file_paths
+from .utils import helper, file_paths
 
 
 # Test DataFrame
