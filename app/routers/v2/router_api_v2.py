@@ -16,7 +16,8 @@ from starlette.requests import Request
 from . import v2
 
 # Initiate Integrator
-COVID_API_V2 = CovidAPIv2Integrator()
+# This is the new change for the second pull request
+COVID_API_V2 = CovidAPIv2Integrator() # This is the new change for the second pull request
 
 
 # Logging

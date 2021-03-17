@@ -43,8 +43,9 @@ class CovidAPIv2Integrator:
             'dt': None,
             'ts': None
         }
-        DAILY_REPORTS = DailyReports()
-        self.daily_reports=DAILY_REPORTS
+
+        DAILY_REPORTS = DailyReports()          # This is the new change for the second pull request
+        self.daily_reports=DAILY_REPORTS        # This is the new change for the second pull request
     
     def wrap_data(func) -> ResponseModel:
         """ Wrap a result in a schemed data """
