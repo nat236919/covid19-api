@@ -27,7 +27,6 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
 from utils.get_data import (DailyReports, get_data_lookup_table,
                               get_data_time_series, get_US_time_series)
 
-
 class CovidAPIv2Integrator:
     """ Covid-19 API v2 methods
         SCHEMA: {
@@ -36,7 +35,7 @@ class CovidAPIv2Integrator:
             "ts": int = "{timestamp}
         }
     """
-    def __init__(self, daily_reports: DailyReports) -> None:
+    def __init__(self) -> None:
         """ Initiate instances """
         self.lookup_table = get_data_lookup_table()
         self.scheme = {
@@ -44,7 +43,8 @@ class CovidAPIv2Integrator:
             'dt': None,
             'ts': None
         }
-        self.daily_reports=daily_reports
+        DAILY_REPORTS = DailyReports()
+        self.daily_reports=DAILY_REPORTS
     
     def wrap_data(func) -> ResponseModel:
         """ Wrap a result in a schemed data """
@@ -232,7 +232,7 @@ class CovidAPIv2Integrator:
 
         return data
 
-class _CovidAPIv2IntegratorHelper:
+class __CovidAPIv2IntegratorHelper:
     """ Covid V2 API Helper Methods
     """
     def __init__(self) -> None:
