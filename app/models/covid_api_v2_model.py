@@ -13,11 +13,14 @@ from pydantic import BaseModel
 # CurrentModel
 #######################################
 class CurrentModel(BaseModel): #changes made right here
-    location: str
-    confirmed: int
-    deaths: int
-    recovered: int
-    active: int
+    def __init__(self):
+        self.location: str
+        self.confirmed: int
+        self.deaths: int
+        self.recovered: int
+        self.active: int
+   
+    
 
 
 #######################################
@@ -34,39 +37,48 @@ class CurrentUSModel(BaseModel):
 # ConfirmedModel
 #######################################
 class ConfirmedModel(CurrentModel): ### Changes made right here - ConfirmedModel now inherits confirmed value from CurrentModel
-    confirmed: int
+    def __init__(self):
+        CurrentModel.__init__(confirmed)
+        confirmed: int
 
 
 #######################################
 # DeathsModel
 #######################################
 class DeathsModel(CurrentModel):   ### Changes made right here - DeathsModel now inherits deaths value from CurrentModel
-    deaths: int
+     def __init__(self):
+        CurrentModel.__init__(deaths)
+        deaths: int
 
 
 #######################################
 # RecoveredModel
 #######################################
 class RecoveredModel(CurrentModel):    ### Changes made right here - RecoveredModel now inherits recovered values from CurrentModel
-    recovered: int
+        def __init__(self):
+        CurrentModel.__init__(recovered)
+        recovered: int
 
 
 #######################################
 # ActiveModel
 #######################################
-class ActiveModel(CurrentModel):      ### Changes made right here - ActiveModel now inherits recovered values from CurrentModel
-    active: int
+class ActiveModel(CurrentModel):      ### Changes made right here - ActiveModel now inherits recovered values from CurrentModel    def __init__(self):
+    CurrentModel.__init__(active)
+        active: int
 
 
 #######################################
 # CountryModel
 #######################################
 class CountryModel(CurrentModel):      ### Changes made right here - ActiveModel now inherits recovered values from CurrentModel
-    location: str
-    confirmed: int
-    deaths: int
-    recovered: int
-    active: int
+   def __init__(self):
+   CurrentModel.__init__(confirmed, location, deaths, recovered, active)
+        location: str
+        confirmed: int
+        deaths: int
+        recovered: int
+        active: int
 
 
 
@@ -76,10 +88,13 @@ class CountryModel(CurrentModel):      ### Changes made right here - ActiveModel
 # TotalModel
 #######################################
 class TotalModel(CurrentModel):       ### Changes made here - TotalModel can inherit values from GetCurrent and use them as part of the aggregation
-    confirmed: int
-    deaths: int
-    recovered: int
-    active: int
+    def __init__(self):
+    CurrentModel.__init__(confirmed)
+        confirmed: int
+        deaths: int
+        recovered: int
+        active: int
+
 
 
 
