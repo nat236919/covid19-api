@@ -1,13 +1,15 @@
 """
-FILE: covid_api_v1_model.py
-DESCRIPTION: Models for API v1
+FILE: covid_api_v3_model.py
+DESCRIPTION: Models for API v3
 AUTHOR: Nuttaphat Arunoprayoch
-DATE: 01-March-2021
+DATE: 15-March-2021
 """
 # Import libraries
 from typing import List
 
 from pydantic import BaseModel
+
+from aggregates import time-data
 
 
 #######################################
@@ -24,8 +26,7 @@ class CurrentModel(BaseModel):
 #######################################
 class CurrentListModel(BaseModel):
     countries: List[CurrentModel]
-    dt: str
-    ts: int
+    td: TimeData
 
 
 #######################################
@@ -35,8 +36,7 @@ class TotalModel(BaseModel):
     confirmed: int
     deaths: int
     recovered: int
-    dt: str
-    ts: int
+    td: TimeData
 
 
 #######################################
@@ -44,8 +44,7 @@ class TotalModel(BaseModel):
 #######################################
 class ConfirmedModel(BaseModel):
     confirmed: int
-    dt: str
-    ts: int
+    td: TimeData
 
 
 #######################################
@@ -53,8 +52,7 @@ class ConfirmedModel(BaseModel):
 #######################################
 class DeathsModel(BaseModel):
     deaths: int
-    dt: str
-    ts: int
+    td: TimeData
 
 
 #######################################
@@ -62,8 +60,7 @@ class DeathsModel(BaseModel):
 #######################################
 class RecoveredModel(BaseModel):
     recovered: int
-    dt: str
-    ts: int
+    td: TimeData
 
 
 #######################################
@@ -71,8 +68,7 @@ class RecoveredModel(BaseModel):
 #######################################
 class CountriesModel(BaseModel):
     countries: List[str]
-    dt: str
-    ts: int
+    td: TimeData
 
 
 #######################################
@@ -93,3 +89,4 @@ class TimeseriesModel(BaseModel):
     Country_Region: str
     Coordinates: TimeseriesCoordinatesModel
     Data: List[TimeseriesDataModel]
+    
