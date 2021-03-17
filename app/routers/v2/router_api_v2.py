@@ -209,6 +209,7 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
 
     data = COVID_API_V2.get_time_series(case.lower())
 
+
     return data
 
 

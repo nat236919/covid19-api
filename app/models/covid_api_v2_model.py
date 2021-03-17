@@ -11,6 +11,13 @@ from pydantic import BaseModel
 
 
 #######################################
+# Confirm Value Object
+#######################################
+class Confirm(BaseModel):
+    confirmed_cases: int
+
+
+#######################################
 # CurrentModel
 #######################################
 class CurrentModel(BaseModel):
@@ -36,7 +43,7 @@ class CurrentUSModel(BaseModel):
 # TotalModel
 #######################################
 class TotalModel(BaseModel):
-    confirmed: int
+    confirmed: Confirm
     deaths: int
     recovered: int
     active: int

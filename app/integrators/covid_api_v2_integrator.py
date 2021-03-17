@@ -13,7 +13,7 @@ import pandas as pd
 
 from models.base_model import ResponseModel
 from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
-                                         CountryModel, CurrentModel,
+                                         CountryModel, CurrentModel, Confirm,
                                          CurrentUSModel, DeathsModel,
                                          RecoveredModel,
                                          TimeseriesCaseCoordinatesModel,
@@ -105,7 +105,7 @@ class CovidAPIv2Integrator:
     # GET - Country
     #######################################################################################
     @wrap_data
-    def get_country(self, country_name: str) -> Dict[str, Any]:
+    def get_country(self, country_name: str) -> CountryModel:
         """ Get a country data from its name or ISO 2 """
         all_country_data = self.get_current().data
 
@@ -130,7 +130,7 @@ class CovidAPIv2Integrator:
         """ Summation of all confirmed cases """
         self.df = get_data_daily_reports() # Get base data
         data = ConfirmedModel(
-            confirmed=int(self.df['Confirmed'].sum())
+            confirmed = Confirm( confirmed_cases = int(self.df['Confirmed'].sum()) )
         )
         return data
 
