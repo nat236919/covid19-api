@@ -46,7 +46,7 @@ def get_data_daily_reports() -> pd.DataFrame:
 class USAData:
     # Aggregate root
     def __init__(self) -> None:
-
+        
     # Get data from daily reports (USA)
     def get_data_daily_reports_us(self) -> pd.DataFrame:
         """ Get data from BASE_URL_DAILY_REPORTS """
