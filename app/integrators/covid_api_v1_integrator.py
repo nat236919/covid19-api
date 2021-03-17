@@ -11,31 +11,36 @@ from typing import Any, Dict, List
 import pandas as pd
 
 from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
-                                         CurrentListModel, CurrentModel,
-                                         DeathsModel, RecoveredModel,
-                                         TimeseriesCoordinatesModel,
-                                         TimeseriesDataModel, TimeseriesModel,
-                                         TotalModel)
-from utils.get_data import get_data
+                                       CurrentListModel, CurrentModel,
+                                       DeathsModel, RecoveredModel,
+                                       TimeseriesCoordinatesModel,
+                                       TimeseriesDataModel, TimeseriesModel,
+                                       TotalModel)
+from utils.get_data import Data_fetcher
+
+# instantiating Data_fetcher class
+data_fetcher = Data_fetcher()
 
 
 # Create a model and its methods
 class CovidAPIv1:
     """ Model and Its methods """
+
     def __init__(self) -> None:
         """ Get data from helper -> the source data """
-        list_of_dataframes = get_data()
+        list_of_dataframes = data_fetcher.get_data()
         self.df_confirmed = list_of_dataframes['confirmed']
         self.df_deaths = list_of_dataframes['deaths']
         self.df_recovered = list_of_dataframes['recovered']
 
-        list_of_time_series = get_data(time_series=True)
+        list_of_time_series = data_fetcher.get_data(time_series=True)
         self.df_time_series_confirmed = list_of_time_series['confirmed']
         self.df_time_series_deaths = list_of_time_series['deaths']
         self.df_time_series_recovered = list_of_time_series['recovered']
 
         self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
-        self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y').timestamp()
+        self.timestamp = datetime.strptime(
+            self.datetime_raw, '%m/%d/%y').timestamp()
 
     def add_dt_and_ts(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """ Add datetime and timestamp to Dict data """
@@ -47,7 +52,8 @@ class CovidAPIv1:
         """ Current data (Lastest date) """
         # Create a template
         countries = self.df_confirmed['Country/Region'].unique().tolist()
-        current_data = {country: {'confirmed': 0, 'deaths': 0, 'recovered': 0} for country in countries}
+        current_data = {country: {'confirmed': 0, 'deaths': 0,
+                                  'recovered': 0} for country in countries}
 
         # Extractor
         def _extractor(col: str, df: pd.DataFrame) -> None:
@@ -60,17 +66,21 @@ class CovidAPIv1:
             return None
 
         # Add data to current_data
-        df_list = {'confirmed': self.df_confirmed, 'deaths': self.df_deaths, 'recovered': self.df_recovered}
+        df_list = {'confirmed': self.df_confirmed,
+                   'deaths': self.df_deaths, 'recovered': self.df_recovered}
         [_extractor(col, df) for col, df in df_list.items()]
 
         # Create Models sorted by Confirmed
         current_data = {country_name: CurrentModel(**country_data) for country_name, country_data
-                                                    in sorted(current_data.items(), key=lambda data: data[-1]['confirmed'], reverse=True)}
+                        in sorted(current_data.items(), key=lambda data: data[-1]['confirmed'], reverse=True)}
 
         # Check if a List form is required
         if list_required:
-            current_data['countries'] = [{k: v for k, v in current_data.items()}]
-            current_data = {k:v for k, v in current_data.items() if k in ['countries']} # Filter out other keys except countries
+            current_data['countries'] = [
+                {k: v for k, v in current_data.items()}]
+            # Filter out other keys except countries
+            current_data = {k: v for k, v in current_data.items() if k in [
+                'countries']}
 
         # Add datetime and timestamp
         current_data = self.add_dt_and_ts(current_data)
@@ -79,7 +89,8 @@ class CovidAPIv1:
 
     def get_confirmed_cases(self) -> Dict[str, int]:
         """ Summation of all confirmed cases """
-        data = {'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']])}
+        data = {'confirmed': sum([int(i)
+                                  for i in self.df_confirmed['confirmed']])}
         data = ConfirmedModel(**self.add_dt_and_ts(data))
         return data
 
@@ -91,7 +102,8 @@ class CovidAPIv1:
 
     def get_recovered(self) -> Dict[str, int]:
         """ Summation of all recovers """
-        data = {'recovered': sum([int(i) for i in self.df_recovered['recovered']])}
+        data = {'recovered': sum([int(i)
+                                  for i in self.df_recovered['recovered']])}
         data = RecoveredModel(**self.add_dt_and_ts(data))
         return data
 
@@ -101,15 +113,17 @@ class CovidAPIv1:
             'confirmed': self.get_confirmed_cases().confirmed,
             'deaths': self.get_deaths().deaths,
             'recovered': self.get_recovered().recovered
-            }
+        }
         data = TotalModel(**self.add_dt_and_ts(data))
         return data
 
     def get_affected_countries(self) -> Dict[str, List]:
         """ The affected countries """
         # Sorted alphabetically and exlucde 'Others'
-        sort_filter_others = lambda country_list: sorted([country for country in country_list if country not in ['Others']])
-        data = {'countries': sort_filter_others(self.df_confirmed['Country/Region'].unique().tolist())}
+        def sort_filter_others(country_list): return sorted(
+            [country for country in country_list if country not in ['Others']])
+        data = {'countries': sort_filter_others(
+            self.df_confirmed['Country/Region'].unique().tolist())}
         data = CountriesModel(**self.add_dt_and_ts(data))
         return data
 
