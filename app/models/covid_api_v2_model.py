@@ -34,6 +34,7 @@ class CurrentUSModel(BaseModel):
 #######################################
 # TotalModel
 #######################################
+
 class TotalModel(BaseModel):
     #######################################
     # ConfirmedModel
