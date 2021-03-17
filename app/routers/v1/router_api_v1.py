@@ -11,11 +11,15 @@ from typing import Any, Dict
 from fastapi import HTTPException
 
 from integrators.covid_api_v1_integrator import CovidAPIv1
-from utils.helper import helper_lookup_country
+from utils.helper import Helping_tools
 from . import v1
 
+# instantiating Helping_tools class
+helping_tools = Helping_tools
 
 # Reload Integrator (APIv1)
+
+
 def reload_api_v1_integrator(func):
     """ Reload a model for each quest """
     @wraps(func)
@@ -81,13 +85,15 @@ def affected_countries() -> Dict[int, str]:
 @reload_api_v1_integrator
 def country(country_name: str) -> Dict[str, Any]:
     """ Search by name or ISO (alpha2) """
-    raw_data = COVID_API_V1.get_current_status() # Get all current data
+    raw_data = COVID_API_V1.get_current_status()  # Get all current data
     try:
         if country_name.lower() not in ['us', 'uk'] and len(country_name) in [2]:
-            country_name = helper_lookup_country(country_name)
-            data = {k: v for k, v in raw_data.items() if country_name.lower() in k.lower()}
+            country_name = helping_tools.helper_lookup_country(country_name)
+            data = {k: v for k, v in raw_data.items(
+            ) if country_name.lower() in k.lower()}
         else:
-            data = {k: v for k, v in raw_data.items() if country_name.lower() == k.lower()}
+            data = {k: v for k, v in raw_data.items(
+            ) if country_name.lower() == k.lower()}
 
         # Add dt and ts
         data['dt'] = raw_data['dt']
