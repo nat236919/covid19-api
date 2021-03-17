@@ -79,28 +79,28 @@ class CovidAPIv1:
 
     def get_confirmed_cases(self) -> Dict[str, int]:
         """ Summation of all confirmed cases """
-        data = {'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']])}
+        data = {'confirmed': self.get_total().confirmed}
         data = ConfirmedModel(**self.add_dt_and_ts(data))
         return data
 
     def get_deaths(self) -> Dict[str, int]:
         """ Summation of all deaths """
-        data = {'deaths': sum([int(i) for i in self.df_deaths['deaths']])}
+        data = {'deaths': self.get_total().death}
         data = DeathsModel(**self.add_dt_and_ts(data))
         return data
 
     def get_recovered(self) -> Dict[str, int]:
         """ Summation of all recovers """
-        data = {'recovered': sum([int(i) for i in self.df_recovered['recovered']])}
+        data = {'recovered': self.get_total().recovered}
         data = RecoveredModel(**self.add_dt_and_ts(data))
         return data
 
     def get_total(self) -> Dict[str, Any]:
         """ Summation of Confirmed, Deaths, Recovered """
         data = {
-            'confirmed': self.get_confirmed_cases().confirmed,
-            'deaths': self.get_deaths().deaths,
-            'recovered': self.get_recovered().recovered
+            'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']]),
+            'deaths': sum([int(i) for i in self.df_deaths['deaths']]),
+            'recovered': sum([int(i) for i in self.df_recovered['recovered']])
             }
         data = TotalModel(**self.add_dt_and_ts(data))
         return data
