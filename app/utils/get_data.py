@@ -42,8 +42,14 @@ def get_data_daily_reports() -> pd.DataFrame:
     df = helper_df_cols_cleaning(df, concerned_columns, int)
     
     return df
+ # new class to get daily report data US 
+  Class getDataDailyReportUs:
+  def __init__(self, latest_base_url, df, concerned_columns) -> None:
+    self.latest_base_url = latest_base_url
+    self.concerned_columns = concerened_columns
+    self.df = df
 
-
+    
 # Get data from daily reports (USA)
 def get_data_daily_reports_us() -> pd.DataFrame:
     """ Get data from BASE_URL_DAILY_REPORTS """
