@@ -19,22 +19,31 @@ from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
 from utils.get_data import get_data
 
 
-# Create a model and its methods
-class CovidAPIv1:
-    """ Model and Its methods """
+class DataHelper:
     def __init__(self) -> None:
         """ Get data from helper -> the source data """
         list_of_dataframes = get_data()
         self.df_confirmed = list_of_dataframes['confirmed']
         self.df_deaths = list_of_dataframes['deaths']
         self.df_recovered = list_of_dataframes['recovered']
+        confirmed_data = {'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']])}
+        death_data = {'deaths': sum([int(i) for i in self.df_deaths['deaths']])}
+        recovered_data = {'recovered': sum([int(i) for i in self.df_recovered['recovered']])}
 
+
+
+# Create a model and its methods
+class CovidAPIv1:
+    """ Model and Its methods """
+    def __init__(self) -> None:
+        """ Get data from helper -> the source data """
+        list_of_dataframes = get_data()
         list_of_time_series = get_data(time_series=True)
         self.df_time_series_confirmed = list_of_time_series['confirmed']
         self.df_time_series_deaths = list_of_time_series['deaths']
         self.df_time_series_recovered = list_of_time_series['recovered']
 
-        self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
+        self.datetime_raw = DataHelper.self.df_confirmed['datetime'].unique().tolist()[0]
         self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y').timestamp()
 
     def add_dt_and_ts(self, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -79,20 +88,17 @@ class CovidAPIv1:
 
     def get_confirmed_cases(self) -> Dict[str, int]:
         """ Summation of all confirmed cases """
-        data = {'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']])}
-        data = ConfirmedModel(**self.add_dt_and_ts(data))
+        data = ConfirmedModel(**self.add_dt_and_ts(DataHelper.confirmed_data))
         return data
 
     def get_deaths(self) -> Dict[str, int]:
         """ Summation of all deaths """
-        data = {'deaths': sum([int(i) for i in self.df_deaths['deaths']])}
-        data = DeathsModel(**self.add_dt_and_ts(data))
+        data = DeathsModel(**self.add_dt_and_ts(DataHelper.death_data))
         return data
 
     def get_recovered(self) -> Dict[str, int]:
         """ Summation of all recovers """
-        data = {'recovered': sum([int(i) for i in self.df_recovered['recovered']])}
-        data = RecoveredModel(**self.add_dt_and_ts(data))
+        data = RecoveredModel(**self.add_dt_and_ts(DataHelper.recovered_data))
         return data
 
     def get_total(self) -> Dict[str, Any]:
