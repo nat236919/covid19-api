@@ -189,7 +189,7 @@ class CovidAPIv2Integrator:
     # GET - Timeseries
     #######################################################################################
     @wrap_data
-    def get_time_series(self, case: str) -> List[Any]:
+    def get_time_series(self, case: str) -> List[TimeseriesCaseModel]:
         """ Get time series data from a given case
             1.) global
             2.) confirmed, deaths, recovered
