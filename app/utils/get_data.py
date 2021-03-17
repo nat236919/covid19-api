@@ -27,6 +27,15 @@ def get_data_lookup_table() -> Dict[str, str]:
 
     return data
 
+# New class to get daily report data 
+  class getDataDailyReport:
+    
+    def __init__(self, latest_base_url, df, concerned_columns) -> None :
+        
+        self.latest_base_url = latest_base_url
+        self.concerned_columns = concerned_columns
+        self.df = df 
+        
 
 # Get data from daily reports
 def get_data_daily_reports() -> pd.DataFrame:
