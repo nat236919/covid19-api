@@ -9,11 +9,10 @@ from typing import List
 
 from pydantic import BaseModel
 
-
 #######################################
 # CurrentModel
 #######################################
-class CurrentModel(BaseModel, ConfirmedModel, DeathsModel, RecoveredModel, ActiveModel, CountryModel): #changes made right here
+class CurrentModel(BaseModel): #changes made right here
     location: str
     confirmed: int
     deaths: int
@@ -31,54 +30,58 @@ class CurrentUSModel(BaseModel):
     Recovered: int
     Active: int
 
-
-#######################################
-# TotalModel
-#######################################
-class TotalModel(BaseModel):
-    confirmed: int
-    deaths: int
-    recovered: int
-    active: int
-
-
 #######################################
 # ConfirmedModel
 #######################################
-class ConfirmedModel(BaseModel):
+class ConfirmedModel(CurrentModel): ### Changes made right here - ConfirmedModel now inherits confirmed value from CurrentModel
     confirmed: int
 
 
 #######################################
 # DeathsModel
 #######################################
-class DeathsModel(BaseModel):
+class DeathsModel(CurrentModel):   ### Changes made right here - DeathsModel now inherits deaths value from CurrentModel
     deaths: int
 
 
 #######################################
 # RecoveredModel
 #######################################
-class RecoveredModel(BaseModel):
+class RecoveredModel(CurrentModel):    ### Changes made right here - RecoveredModel now inherits recovered values from CurrentModel
     recovered: int
 
 
 #######################################
 # ActiveModel
 #######################################
-class ActiveModel(BaseModel):
+class ActiveModel(CurrentModel):      ### Changes made right here - ActiveModel now inherits recovered values from CurrentModel
     active: int
 
 
 #######################################
 # CountryModel
 #######################################
-class CountryModel(BaseModel):
+class CountryModel(CurrentModel):      ### Changes made right here - ActiveModel now inherits recovered values from CurrentModel
     location: str
     confirmed: int
     deaths: int
     recovered: int
     active: int
+
+
+
+
+
+#######################################
+# TotalModel
+#######################################
+class TotalModel(CurrentModel):       ### Changes made here - TotalModel can inherit values from GetCurrent and use them as part of the aggregation
+    confirmed: int
+    deaths: int
+    recovered: int
+    active: int
+
+
 
 
 #######################################
