@@ -20,30 +20,46 @@ def get_data_lookup_table() -> Dict[str, str]:
     """ Get lookup table (country references for iso2) """
     lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
     lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
-    
+
     # Create referral dictionary
     data = lookup_df.to_dict('records')
     data = {v['iso2']: v['Country_Region'] for v in data}
 
     return data
 
-
-# Get Daily Reports Data (General and US)
-class DailyReports:
-    def __init__(self) -> None: 
-        self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+# Get Daily Reports Data (US)
+class DailyReportsUS:
+    def __init__(self) -> None:
         self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
 
     # Get data from daily reports
-    def get_data_daily_reports(self, US: bool = False) -> pd.DataFrame:
-        """ Get data from BASE_URL_DAILY_REPORTS """
+    def get_data_daily_reports_us(self) -> pd.DataFrame:
+        """ Get data from BASE_URL_DAILY_REPORTS_US """
         # Extract the data
-        df = pd.read_csv(self.latest_base_US_url) if US else pd.read_csv(self.latest_base_url)
+        df = pd.read_csv(self.latest_base_US_url)
 
         # Data pre-processing
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         df = helper_df_cols_cleaning(df, concerned_columns, int)
-        
+
+        return df
+
+
+# Get Daily Reports Data (General)
+class DailyReports:
+    def __init__(self) -> None:
+        self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+
+    # Get data from daily reports
+    def get_data_daily_reports(self) -> pd.DataFrame:
+        """ Get data from BASE_URL_DAILY_REPORTS """
+        # Extract the data
+        df = pd.read_csv(self.latest_base_url)
+
+        # Data pre-processing
+        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
+        df = helper_df_cols_cleaning(df, concerned_columns, int)
+
         return df
 
 
@@ -72,7 +88,7 @@ def get_US_time_series() -> Dict[str, pd.DataFrame]:
     # Iterate through categories ('confirmed', 'deaths')
     for category in JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1]:
         url = JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES'].format(category)
-        
+
         # Extract data
         df = pd.read_csv(url)
         df = helper_df_cleaning(df)
