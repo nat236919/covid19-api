@@ -25,7 +25,7 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          TimeseriesUSInfoModel,
                                          TimeseriesUSModel, TotalModel)
 from utils.get_data import (DailyReports, get_data_lookup_table,
-                              get_data_time_series, get_US_time_series)
+                             get_t_series)
 
 
 class CovidAPIv2Integrator:
@@ -204,14 +204,14 @@ class CovidAPIv2Integrator:
             1.) global
             2.) confirmed, deaths, recovered
         """
-        self.df_time_series = get_data_time_series() # Get base data
-
+    
+        self.df_t_series = get_t_series()
         if case not in ['global']:
-            raw_data = self.df_time_series[case].T.to_dict()
-            data = self.__extract_time_series(raw_data)
+            raw_data = self.df_t_series[case].T.to_dict()
+            data = self.__extract_data_time_series(raw_data)
         else:
-            raw_data = self.df_time_series
-            data = self.__extract_time_series_global(raw_data)
+            raw_data = self.df_t_series
+            data = self.__extract_data_time_series_global(raw_data)
 
         return data
     
@@ -219,7 +219,7 @@ class CovidAPIv2Integrator:
         """ Extract time series from a given case """
 
         def __unpack_inner_time_series(time_series: Dict[str, Any]) -> TimeseriesCaseModel:
-            for data in time_series.values():
+            for data in data_time_series.values():
                 excluded_cols = ['Province/State', 'Country/Region', 'Lat', 'Long']
                 # Coordinates
                 timeseries_coordinates_model = TimeseriesCaseCoordinatesModel(
@@ -272,7 +272,8 @@ class CovidAPIv2Integrator:
         if case not in ['confirmed', 'deaths']:
             data = []
         else:
-            self.df_US_time_series = get_US_time_series() # Get base data
+           
+            self.df_US_time_series = get_t_series(USA=True) # Get base data
             raw_data = self.df_US_time_series[case].T.to_dict()
             data = self.__extract_US_time_series(raw_data)
 
