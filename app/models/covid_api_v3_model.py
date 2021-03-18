@@ -15,4 +15,4 @@ from aggregates import CountryTotal
 # CountryTotalModel
 #######################################
 class CountryTotalModel
-    countryTotal: CountryTotalModel
+    countryTotal: CountryTotal
