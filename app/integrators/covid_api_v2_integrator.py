@@ -35,7 +35,7 @@ class CovidAPIv2Integrator:
             "ts": int = "{timestamp}
         }
     """
-    def __init__(self, daily_reports: DailyReports, timeSeries: Timeseries) -> None:
+    def __init__(self, daily_reports: DailyReports) -> None:
         """ Initiate instances """
         self.lookup_table = get_data_lookup_table()
         self.scheme = {
@@ -44,7 +44,6 @@ class CovidAPIv2Integrator:
             'ts': None
         }
         self.daily_reports=daily_reports
-        self.timeSeries = timeSeries
     
     def wrap_data(func) -> ResponseModel:
         """ Wrap a result in a schemed data """
@@ -204,7 +203,7 @@ class CovidAPIv2Integrator:
             1.) global
             2.) confirmed, deaths, recovered
         """
-        self.df_time_series = self.timeSeries.get_data_time_series() # Get base data
+        self.df_time_series = Timeseries.get_data_time_series() # Get base data
 
         if case not in ['global']:
             raw_data = self.df_time_series[case].T.to_dict()
@@ -272,7 +271,7 @@ class CovidAPIv2Integrator:
         if case not in ['confirmed', 'deaths']:
             data = []
         else:
-            self.df_US_time_series = self.timeSeries.get_data_time_series(US=True) # Get base data
+            self.df_US_time_series = Timeseries.get_data_time_series(US=True) # Get base data
             raw_data = self.df_US_time_series[case].T.to_dict()
             data = self.__extract_US_time_series(raw_data)
 
