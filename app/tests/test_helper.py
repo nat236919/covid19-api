@@ -6,7 +6,8 @@ DATE: 02-Sep-2020
 """
 # Import libraries
 import pandas as pd
-from ..utils import helper, file_paths
+from ..utils import helper
+from ..utils.file_paths import JHUCSSEDatasetURL
 
 
 # Test DataFrame
@@ -34,13 +35,3 @@ def test_helper_df_cols_cleaning() -> None:
     assert isinstance(res_df, pd.DataFrame) is True
     assert res_col_1 == [i for i in DF['col_1'].values]
     assert res_col_2 != [i for i in DF['col_2'].values]
-
-
-# Test get latest data
-def test_helper_get_latest_data_url() -> None:
-    assert isinstance(helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']), str)
-    assert isinstance(helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS']), str)
-    assert isinstance(helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US']), str)
-    ## Temporily disable timeseries testing
-    # assert isinstance(helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES']), str)
-    # assert isinstance(helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES']), str)

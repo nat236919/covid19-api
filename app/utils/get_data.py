@@ -10,15 +10,14 @@ from typing import Dict
 
 import pandas as pd
 
-from .file_paths import JHU_CSSE_FILE_PATHS
-from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
-                     helper_get_latest_data_url)
+from .file_paths import JHUCSSEDatasetURL
+from .helper import (helper_df_cleaning, helper_df_cols_cleaning,)
 
 
 # Get Lookup table
 def get_data_lookup_table() -> Dict[str, str]:
     """ Get lookup table (country references for iso2) """
-    lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
+    lookup_table_url = JHUCSSEDatasetURL.get_lookup_table_url()
     lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
     
     # Create referral dictionary
@@ -31,8 +30,8 @@ def get_data_lookup_table() -> Dict[str, str]:
 # Get Daily Reports Data (General and US)
 class DailyReports:
     def __init__(self) -> None: 
-        self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
-        self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
+        self.latest_base_url = JHUCSSEDatasetURL.get_daily_report_url()
+        self.latest_base_US_url = JHUCSSEDatasetURL.get_daily_report_us_url()
 
     # Get data from daily reports
     def get_data_daily_reports(self, US: bool = False) -> pd.DataFrame:
@@ -53,9 +52,8 @@ def get_data_time_series() -> Dict[str, pd.DataFrame]:
     dataframes = {}
 
     # Iterate through all files
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
-
+    for category in JHUCSSEDatasetURL.JHU_CSSE_CATEGORIES:
+        url = JHUCSSEDatasetURL.get_time_series_url(category)
         # Extract data
         df = pd.read_csv(url)
         df = helper_df_cleaning(df)
@@ -70,8 +68,8 @@ def get_US_time_series() -> Dict[str, pd.DataFrame]:
     dataframes = {}
 
     # Iterate through categories ('confirmed', 'deaths')
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1]:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES'].format(category)
+    for category in JHUCSSEDatasetURL.JHU_CSSE_CATEGORIES[:-1]:
+        url = JHUCSSEDatasetURL.get_time_series_us_url(category)
         
         # Extract data
         df = pd.read_csv(url)
@@ -89,8 +87,8 @@ def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
     dataframes = {}
 
     # Iterate through all files
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
+    for category in JHUCSSEDatasetURL.JHU_CSSE_CATEGORIES:
+        url = JHUCSSEDatasetURL.get_time_series_url(category)
 
         # Extract data
         df = pd.read_csv(url)
