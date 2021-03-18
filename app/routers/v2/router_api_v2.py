@@ -75,93 +75,40 @@ async def get_current_us(request: Request, background_tasks: BackgroundTasks) ->
     return data
 
 
-@v2.get('/total')
-async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """
-    Get the total numbers of all cases
-
-    - **confirmed**: confirmed cases
-    - **deaths**:  death cases
-    - **recovered**: recovered cases
-    - **active**: active cases
-    """
+@v2.get('/worldwide')
+@v2.get('/worldwide/')
+async def get_worldwide_total(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_total()
-
+            
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
     return data
 
-
-@v2.get('/confirmed')
-async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
-    """
-    Get the total numbers of confirmed cases
-
-    - **confirmed**: confirmed cases
-    """
+@v2.get('/worldwide/{stat_type}')
+async def get_worldwide(stat_type: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_confirmed()
+        stat_type = stat_type.lower()
 
+        if stat_type == "":
+            data = COVID_API_V2.get_total()
+        elif stat_type == "confirmed":
+            data = COVID_API_V2.get_confirmed()
+        elif stat_type == "deaths":
+            data = COVID_API_V2.get_deaths()
+        elif stat_type == "recovered":
+            data = COVID_API_V2.get_recovered()
+        elif stat_type == "active":
+            data = COVID_API_V2.get_active()
+            
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
     return data
-
-
-@v2.get('/deaths')
-async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
-    """
-    Get the total numbers of death cases
-
-    - **deaths**:  death cases
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_deaths()
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
-
-    return data
-
-
-@v2.get('/recovered')
-async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
-    """
-    Get the total numbers of recovered cases
-
-    - **recovered**: recovered case
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_recovered()
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
-
-    return data
-
-
-@v2.get('/active')
-async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
-    """
-    Get the total numbers of active cases
-
-    - **active**: active case
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_active()
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
-
-    return data
-
+    
 
 @v2.get('/country/{country_name}')
 async def get_country(country_name: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
