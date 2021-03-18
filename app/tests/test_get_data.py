@@ -6,10 +6,13 @@ DATE: 11-April-2020
 """
 # Import libraries
 import pandas as pd
-from ..utils.get_data import get_data, DataTimeSeries, get_data_lookup_table, DailyReports
+
+from ..utils.get_data import (DailyReports, DataTimeSeries, get_data,
+                              get_data_lookup_table)
 
 daily_reports = DailyReports()
 time_series = DataTimeSeries()
+
 
 # Test - Get Lookup table
 def test_get_data_lookup_table() -> None:
