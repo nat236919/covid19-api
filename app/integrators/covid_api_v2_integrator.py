@@ -25,7 +25,7 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          TimeseriesUSInfoModel,
                                          TimeseriesUSModel, TotalModel)
 from utils.get_data import (DailyReports, DailyReportsUS, get_data_lookup_table,
-                              get_data_time_series, get_US_time_series)
+                              DataTimeSeries)
 
 
 class CovidAPIv2Integrator:
@@ -36,7 +36,7 @@ class CovidAPIv2Integrator:
             "ts": int = "{timestamp}
         }
     """
-    def __init__(self, daily_reports: DailyReports) -> None:
+    def __init__(self, daily_reports: DailyReports, daily_reports_us: DailyReportsUS, data_time_series: DataTimeSeries) -> None:
         """ Initiate instances """
         self.lookup_table = get_data_lookup_table()
         self.scheme = {
@@ -45,6 +45,8 @@ class CovidAPIv2Integrator:
             'ts': None
         }
         self.daily_reports=daily_reports
+        self.daily_reports_us=daily_reports_us
+        self.data_time_series=data_time_series
 
     def wrap_data(func) -> ResponseModel:
         """ Wrap a result in a schemed data """
@@ -89,7 +91,7 @@ class CovidAPIv2Integrator:
     @wrap_data
     def get_current_US(self) -> List[CurrentUSModel]:
         """ Get current data for USA's situation """
-        self.df_US = self.daily_reports.get_data_daily_reports_us(US=True) # Get base data
+        self.df_US = self.daily_reports_us.get_data_daily_reports_us() # Get base data
 
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         df = self.df_US.groupby(['Province_State'])[concerned_columns].sum().sort_values(by='Confirmed', ascending=False)
@@ -139,7 +141,7 @@ class CovidAPIv2Integrator:
     def get_confirmed(self) -> ConfirmedModel:
         """ Summation of all confirmed cases """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        self.df_US = self.daily_reports.get_data_daily_reports_us()
+        self.df_US = self.daily_reports_us.get_data_daily_reports_us()
         data = ConfirmedModel(
             confirmed=int(self.df['Confirmed'].sum() + int(self.df_US['Confirmed'].sum()))
         )
@@ -152,7 +154,7 @@ class CovidAPIv2Integrator:
     def get_deaths(self) -> DeathsModel:
         """ Summation of all deaths """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        self.df_US = self.daily_reports.get_data_daily_reports_us()
+        self.df_US = self.daily_reports_us.get_data_daily_reports_us()
         data = DeathsModel(
             deaths=int(self.df['Deaths'].sum()) + int(self.df_US['Deaths'].sum())
         )
@@ -165,7 +167,7 @@ class CovidAPIv2Integrator:
     def get_recovered(self) -> RecoveredModel:
         """ Summation of all recovers """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        self.df_US = self.daily_reports.get_data_daily_reports_us()
+        self.df_US = self.daily_reports_us.get_data_daily_reports_us()
         data = RecoveredModel(
             recovered=int(self.df['Recovered'].sum()) + int(self.df_US['Recovered'].sum())
         )
@@ -178,7 +180,7 @@ class CovidAPIv2Integrator:
     def get_active(self) -> ActiveModel:
         """ Summation of all actives """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        self.df_US = self.daily_reports.get_data_daily_reports_us()
+        self.df_US = self.daily_reports_us.get_data_daily_reports_us()
         data = ActiveModel(
             active=int(self.df['Active'].sum()) + int(self.df_US['Active'].sum())
         )
@@ -191,7 +193,7 @@ class CovidAPIv2Integrator:
     def get_total(self) -> TotalModel:
         """ Summation of Confirmed, Deaths, Recovered, Active """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        self.df_US = self.daily_reports.get_data_daily_reports_us()
+        self.df_US = self.daily_reports_us.get_data_daily_reports_us()
         data = TotalModel(
             confirmed=int(self.df['Confirmed'].sum()) + int(self.df_US['Confirmed'].sum()),
             deaths=int(self.df['Deaths'].sum()) + int(self.df_US['Deaths'].sum()),
@@ -209,7 +211,7 @@ class CovidAPIv2Integrator:
             1.) global
             2.) confirmed, deaths, recovered
         """
-        self.df_time_series = get_data_time_series() # Get base data
+        self.df_time_series = data_time_series.get_time_series()# Get base data
 
         if case not in ['global']:
             raw_data = self.df_time_series[case].T.to_dict()
@@ -277,7 +279,7 @@ class CovidAPIv2Integrator:
         if case not in ['confirmed', 'deaths']:
             data = []
         else:
-            self.df_US_time_series = get_US_time_series() # Get base data
+            self.df_US_time_series = data_time_series.get_US_time_series() # Get base data
             raw_data = self.df_US_time_series[case].T.to_dict()
             data = self.__extract_US_time_series(raw_data)
 

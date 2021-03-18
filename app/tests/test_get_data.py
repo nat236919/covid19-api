@@ -21,26 +21,26 @@ def test_get_data_lookup_table() -> None:
 def test_get_data_daily_reports() -> None:
     result = daily_reports.get_data_daily_reports()
     assert len(result) > 0
-    assert isinstance(result, pd.DataFrame) is True 
+    assert isinstance(result, pd.DataFrame) is True
 
 
 # Test - Get data from daily reports (US)
 def test_get_data_daily_reports_US() -> None:
-    result = daily_reports.get_data_daily_reports(US=True)
+    result = daily_reports_us.get_data_daily_reports_us()
     assert len(result) > 0
-    assert isinstance(result, pd.DataFrame) is True 
+    assert isinstance(result, pd.DataFrame) is True
 
 
 # Test - Get data from time series
 def test_get_data_time_series() -> None:
-    result = get_data_time_series()
+    result = DataTimeSeries.get_time_series()
     assert len(result) > 0
     assert isinstance(result, dict) is True
 
 
 # Test - Get data from time series (US)
 def test_get_US_time_series() -> None:
-    result = get_US_time_series()
+    result = DataTimeSeries.get_US_time_series()
     assert len(result) > 0
     assert isinstance(result, dict) is True
 
