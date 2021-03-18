@@ -9,13 +9,12 @@
       "login": "nat236919",
       "name": "Nuttaphat Arunoprayoch",
       "avatar_url": "https://avatars0.githubusercontent.com/u/9074112?v=4",
-      "profile": "http://nuttaphat.azurewebsites.net",
+      "profile": "https://nuttaphat.com",
       "contributions": [
         "maintenance",
         "code",
         "bug",
         "doc",
-        "ideas",
         "review"
       ]
     },
@@ -61,7 +60,17 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/43126781?v=4",
       "profile": "https://github.com/owen-duncan-snobel",
       "contributions": [
+        "code",
         "doc"
+      ]
+    },
+    {
+      "login": "mSitkovets",
+      "name": "Maria Sitkovets",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28634142?v=4",
+      "profile": "https://www.linkedin.com/in/maria-sitkovets-03994b159/",
+      "contributions": [
+        "code"
       ]
     }
   ],
