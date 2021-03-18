@@ -7,17 +7,17 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/nat236919/Covid2019API/issues" target="_blank">
-      <img src="https://img.shields.io/github/issues/nat236919/Covid2019API" alt="issues">
+  <a href="https://github.com/nat236919/covid19-api/issues" target="_blank">
+      <img src="https://img.shields.io/github/issues/nat236919/covid19-api" alt="issues">
   </a>
-  <a href="https://github.com/nat236919/Covid2019API/forks" target="_blank">
-      <img src="https://img.shields.io/github/forks/nat236919/Covid2019API" alt="forks">
+  <a href="https://github.com/nat236919/covid19-api/network/members" target="_blank">
+      <img src="https://img.shields.io/github/forks/nat236919/covid19-api" alt="forks">
   </a>
-  <a href="https://github.com/nat236919/Covid2019API/stars" target="_blank">
-      <img src="https://img.shields.io/github/stars/nat236919/Covid2019API" alt="starts">
+  <a href="https://github.com/nat236919/covid19-api/stargazers" target="_blank">
+      <img src="https://img.shields.io/github/stars/nat236919/covid19-api" alt="starts">
   </a>
-  <a href="https://github.com/nat236919/Covid2019API/blob/master/LICENCE" target="_blank">
-      <img src="https://img.shields.io/github/license/nat236919/Covid2019API" alt="licence">
+  <a href="https://github.com/nat236919/covid19-api/blob/master/LICENCE" target="_blank">
+      <img src="https://img.shields.io/github/license/nat236919/covid19-api" alt="licence">
   </a>
   <a href="https://travis-ci.org/github/nat236919/covid19-api" target="_blank">
       <img src="https://travis-ci.org/nat236919/covid19-api.svg?branch=development" alt="build">
@@ -30,7 +30,7 @@ This API provides the information regarding '2019 Novel Coronavirus (covid-19)'.
 
 ## Example
 
-* https://covid19.nuttaphat.com/
+* https://covid19api.azurewebsites.net/
 * https://covid2019-api.herokuapp.com/
 
 ## Applications
@@ -41,9 +41,9 @@ This API provides the information regarding '2019 Novel Coronavirus (covid-19)'.
 * [BAILAM (Data and API Integration)](https://www.bailam.com/covid19)
 * [Coronavirus Tech Handbook (Data Tools)](https://coronavirustechhandbook.com/data-tools)
 
-### References
+### Reference
 
-https://github.com/CSSEGISandData/COVID-19
+* https://github.com/CSSEGISandData/COVID-19
 
 ## Branches
 
