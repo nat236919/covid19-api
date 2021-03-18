@@ -16,7 +16,7 @@ from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
                                          TimeseriesCoordinatesModel,
                                          TimeseriesDataModel, TimeseriesModel,
                                          TotalModel)
-from utils.get_data import get_data
+from utils.get_data_v1 import get_data
 
 
 # Create a model and its methods

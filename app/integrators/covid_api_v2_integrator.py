@@ -24,7 +24,7 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          TimeseriesUSDataModel,
                                          TimeseriesUSInfoModel,
                                          TimeseriesUSModel, TotalModel)
-from utils.get_data import (DailyReports, DataTimeSeries,
+from utils.get_data_v2 import (DailyReports, DataTimeSeries,
                               get_data_lookup_table)
 
 

@@ -14,7 +14,7 @@ from integrators.covid_api_v2_integrator import CovidAPIv2Integrator
 from starlette.requests import Request
 
 from . import v2
-from utils.get_data import DailyReports, DataTimeSeries
+from utils.get_data_v2 import DailyReports, DataTimeSeries
 
 # Initiate Integrator
 DAILY_REPORTS = DailyReports()
