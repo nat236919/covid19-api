@@ -1,6 +1,7 @@
 """
 FILE: CountryTotal.py
-DESCRIPTION: Encapsulation of all Time related data for a query
+DESCRIPTION: A model component containing all confirmed cases, deaths, and recoveries
+             for a specified country.
 AUTHOR: Vivian Dcruze
 DATE: 15-March-2021
 """
