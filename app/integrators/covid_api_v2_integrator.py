@@ -29,6 +29,9 @@ from utils.get_data import (get_data_daily_reports,
                               get_data_time_series, get_US_time_series)
 
 from app.models.covid_api_v2_model import AggregatedConcernedColumns
+from app.utils.file_paths import JHU_CSSE_FILE_PATHS
+from app.utils.get_data import DailyReports
+from app.utils.helper import helper_get_latest_data_url
 
 
 class CovidAPIv2Integrator:
@@ -42,11 +45,15 @@ class CovidAPIv2Integrator:
     def __init__(self) -> None:
         """ Initiate DataFrames """
         self.lookup_table = get_data_lookup_table()
+        self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+        self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
         self.scheme = {
             'data': None,
             'dt': None,
             'ts': None
         }
+        self.daily_reports = DailyReports(self.latest_base_url)
+        self.daily_US_reports = DailyReports(self.latest_base_US_url)
 
     def wrap_data(func) -> ResponseModel:
         """ Wrap a result in a schemed data """
@@ -73,7 +80,7 @@ class CovidAPIv2Integrator:
     def get_current(self) -> List[CurrentModel]:
         """ Current data from all locations (Lastest date) """
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        self.df = get_data_daily_reports() # Get base data
+        self.df = self.daily_reports.get_data_daily_reports() # Get base data
         self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
         self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
 
@@ -91,7 +98,7 @@ class CovidAPIv2Integrator:
     @wrap_data
     def get_current_US(self) -> List[CurrentUSModel]:
         """ Get current data for USA's situation """
-        self.df_US = get_data_daily_reports_us() # Get base data
+        self.df_US = self.daily_US_reports.get_data_daily_reports() # Get base data
 
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         df = self.df_US.groupby(['Province_State'])[concerned_columns].sum().sort_values(by='Confirmed', ascending=False)
@@ -110,7 +117,7 @@ class CovidAPIv2Integrator:
     def get_country(self, country_name: str) -> CountryModel:
         """ Get a country data from its name or ISO 2 """
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        self.df = get_data_daily_reports() # Get base data
+        self.df = self.daily_reports.get_data_daily_reports() # Get base data
         self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
         self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
 
