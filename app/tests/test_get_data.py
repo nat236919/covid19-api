@@ -6,6 +6,7 @@ DATE: 11-April-2020
 """
 # Import libraries
 import pandas as pd
+
 from ..utils.get_data import DailyReports, get_data_lookup_table, Timeseries, get_data
 
 daily_reports = DailyReports()

@@ -46,7 +46,6 @@ class DailyReports:
         
         return df
 
-
 # Creating Time Series Class
 class Timeseries:
     def __init__(self) -> None:
