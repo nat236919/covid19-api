@@ -37,6 +37,13 @@ class CovidAPIv1:
         self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
         self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y').timestamp()
 
+   
+
+    def Total_Sum(list):
+        """ Summation of all cases are performed here"""
+        data = sum([int(i) for i in list])
+        return data
+
     def add_dt_and_ts(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """ Add datetime and timestamp to Dict data """
         data['dt'] = self.datetime_raw
@@ -77,22 +84,20 @@ class CovidAPIv1:
 
         return current_data
 
+
     def get_confirmed_cases(self) -> Dict[str, int]:
-        """ Summation of all confirmed cases """
-        data = {'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']])}
-        data = ConfirmedModel(**self.add_dt_and_ts(data))
+        #data = {'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']])}
+        data = ConfirmedModel(**self.add_dt_and_ts({'confirmed': CovidAPIv1.Total_Sum(self.df_confirmed['confirmed'])}))
         return data
 
     def get_deaths(self) -> Dict[str, int]:
-        """ Summation of all deaths """
-        data = {'deaths': sum([int(i) for i in self.df_deaths['deaths']])}
-        data = DeathsModel(**self.add_dt_and_ts(data))
+        #data = {'deaths': sum([int(i) for i in self.df_deaths['deaths']])}
+        data = DeathsModel(**self.add_dt_and_ts({'deaths': CovidAPIv1.Total_Sum(self.df_deaths['deaths'])}))
         return data
 
     def get_recovered(self) -> Dict[str, int]:
-        """ Summation of all recovers """
-        data = {'recovered': sum([int(i) for i in self.df_recovered['recovered']])}
-        data = RecoveredModel(**self.add_dt_and_ts(data))
+        #data = {'recovered': sum([int(i) for i in self.df_recovered['recovered']])}
+        data = RecoveredModel(**self.add_dt_and_ts({'recovered': CovidAPIv1.Total_Sum(self.df_recovered['recovered'])}))
         return data
 
     def get_total(self) -> Dict[str, Any]:

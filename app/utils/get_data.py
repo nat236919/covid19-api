@@ -47,7 +47,7 @@ class DailyReports:
         return df
 
 
-#getting data from time series
+#aggregation US and normal time series
 
 def get_t_series(self, USA: bool) -> Dict[str, pd.DataFrame]:
 
