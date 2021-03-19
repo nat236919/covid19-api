@@ -42,7 +42,7 @@ def test_get_data_time_series() -> None:
 
 # Test - Get data from time series (US)
 def test_get_US_time_series() -> None:
-    result = timeSeries.get_data_time_series(US = True)
+    result = timeSeries.get_data_time_series(US=True)
     assert len(result) > 0
     assert isinstance(result, dict) is True
 
