@@ -205,16 +205,41 @@ class CovidAPIv2Integrator:
             2.) confirmed, deaths, recovered
         """
         self.df_time_series = get_data_time_series() # Get base data
-
+        timeseries_helper = _CovidAPIv2IntegratorHelper()  # Get Helper Functions
         if case not in ['global']:
             raw_data = self.df_time_series[case].T.to_dict()
             data = self.__extract_time_series(raw_data)
         else:
             raw_data = self.df_time_series
             data = self.__extract_time_series_global(raw_data)
+            data = timeseries_helper.__extract_time_series_global(raw_data)
 
         return data
-    
+
+        #######################################################################################
+        # GET - Timeseries US
+        #######################################################################################
+    @wrap_data
+    def get_US_time_series(self, case: str) -> List[TimeseriesUSModel]:
+        """ Get USA time series """
+        if case not in ['confirmed', 'deaths']:
+            data = []
+        else:
+            timeseries_helper = _CovidAPIv2IntegratorHelper()  # Get Helper Functions
+            self.df_US_time_series = get_US_time_series()  # Get base data
+            raw_data = self.df_US_time_series[case].T.to_dict()
+            data = timeseries_helper.__extract_US_time_series(raw_data)
+
+        return data
+
+
+class _CovidAPIv2IntegratorHelper:
+    """ Covid V2 API Helper Methods
+    """
+
+    def __init__(self) -> None:
+        """ Initiate instances """
+
     def __extract_time_series(self, time_series: Dict) -> List[TimeseriesCaseModel]:
         """ Extract time series from a given case """
 
@@ -260,21 +285,6 @@ class CovidAPIv2Integrator:
         # Combine DataFrames
         global_dict = pd.concat(global_df_list, axis=1, sort=False).T.to_dict()
         data = [{k: TimeseriesGlobalModel(**v)} for k, v in global_dict.items()]
-
-        return data
-    
-    #######################################################################################
-    # GET - Timeseries US
-    #######################################################################################
-    @wrap_data
-    def get_US_time_series(self, case: str) -> List[TimeseriesUSModel]:
-        """ Get USA time series """
-        if case not in ['confirmed', 'deaths']:
-            data = []
-        else:
-            self.df_US_time_series = get_US_time_series() # Get base data
-            raw_data = self.df_US_time_series[case].T.to_dict()
-            data = self.__extract_US_time_series(raw_data)
 
         return data
 
