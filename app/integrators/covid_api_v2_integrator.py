@@ -12,20 +12,18 @@ from typing import Any, Dict, List
 import pandas as pd
 
 from models.base_model import ResponseModel
-from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
-                                         CountryModel, CurrentModel,
-                                         CurrentUSModel, DeathsModel,
-                                         RecoveredModel,
-                                         TimeseriesCaseCoordinatesModel,
+from models.covid_api_v2_model import (TimeseriesCaseCoordinatesModel,
                                          TimeseriesCaseDataModel,
                                          TimeseriesCaseModel,
                                          TimeseriesGlobalModel,
                                          TimeseriesUSCoordinatesModel,
                                          TimeseriesUSDataModel,
                                          TimeseriesUSInfoModel,
-                                         TimeseriesUSModel, TotalModel)
+                                         TimeseriesUSModel)
 from utils.get_data import (DailyReports, DataTimeSeries,
                               get_data_lookup_table)
+
+from models.covid_api_v2_model_aggegator import CurrentModelRoot
 
 
 class CovidAPIv2Integrator:
@@ -48,6 +46,8 @@ class CovidAPIv2Integrator:
         self.daily_reports = daily_reports
         self.time_series = time_series
 
+        self.current_model_root = CurrentModelRoot(daily_reports, time_series)
+
     def wrap_data(func) -> ResponseModel:
         """ Wrap a result in a schemed data """
         @wraps(func)
@@ -69,133 +69,57 @@ class CovidAPIv2Integrator:
     #######################################################################################
     # GET - Current
     #######################################################################################
-    @wrap_data
-    def get_current(self) -> List[CurrentModel]:
+    def get_current(self) -> dict:
         """ Current data from all locations (Lastest date) """
-        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
-        self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
-
-        df_grp_by_country = self.df_grp_by_country.sort_values(by='Confirmed', ascending=False)
-        df_grp_by_country = df_grp_by_country.reset_index()
-        df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
-
-        data = [CurrentModel(**v) for v in df_grp_by_country.to_dict('index').values()]
-
-        return data
+        return self.current_model_root.get_all_countries()
     
     #######################################################################################
     # GET - Current US
     #######################################################################################
-    @wrap_data
-    def get_current_US(self) -> List[CurrentUSModel]:
+    def get_current_US(self) -> dict:
         """ Get current data for USA's situation """
-        self.df_US = self.daily_reports.get_data_daily_reports(US=True) # Get base data
-
-        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        df = self.df_US.groupby(['Province_State'])[concerned_columns].sum().sort_values(by='Confirmed', ascending=False)
-        df = df[concerned_columns].astype(int)
-        df = df.reset_index()
-        df.columns = ['Province_State'] + concerned_columns
-
-        data = [CurrentUSModel(**v) for v in df.to_dict('index').values()]
-
-        return data
+        return self.current_model_root.get_us()
     
     #######################################################################################
     # GET - Country
     #######################################################################################
-    @wrap_data
-    def get_country(self, country_name: str) -> CountryModel:
+    def get_country(self, country_name: str) -> dict:
         """ Get a country data from its name or ISO 2 """
-        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
-        self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
-
-        df_grp_by_country = self.df_grp_by_country.sort_values(by='Confirmed', ascending=False)
-        df_grp_by_country = df_grp_by_country.reset_index()
-        df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
-
-        all_country_data = [CountryModel(**v) for v in df_grp_by_country.to_dict('index').values()]
-
-
-        # Check input
-        if not isinstance(country_name, str) or not country_name.isalpha():
-            return {}
-
-        # Search for a given country
-        country_name = country_name.lower()
-        country_name_from_code = self.lookup_table.get(country_name.upper(), '').lower()
-
-        data = [country_data for country_data in all_country_data if country_data.location.lower() in [country_name, country_name_from_code]]
-        data = data[0] if data else {}
-
-        return data
+        return self.current_model_root.get_country(country_name)
     
     #######################################################################################
     # GET - Confirm
     #######################################################################################
-    @wrap_data
-    def get_confirmed(self) -> ConfirmedModel:
+    def get_confirmed(self) -> dict:
         """ Summation of all confirmed cases """
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = ConfirmedModel(
-            confirmed=int(self.df['Confirmed'].sum())
-        )
-        return data
+        return self.current_model_root.get_confirmed()
 
     #######################################################################################
     # GET - Deaths
     #######################################################################################
-    @wrap_data
-    def get_deaths(self) -> DeathsModel:
-        """ Summation of all deaths """
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = DeathsModel(
-            deaths=int(self.df['Deaths'].sum())
-        )
-        return data
+    def get_deaths(self) -> dict:
+        return self.current_model_root.get_deaths()
     
     #######################################################################################
     # GET - Recovered
     #######################################################################################
-    @wrap_data
-    def get_recovered(self) -> RecoveredModel:
+    def get_recovered(self) -> dict:
         """ Summation of all recovers """
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = RecoveredModel(
-            recovered=int(self.df['Recovered'].sum())
-        )
-        return data
+        return self.current_model_root.get_recovered()
     
     #######################################################################################
     # GET - Active
     #######################################################################################
-    @wrap_data
-    def get_active(self) -> ActiveModel:
+    def get_active(self) -> dict:
         """ Summation of all actives """
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = ActiveModel(
-            active=int(self.df['Active'].sum())
-        )
-        return data
+        return self.current_model_root.get_active()
     
     #######################################################################################
     # GET - Total
     #######################################################################################
-    @wrap_data
-    def get_total(self) -> TotalModel:
+    def get_total(self) -> dict:
         """ Summation of Confirmed, Deaths, Recovered, Active """
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = TotalModel(
-            confirmed=int(self.df['Confirmed'].sum()),
-            deaths=int(self.df['Deaths'].sum()),
-            recovered=int(self.df['Recovered'].sum()),
-            active=int(self.df['Active'].sum())
-        )
-        return data
+        return self.current_model_root.get_total()
     
     #######################################################################################
     # GET - Timeseries

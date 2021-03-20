@@ -25,55 +25,16 @@ class CurrentModel(BaseModel):
 # CurrentUSModel
 #######################################
 class CurrentUSModel(BaseModel):
-    Province_State: str
-    Confirmed: int
-    Deaths: int
-    Recovered: int
-    Active: int
-
-
-#######################################
-# TotalModel
-#######################################
-class TotalModel(BaseModel):
+    province_state: str
     confirmed: int
     deaths: int
     recovered: int
     active: int
-
-
-#######################################
-# ConfirmedModel
-#######################################
-class ConfirmedModel(BaseModel):
-    confirmed: int
-
-
-#######################################
-# DeathsModel
-#######################################
-class DeathsModel(BaseModel):
-    deaths: int
-
-
-#######################################
-# RecoveredModel
-#######################################
-class RecoveredModel(BaseModel):
-    recovered: int
-
-
-#######################################
-# ActiveModel
-#######################################
-class ActiveModel(BaseModel):
-    active: int
-
 
 #######################################
 # CountryModel
 #######################################
-class CountryModel(BaseModel):
+class CurrentCountryModel(BaseModel):
     location: str
     confirmed: int
     deaths: int
