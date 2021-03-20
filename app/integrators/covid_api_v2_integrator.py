@@ -205,7 +205,9 @@ class CovidAPIv2Integrator:
             2.) confirmed, deaths, recovered
         """
         self.df_time_series = get_data_time_series() # Get base data
+        # Change Made over here for Second Pull Request
         timeseries_helper = _CovidAPIv2IntegratorHelper()  # Get Helper Functions
+        # Till here
         if case not in ['global']:
             raw_data = self.df_time_series[case].T.to_dict()
             data = self.__extract_time_series(raw_data)
@@ -215,7 +217,7 @@ class CovidAPIv2Integrator:
             data = timeseries_helper.__extract_time_series_global(raw_data)
 
         return data
-
+        # Change Made over here for Second Pull Request
         #######################################################################################
         # GET - Timeseries US
         #######################################################################################
@@ -239,7 +241,7 @@ class _CovidAPIv2IntegratorHelper:
 
     def __init__(self) -> None:
         """ Initiate instances """
-
+# Till here
     def __extract_time_series(self, time_series: Dict) -> List[TimeseriesCaseModel]:
         """ Extract time series from a given case """
 
@@ -263,6 +265,8 @@ class _CovidAPIv2IntegratorHelper:
                     TimeSeries=timeseries_data_model_list
                 )
                 yield timeseries_case_model
+
+# One function deleted Over here
 
         # Extract the time series data
         time_series_data = []
