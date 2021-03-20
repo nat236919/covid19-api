@@ -63,6 +63,28 @@ class CovidAPIv2Integrator:
         return wrapper
     
     #######################################################################################
+    # GET - Country
+    #######################################################################################
+    @wrap_data
+    def get_country(self, country_name: str) -> Dict[str, Any]:
+        """ Get a country data from its name or ISO 2 """
+        all_country_data = self.get_current().data
+
+        # Check input
+        if not isinstance(country_name, str) or not country_name.isalpha():
+            return {}
+
+        # Search for a given country
+        country_name = country_name.lower()
+        country_name_from_code = self.lookup_table.get(country_name.upper(), '').lower()
+
+        data = [country_data for country_data in all_country_data if country_data.location.lower() in [country_name, country_name_from_code]]
+        data = data[0] if data else {}
+
+        return data
+    
+class CovidAPIv2Integrator_current:
+    #######################################################################################
     # GET - Current
     #######################################################################################
     @wrap_data
@@ -99,27 +121,7 @@ class CovidAPIv2Integrator:
 
         return data
     
-    #######################################################################################
-    # GET - Country
-    #######################################################################################
-    @wrap_data
-    def get_country(self, country_name: str) -> Dict[str, Any]:
-        """ Get a country data from its name or ISO 2 """
-        all_country_data = self.get_current().data
-
-        # Check input
-        if not isinstance(country_name, str) or not country_name.isalpha():
-            return {}
-
-        # Search for a given country
-        country_name = country_name.lower()
-        country_name_from_code = self.lookup_table.get(country_name.upper(), '').lower()
-
-        data = [country_data for country_data in all_country_data if country_data.location.lower() in [country_name, country_name_from_code]]
-        data = data[0] if data else {}
-
-        return data
-    
+class CovidAPIv2Integrator_Status:    
     #######################################################################################
     # GET - Confirm
     #######################################################################################
@@ -182,7 +184,8 @@ class CovidAPIv2Integrator:
             active=int(self.df['Active'].sum())
         )
         return data
-    
+
+class CovidAPIv2Integrator_timeseries:
     #######################################################################################
     # GET - Timeseries
     #######################################################################################
