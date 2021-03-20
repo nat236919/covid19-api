@@ -5,7 +5,7 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 01-March-2021
 """
 # Import libraries
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -30,6 +30,7 @@ class CurrentUSModel(BaseModel):
     deaths: int
     recovered: int
     active: int
+
 
 #######################################
 # CountryModel
@@ -64,16 +65,6 @@ class TimeseriesCaseDataModel(BaseModel):
     value: int
 
 
-class TimeseriesCaseModel(BaseModel):
-    Province_State: str
-    Country_Region: str
-    Coordinates: TimeseriesCaseCoordinatesModel
-    TimeSeries: List[TimeseriesCaseDataModel]
-
-
-#######################################
-# TimeseriesUSModel
-#######################################
 class TimeseriesUSInfoModel(BaseModel):
     UID: str
     iso2: str
@@ -83,19 +74,9 @@ class TimeseriesUSInfoModel(BaseModel):
     Admin2: str
 
 
-class TimeseriesUSCoordinatesModel(BaseModel):
-    Lat: float
-    Long: float
-
-
-class TimeseriesUSDataModel(BaseModel):
-    date: str
-    value: int
-
-
-class TimeseriesUSModel(BaseModel):
+class TimeseriesCaseModel(BaseModel):
     Province_State: str
     Country_Region: str
-    Info: TimeseriesUSInfoModel
-    Coordinates: TimeseriesUSCoordinatesModel
-    TimeSeries: List[TimeseriesUSDataModel]
+    Coordinates: TimeseriesCaseCoordinatesModel
+    Info: Optional[TimeseriesUSInfoModel]
+    TimeSeries: List[TimeseriesCaseDataModel]

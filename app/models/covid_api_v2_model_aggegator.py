@@ -1,14 +1,16 @@
 
-
-
 #######################################
 # CurrentModelRoot
 #######################################
+import pandas as pd
 from datetime import datetime
 from functools import wraps
-from typing import List
+from typing import List, Dict, Any
 
-from models.covid_api_v2_model import CurrentCountryModel, CurrentUSModel
+from models.covid_api_v2_model import (CurrentCountryModel, CurrentUSModel,
+                                       TimeseriesCaseModel, TimeseriesGlobalModel,
+                                       TimeseriesCaseDataModel, TimeseriesUSInfoModel,
+                                       TimeseriesCaseCoordinatesModel)
 
 from models.covid_api_v2_model import CurrentModel
 from pydantic import BaseModel
@@ -22,7 +24,7 @@ class CurrentModelRoot:
     country_models: List[CurrentCountryModel]
     states_models: List[CurrentUSModel]
 
-    def __init__(self,  daily_reports: DailyReports, time_series: DataTimeSeries):
+    def __init__(self,  daily_reports: DailyReports):
 
         self.country_models = []
         self.states_models = []
@@ -33,7 +35,6 @@ class CurrentModelRoot:
             'ts': None
         }
         self.daily_reports = daily_reports
-        self.time_series = time_series
 
     def wrap_data(func) -> dict:
         """
@@ -184,5 +185,177 @@ class CurrentModelRoot:
             data['confirmed'] += x.confirmed
         return data
 
+class TimeseriesModelRoot:
+
+    country_timeseries: List[TimeseriesCaseModel]
+    us_timeseries: List[TimeseriesCaseModel]
+
+    def __init__(self, time_series: DataTimeSeries):
+        self.country_timeseries = []
+        self.us_timeseries = []
+
+        self.lookup_table = get_data_lookup_table()
+        self.scheme = {
+            'data': None,
+            'dt': None,
+            'ts': None
+        }
+
+        self.time_series = time_series
+
+    def wrap_data(func) -> dict:
+        """
+        Wrap a result in a schemed data, it keeps the aggregation as all results from functions
+        wrapped with this will become dicts
+         """
+
+        @wraps(func)
+        def wrapper(self, *args, **kwargs):
+            packed_data = self.scheme
+            packed_data['data'] = []
+            try:
+                packed_data['data'] = func(self, *args, **kwargs)
+            except Exception as e:
+                print(e)
+            finally:
+                time_format = '%m-%d-%Y'
+                packed_data['dt'] = datetime.utcnow().strftime(time_format)
+                packed_data['ts'] = datetime.strptime(packed_data['dt'], time_format).timestamp()
+                reponse_model = ResponseModel(**packed_data)
+
+            return reponse_model.dict()
+
+        return wrapper
+
+    def _update_time_series(self) -> None:
+        """ Update all series
+        """
+        self.df_time_series = self.time_series.get_data_time_series() # Get base data
+
+        raw_data = self.df_time_series
+
+        self.global_data = self.__extract_time_series_global(raw_data)
+
+        self.dict_global_data = {}
+
+        for case in ['confirmed', 'deaths', 'recovered']:
+            raw_d = raw_data[case].T.to_dict()
+            self.dict_global_data[case] = self.__extract_time_series(raw_d)
 
 
+    def _update_US_time_series(self) -> None:
+        self.df_US_time_series = self.time_series.get_data_time_series(US=True)
+        self.dict_US_data = {}
+
+        for case in self.df_US_time_series.keys():
+            raw_d = self.df_US_time_series[case].T.to_dict()
+            self.dict_US_data[case] = self.__extract_US_time_series(raw_d)
+
+
+
+    def __extract_time_series(self, time_series: Dict) -> List[TimeseriesCaseModel]:
+        """ Extract time series from a given case """
+
+        def __unpack_inner_time_series(time_series: Dict[str, Any]) -> TimeseriesCaseModel:
+            for data in time_series.values():
+                excluded_cols = ['Province/State', 'Country/Region', 'Lat', 'Long']
+                # Coordinates
+                timeseries_coordinates_model = TimeseriesCaseCoordinatesModel(
+                    Lat=float(data['Lat']) if data['Lat'] else 0,
+                    Long=float(data['Long']) if data['Long'] else 0
+                )
+                # Timeseries Data
+                temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
+                timeseries_data_model_list = [TimeseriesCaseDataModel(date=k, value=v) for k, v in temp_time_series_dict.items()]
+
+                # Main Model
+                timeseries_case_model = TimeseriesCaseModel(
+                    Province_State=data['Province/State'],
+                    Country_Region=data['Country/Region'],
+                    Coordinates=timeseries_coordinates_model,
+                    Info=None,
+                    TimeSeries=timeseries_data_model_list
+                )
+                yield timeseries_case_model
+
+        # Extract the time series data
+        time_series_data = []
+        for data in __unpack_inner_time_series(time_series):
+            time_series_data.append(data)
+
+        return time_series_data
+
+    def __extract_time_series_global(self, dataframe_dict: Dict[str, pd.DataFrame]) -> List[TimeseriesGlobalModel]:
+        """ Extract time series for global case
+            Iterating all cases from all time series
+        """
+        global_df_list = []
+
+        for key, df in dataframe_dict.items():
+            df_temp = pd.DataFrame(df.iloc[:, 4:].astype('int32').sum(axis=0)) # Slice to select time series data (exclude country info)
+            df_temp.columns = [key] # A dataframe with one column named by a key (case), rows are time series
+            global_df_list.append(df_temp)
+
+        # Combine DataFrames
+        global_dict = pd.concat(global_df_list, axis=1, sort=False).T.to_dict()
+        data = [{k: TimeseriesGlobalModel(**v)} for k, v in global_dict.items()]
+
+        return data
+
+    def __extract_US_time_series(self, time_series: Dict[str, Any]) -> List[TimeseriesCaseModel]:
+        """ Extract USA time series """
+
+        def __unpack_US_inner_time_series(time_series: Dict[str, Any]) -> TimeseriesCaseModel:
+            for data in time_series.values():
+                excluded_cols = ['UID', 'iso2', 'iso3', 'code3', 'FIPS',
+                                'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_',
+                                'Combined_Key','Population']
+                # Info
+                timeseries_US_info_model = TimeseriesUSInfoModel(
+                    UID=data['UID'],
+                    iso2=data['iso2'],
+                    iso3=data['iso3'],
+                    code3=data['code3'],
+                    FIPS=data['FIPS'],
+                    Admin2=data['Admin2'],
+                )
+                # Coordinates
+                timeseries_US_coordinates_model = TimeseriesCaseCoordinatesModel(
+                    Lat=float(data['Lat']) if data['Lat'] else 0,
+                    Long=float(data['Long_']) if data['Long_'] else 0
+                )
+                # Timeseries
+                temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
+                timeseries_data_model_list = [TimeseriesCaseDataModel(date=k, value=v) for k, v in temp_time_series_dict.items()]
+
+                # Main Model
+                timeseries_US_model = TimeseriesCaseModel(
+                    Province_State=data['Province_State'],
+                    Country_Region=data['Country_Region'],
+                    Info=timeseries_US_info_model,
+                    Coordinates=timeseries_US_coordinates_model,
+                    TimeSeries=timeseries_data_model_list
+                )
+                yield timeseries_US_model
+
+        # Extract the time series data
+        time_series_data = []
+        for data in __unpack_US_inner_time_series(time_series):
+            time_series_data.append(data)
+
+        return time_series_data
+
+    @wrap_data
+    def get_US_time_series(self, case: str) -> List[TimeseriesCaseModel]:
+        """ Get USA time series """
+        self._update_US_time_series()
+        return self.dict_US_data[case]
+
+    @wrap_data
+    def get_time_series(self, case: str) -> List[Any]:
+        """ Get time series data from a given case
+            1.) global
+            2.) confirmed, deaths, recovered
+        """
+        self._update_time_series()
+        return self.global_data if case in ['global'] else self.dict_global_data[case]
