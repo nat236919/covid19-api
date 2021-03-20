@@ -199,11 +199,19 @@ class CovidAPIv2Integrator:
     def get_total(self) -> TotalModel:
         """ Summation of Confirmed, Deaths, Recovered, Active """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
+
+        confirmed = self.df['Confirmed'].sum()
+        deaths = self.df['Deaths'].sum()
+        recovered = self.df['Recovered'].sum()
+        active = self.df['Active'].sum()
+
+
+
         data = TotalModel(
-            confirmed=int(self.df['Confirmed'].sum()),
-            deaths=int(self.df['Deaths'].sum()),
-            recovered=int(self.df['Recovered'].sum()),
-            active=int(self.df['Active'].sum())
+            confirmed=ConfirmedModel(confirmed=confirmed),
+            deaths=DeathsModel(deaths=deaths),
+            recovered=RecoveredModel(recovered=recovered),
+            active=ActiveModel(active=active)
         )
         return data
     

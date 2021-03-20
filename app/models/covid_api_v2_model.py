@@ -33,20 +33,11 @@ class CurrentUSModel(BaseModel):
 
 
 #######################################
-# TotalModel
-#######################################
-class TotalModel(BaseModel):
-    confirmed: int
-    deaths: int
-    recovered: int
-    active: int
-
-
-#######################################
 # ConfirmedModel
 #######################################
 class ConfirmedModel(BaseModel):
     confirmed: int
+
 
 
 #######################################
@@ -68,6 +59,16 @@ class RecoveredModel(BaseModel):
 #######################################
 class ActiveModel(BaseModel):
     active: int
+
+
+#######################################
+# TotalModel
+#######################################
+class TotalModel(BaseModel):
+    confirmed: ConfirmedModel
+    deaths: DeathsModel
+    recovered: RecoveredModel
+    active: ActiveModel
 
 
 #######################################
