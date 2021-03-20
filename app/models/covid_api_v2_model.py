@@ -36,47 +36,39 @@ class CurrentUSModel(BaseModel):
 #######################################
 
 class TotalModel(BaseModel):
-    confirmed:int
-    deaths:int
-    recovered:int
-    active:int
-#######################################
-# ConfirmedModel
-#######################################
-class ConfirmedModel(BaseModel):
-    confirmed: int
+    #######################################
+    # ConfirmedModel
+    #######################################
+    class ConfirmedModel(BaseModel):
+        confirmed: int
 
+    #######################################
+    # DeathsModel
+    #######################################
+    class DeathsModel(BaseModel):
+        deaths: int
 
-#######################################
-# DeathsModel
-#######################################
-class DeathsModel(BaseModel):
-    deaths: int
+    #######################################
+    # RecoveredModel
+    #######################################
+    class RecoveredModel(BaseModel):
+        recovered: int
 
+    #######################################
+    # ActiveModel
+    #######################################
+    class ActiveModel(BaseModel):
+        active: int
 
-#######################################
-# RecoveredModel
-#######################################
-class RecoveredModel(BaseModel):
-    recovered: int
-
-
-#######################################
-# ActiveModel
-#######################################
-class ActiveModel(BaseModel):
-    active: int
-
-
-#######################################
-# CountryModel
-#######################################
-class CountryModel(BaseModel):
-    location: str
-    confirmed: int
-    deaths: int
-    recovered: int
-    active: int
+    #######################################
+    # CountryModel
+    #######################################
+    class CountryModel(BaseModel):
+        location: str
+        confirmed: int
+        deaths: int
+        recovered: int
+        active: int
 
 
 #######################################

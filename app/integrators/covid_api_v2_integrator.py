@@ -12,8 +12,7 @@ from typing import Any, Dict, List
 import pandas as pd
 
 from models.base_model import ResponseModel
-from models.covid_api_v2_model import (CountryModel,ConfirmedModel,DeathsModel,ActiveModel, RecoveredModel, CurrentModel,
-                                         CurrentUSModel,TimeseriesCaseCoordinatesModel,
+from models.covid_api_v2_model import (CurrentModel,CurrentUSModel,TimeseriesCaseCoordinatesModel,
                                          TimeseriesCaseDataModel,
                                          TimeseriesCaseModel,
                                          TimeseriesGlobalModel,
@@ -123,10 +122,10 @@ class CovidAPIv2Integrator:
     # GET - Confirm
     #######################################################################################
     @wrap_data
-    def get_confirmed(self) -> ConfirmedModel:
+    def get_confirmed(self) -> TotalModel.ConfirmedModel:
         """ Summation of all confirmed cases """
         self.df = get_data_daily_reports() # Get base data
-        data = ConfirmedModel(
+        data = TotalModel.ConfirmedModel(
             confirmed=int(self.df['Confirmed'].sum())
         )
         return data
@@ -135,10 +134,10 @@ class CovidAPIv2Integrator:
     # GET - Deaths
     #######################################################################################
     @wrap_data
-    def get_deaths(self) -> DeathsModel:
+    def get_deaths(self) -> TotalModel.DeathsModel:
         """ Summation of all deaths """
         self.df = get_data_daily_reports() # Get base data
-        data = DeathsModel(
+        data = TotalModel.DeathsModel(
             deaths=int(self.df['Deaths'].sum())
         )
         return data
@@ -147,10 +146,10 @@ class CovidAPIv2Integrator:
     # GET - Recovered
     #######################################################################################
     @wrap_data
-    def get_recovered(self) -> RecoveredModel:
+    def get_recovered(self) -> TotalModel.RecoveredModel:
         """ Summation of all recovers """
         self.df = get_data_daily_reports() # Get base data
-        data = RecoveredModel(
+        data = TotalModel.RecoveredModel(
             recovered=int(self.df['Recovered'].sum())
         )
         return data
@@ -158,10 +157,10 @@ class CovidAPIv2Integrator:
     # GET - Active
     #######################################################################################
     @wrap_data
-    def get_active(self) -> ActiveModel:
+    def get_active(self) -> TotalModel.ActiveModel:
         """ Summation of all actives """
         self.df = get_data_daily_reports() # Get base data
-        data = ActiveModel(
+        data = TotalModel.ActiveModel(
             active=int(self.df['Active'].sum())
         )
         return data
