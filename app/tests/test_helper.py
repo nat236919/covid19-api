@@ -17,7 +17,7 @@ DF = pd.DataFrame(DATA)
 # Test df cleaning
 def test_helper_df_cleaning() -> None:
     df = DF.copy()
-    res_df = helper.helper_df_cleaning(df)
+    res_df = helper.help.helper_df_cleaning(df)
     res_col_1 = [i for i in res_df['col_1'].values]
     res_col_2 = [i for i in res_df['col_2'].values]
     assert isinstance(res_df, pd.DataFrame) is True
