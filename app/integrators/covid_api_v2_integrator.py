@@ -116,7 +116,19 @@ class CovidAPIv2Integrator:
         df_grp_by_country = df_grp_by_country.reset_index()
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
 
-        all_country_data = [CountryModel(**v) for v in df_grp_by_country.to_dict('index').values()]
+        # all_country_data = [CountryModel(**v) for v in df_grp_by_country.to_dict('index').values()]
+        all_country_data = []
+        for v in df_grp_by_country.to_dict('index').values():
+            recovered = v['recovered']
+            confirmed = v['confirmed']
+            deaths = v['deaths']
+            active = v['active']
+            all_country_data.append(CountryModel(
+                location=v['location'],
+                recovered=RecoveredModel(recovered=recovered),
+                confirmed=ConfirmedModel(confirmed=confirmed),
+                deaths=DeathsModel(deaths=deaths),
+                active=ActiveModel(active=active)))
 
 
         # Check input

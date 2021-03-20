@@ -75,10 +75,10 @@ class ActiveModel(BaseModel):
 #######################################
 class CountryModel(BaseModel):
     location: str
-    confirmed: int
-    deaths: int
-    recovered: int
-    active: int
+    confirmed: ConfirmedModel
+    deaths: DeathsModel
+    recovered: RecoveredModel
+    active: ActiveModel
 
 
 #######################################
