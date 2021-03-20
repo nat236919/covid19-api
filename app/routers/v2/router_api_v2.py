@@ -15,12 +15,13 @@ from starlette.requests import Request
 
 from . import v2
 
-# Initiate Integrator
-COVID_API_V2 = CovidAPIv2Integrator()
+class router_V2 :
+    # Initiate Integrator
+    COVID_API_V2 = CovidAPIv2Integrator()
 
 
-# Logging
-def write_log(requested_path: str, client_ip: str) -> None:
+    # Logging
+    def write_log(requested_path: str, client_ip: str) -> None:
     time_format = '%d-%b-%Y'
     file_name = datetime.now().strftime(time_format)
     with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
@@ -30,8 +31,8 @@ def write_log(requested_path: str, client_ip: str) -> None:
     return None
 
 
-@v2.get('/current')
-async def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    @v2.get('/current')
+    async def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the current situation data from all reported countries
 
@@ -51,8 +52,8 @@ async def get_current(request: Request, background_tasks: BackgroundTasks) -> Di
     return data
 
 
-@v2.get('/current/US')
-async def get_current_us(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    @v2.get('/current/US')
+    async def get_current_us(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get all data from USA's current situation
 
@@ -72,8 +73,8 @@ async def get_current_us(request: Request, background_tasks: BackgroundTasks) ->
     return data
 
 
-@v2.get('/total')
-async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    @v2.get('/total')
+    async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the total numbers of all cases
 
@@ -92,8 +93,8 @@ async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict
     return data
 
 
-@v2.get('/confirmed')
-async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
+    @v2.get('/confirmed')
+    async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of confirmed cases
 
@@ -109,8 +110,8 @@ async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> 
     return data
 
 
-@v2.get('/deaths')
-async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
+    @v2.get('/deaths')
+    async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of death cases
 
@@ -126,8 +127,8 @@ async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dic
     return data
 
 
-@v2.get('/recovered')
-async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
+    @v2.get('/recovered')
+    async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of recovered cases
 
@@ -143,8 +144,8 @@ async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> 
     return data
 
 
-@v2.get('/active')
-async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
+    @v2.get('/active')
+    async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of active cases
 
@@ -160,8 +161,8 @@ async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dic
     return data
 
 
-@v2.get('/country/{country_name}')
-async def get_country(country_name: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    @v2.get('/country/{country_name}')
+    async def get_country(country_name: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the data based on a county's name or its ISO code
 
@@ -183,8 +184,8 @@ async def get_country(country_name: str, request: Request, background_tasks: Bac
     return raw_data
 
 
-@v2.get('/timeseries/{case}')
-async def get_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    @v2.get('/timeseries/{case}')
+    async def get_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the time series based on a given case: global, confirmed, deaths, recovered
     
@@ -212,8 +213,8 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
     return data
 
 
-@v2.get('/timeseries/US/{case}')
-async def get_US_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    @v2.get('/timeseries/US/{case}')
+    async def get_US_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the USA time series based on a given case:
 

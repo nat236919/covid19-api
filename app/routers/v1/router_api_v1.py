@@ -14,10 +14,11 @@ from integrators.covid_api_v1_integrator import CovidAPIv1
 from utils.helper import helper_lookup_country
 from . import v1
 
-
-# Reload Integrator (APIv1)
-def reload_api_v1_integrator(func):
+class router_V1 :
+    # Reload Integrator (APIv1)
+    def reload_api_v1_integrator(func):
     """ Reload a model for each quest """
+    
     @wraps(func)
     def wrapper(*args, **kwargs):
         global COVID_API_V1, dt, ts
@@ -27,59 +28,61 @@ def reload_api_v1_integrator(func):
     return wrapper
 
 
-@v1.get('/current')
-@reload_api_v1_integrator
-def current_status() -> Dict[str, int]:
+    @v1.get('/current')
+    @reload_api_v1_integrator
+    def current_status() -> Dict[str, int]:
     data = COVID_API_V1.get_current_status()
     return data
 
 
-@v1.get('/current_list')
-@reload_api_v1_integrator
-def current_status_list() -> Dict[str, Any]:
+    @v1.get('/current_list')
+    @reload_api_v1_integrator
+    def current_status_list() -> Dict[str, Any]:
     """ Coutries are kept in a List """
     data = COVID_API_V1.get_current_status(list_required=True)
     return data
 
 
-@v1.get('/total')
-@reload_api_v1_integrator
-def total() -> Dict[str, Any]:
-    data = COVID_API_V1.get_total()
-    return data
-
-
-@v1.get('/confirmed')
-@reload_api_v1_integrator
-def confirmed_cases() -> Dict[str, int]:
+    @v1.get('/confirmed')
+    @reload_api_v1_integrator
+    def confirmed_cases() -> Dict[str, int]:
     data = COVID_API_V1.get_confirmed_cases()
     return data
 
 
-@v1.get('/deaths')
-@reload_api_v1_integrator
-def deaths() -> Dict[str, int]:
-    data = COVID_API_V1.get_deaths()
-    return data
 
 
-@v1.get('/recovered')
-@reload_api_v1_integrator
-def recovered() -> Dict[str, int]:
+    @v1.get('/recovered')
+    @reload_api_v1_integrator
+    def recovered() -> Dict[str, int]:
     data = COVID_API_V1.get_recovered()
     return data
 
 
-@v1.get('/countries')
-@reload_api_v1_integrator
-def affected_countries() -> Dict[int, str]:
+    @v1.get('/deaths')
+    @reload_api_v1_integrator
+    def deaths() -> Dict[str, int]:
+    data = COVID_API_V1.get_deaths()
+    return data
+
+
+
+    @v1.get('/total')
+    @reload_api_v1_integrator
+    def total() -> Dict[str, Any]:
+    data = COVID_API_V1.get_total()
+    return data
+
+    @v1.get('/countries')
+    @reload_api_v1_integrator
+    def affected_countries() -> Dict[int, str]:
     data = COVID_API_V1.get_affected_countries()
     return data
 
 
-@v1.get('/country/{country_name}')
-@reload_api_v1_integrator
-def country(country_name: str) -> Dict[str, Any]:
+    @v1.get('/country/{country_name}')
+        @reload_api_v1_integrator
+    def country(country_name: str) -> Dict[str, Any]:
     """ Search by name or ISO (alpha2) """
     raw_data = COVID_API_V1.get_current_status() # Get all current data
     try:
@@ -99,9 +102,9 @@ def country(country_name: str) -> Dict[str, Any]:
     return data
 
 
-@v1.get('/timeseries/{case}')
-@reload_api_v1_integrator
-def timeseries(case: str) -> Dict[str, Any]:
+    @v1.get('/timeseries/{case}')
+    @reload_api_v1_integrator
+    def timeseries(case: str) -> Dict[str, Any]:
     """ Get the time series based on a given case: confirmed, deaths, recovered """
     raw_data = COVID_API_V1.get_time_series()
     case = case.lower()
