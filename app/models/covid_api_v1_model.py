@@ -6,8 +6,16 @@ DATE: 01-March-2021
 """
 # Import libraries
 from typing import List
+from models import cases
+from pydantic import BaseModel]
 
-from pydantic import BaseModel
+class case:
+    def __init__(self, dt, ts):
+        self.dt: str
+        self.ts: int
+
+
+
 
 
 #######################################
@@ -42,10 +50,12 @@ class TotalModel(BaseModel):
 #######################################
 # ConfirmedModel
 #######################################
-class ConfirmedModel(BaseModel):
-    confirmed: int
-    dt: str
-    ts: int
+class ConfirmedModel:
+    def __init__(self, confirmed, case):
+        self.confirmed: confirmed
+        self.caseOBJ: case
+    
+
 
 
 #######################################
@@ -60,10 +70,11 @@ class DeathsModel(BaseModel):
 #######################################
 # RecoveredModel
 #######################################
-class RecoveredModel(BaseModel):
-    recovered: int
-    dt: str
-    ts: int
+class RecoveredModel:
+    def __init__(self, recovered, case):
+        self.recoveredCases: recovered
+        self.caseOBJ: case
+    
 
 
 #######################################
