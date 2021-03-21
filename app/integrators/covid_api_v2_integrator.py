@@ -271,7 +271,7 @@ class CovidAPIv2Integrator:
         if case not in ['confirmed', 'deaths']:
             data = []
         else:
-            self.df_US_time_series = get_time_series(USA=True)
+            self.df_US_time_series = get_time_series(US=True)
             
             raw_data = self.df_US_time_series[case].T.to_dict()
             data = self.__extract_US_time_series(raw_data)
