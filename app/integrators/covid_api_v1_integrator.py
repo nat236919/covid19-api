@@ -98,8 +98,8 @@ class CovidAPIv1:
     def get_total(self) -> Dict[str, Any]:
         """ Summation of Confirmed, Deaths, Recovered """
         data = {
-            'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']])
-            'deaths': sum([int(i) for i in self.df_deaths['deaths']])
+            'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']]),
+            'deaths': sum([int(i) for i in self.df_deaths['deaths']]),
             'recovered': sum([int(i) for i in self.df_recovered['recovered']])
             }
         data = TotalModel(**self.add_dt_and_ts(data))
