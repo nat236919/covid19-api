@@ -48,32 +48,20 @@ class DailyReports:
 
 
 # Get data from time series
-def get_data_time_series() -> Dict[str, pd.DataFrame]:
-    """ Get the dataset from JHU CSSE """
 def get_time_series(self, US:bool) ->Dict[str, pd.DataFrame]
     dataframes = {}
 
-    # Iterate through all files
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
+    if US is True:
+      categories = JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1]
+      url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES']
+    
+    else:
+      categories = JHU_CSSE_FILE_PATHS['CATEGORIES']
+      url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES']
+     
+    for category in categories:
+       url = url.format(category)
 
-        # Extract data
-        df = pd.read_csv(url)
-        df = helper_df_cleaning(df)
-        dataframes[category] = df
-
-    return dataframes
-
-
-# Get data from time series (US)
-def get_US_time_series() -> Dict[str, pd.DataFrame]:
-    """ Get the dataset of time series for USA """
-    dataframes = {}
-
-    # Iterate through categories ('confirmed', 'deaths')
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1]:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES'].format(category)
-        
         # Extract data
         df = pd.read_csv(url)
         df = helper_df_cleaning(df)
