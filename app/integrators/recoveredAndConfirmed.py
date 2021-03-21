@@ -24,23 +24,23 @@ from utils.get_data import get_data
         data = ConfirmedModel(**self.add_dt_and_ts(data))
         return data
 
- class Deaths:
+class Recovered:
 
-  def __init__(self) -> None:
-     	   self.df_deaths = list_of_dataframes['deaths']
+   def __init__(self) -> None:
+   self.df_recovered = list_of_dataframes['recovered']
 
-  def get_deaths(self) -> Dict[str, int]:
-        """ Summation of all deaths """
-        data = {'deaths': sum([int(i) for i in self.df_deaths['deaths']])}
-        data = DeathsModel(**self.add_dt_and_ts(data))
+   def get_recovered(self) -> Dict[str, int]:
+        """ Summation of all recovers """
+        data = {'recovered': sum([int(i) for i in self.df_recovered['recovered']])}
+        data = RecoveredModel(**self.add_dt_and_ts(data))
+        return data
 
-
- class ConfirmedAndDeathsRatio:
+class ConfirmedAndRecoveredDifference:
 
      def __init__(self,deaths, confirmed) 
-      self.deaths = deaths
+      self.recovered = recovered
       self.confirmed = confirmed
-      self.confirmedDeathRatio confirmed.sum - deaths.sum
+      self.confirmedDeathDifference confirmed.sum - recovered.sum
 
-      return confirmedDeathRatio
+      return confirmedDeathDifference
 
