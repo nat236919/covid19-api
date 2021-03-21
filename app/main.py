@@ -15,8 +15,8 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 
 from config import CONFIG
-from routers.v1 import v1
-from routers.v2 import v2
+from app.routers.v1 import v1
+from app.routers.v2 import v2
 
 # Setup application
 # Note: Please visit config.py for modification
