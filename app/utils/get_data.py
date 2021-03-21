@@ -78,37 +78,54 @@ class DataTimeSeries:
             df_cleaned = helper_df_cols_cleaning(df_cleaned, ['Lat', 'Long_'], float)
         return df_cleaned
 
-      
-# API v1
-def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
-    """ Get the dataset from JHU CSSE """
-    dataframes = {}
+class GetData:
+    def get_data(self) -> Dict[str, pd.DataFrame]:
+        """ Get the dataset from JHU CSSE """
+        dataframes = {}
 
-    # Iterate through all files
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
+        # Iterate through all files
+        for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
+            url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
 
-        # Extract data
-        df = pd.read_csv(url)
-        df = df.fillna('')
-        df['Country/Region'] = df['Country/Region'].apply(lambda country_name: country_name.strip()) # Eliminate whitespace
-        df['Country/Region'] = df['Country/Region'].str.replace(' ', '_')
-
-        # Data Preprocessing
-        if time_series:
-            df = df.T.to_dict()
-        else:
-            df = df.iloc[:, [0, 1, -1]] # Select only Region, Country and its last values
-            datetime_raw = list(df.columns.values)[-1] # Ex) '2/11/20 20:44'
+            # Extract data
+            df = pd.read_csv(url)
+            df = df.fillna('')
+            df['Country/Region'] = df['Country/Region'].apply(
+                lambda country_name: country_name.strip())  # Eliminate whitespace
+            df['Country/Region'] = df['Country/Region'].str.replace(' ', '_')
+            df = df.iloc[:, [0, 1, -1]]  # Select only Region, Country and its last values
+            datetime_raw = list(df.columns.values)[-1]  # Ex) '2/11/20 20:44'
             df.columns = ['Province/State', 'Country/Region', category]
 
-            df[category].fillna(0, inplace=True) # Replace empty cells with 0
-            df[category].replace('', 0, inplace=True) # Replace '' with 0
+            df[category].fillna(0, inplace=True)  # Replace empty cells with 0
+            df[category].replace('', 0, inplace=True)  # Replace '' with 0
 
             df['datetime'] = datetime_raw
             pd.to_numeric(df[category])
             df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
 
-        dataframes[category.lower()] = df
+            dataframes[category.lower()] = df
 
-    return dataframes
+        return dataframes
+
+    def get_data_series(self) -> Dict[str, pd.DataFrame]:
+        """ Get the dataset from JHU CSSE """
+        dataframes = {}
+
+        # Iterate through all files
+        for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
+            url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
+
+            # Extract data
+            df = pd.read_csv(url)
+            df = df.fillna('')
+            df['Country/Region'] = df['Country/Region'].apply(
+                lambda country_name: country_name.strip())  # Eliminate whitespace
+            df['Country/Region'] = df['Country/Region'].str.replace(' ', '_')
+
+            # Data Preprocessing
+            df = df.T.to_dict()
+
+            dataframes[category.lower()] = df
+
+        return dataframes
