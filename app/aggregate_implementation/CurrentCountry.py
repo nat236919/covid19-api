@@ -1,5 +1,5 @@
 """
-FILE: UsModel.py
+FILE: CountryModel.py
 DESCRIPTION: A model component containing that aggregate TotalModel to CountryModel
 AUTHOR: Ka Hei Chan
 DATE: 17-March-2021
