@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f513655-7b94-4b8e-98f0-b3cc1bfdf682" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/covid19-api.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/integrators/covid_api_v1_integrator.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrators/covid_api_v1_integrator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/v1/router_api_v1.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/v1/router_api_v1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tests/test_get_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/tests/test_get_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/get_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/get_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/helper.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
