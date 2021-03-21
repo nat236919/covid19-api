@@ -61,10 +61,10 @@ class ConfirmedModel:
 #######################################
 # DeathsModel
 #######################################
-class DeathsModel(BaseModel):
-    deaths: int
-    dt: str
-    ts: int
+class DeathsModel:
+    def __init__(self, deaths, case):
+        self.deathCases: deaths
+        self.caseOBJ: case
 
 
 #######################################
