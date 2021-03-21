@@ -42,12 +42,12 @@ class CurrentListModel:
 #######################################
 # TotalModel
 #######################################
-class TotalModel(BaseModel):
-    confirmed: int
-    deaths: int
-    recovered: int
-    dt: str
-    ts: int
+class TotalModel:
+    def __init__(self, confirmed, recovered, deaths, case):
+        self.confirmed: confirmed
+        self.recovered: recovered
+        self.deaths: deaths
+        self.caseOBJ: case
 
 
 #######################################
