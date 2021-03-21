@@ -50,6 +50,7 @@ class DailyReports:
 # Get data from time series
 def get_data_time_series() -> Dict[str, pd.DataFrame]:
     """ Get the dataset from JHU CSSE """
+def get_time_series(self, US:bool) ->Dict[str, pd.DataFrame]
     dataframes = {}
 
     # Iterate through all files
