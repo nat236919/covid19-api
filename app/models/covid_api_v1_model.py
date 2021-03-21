@@ -14,6 +14,9 @@ class case:
         self.dt: str
         self.ts: int
 
+class countries:
+    def __init__(self, countries):
+        self.countries: List[str]
 
 
 
@@ -30,10 +33,10 @@ class CurrentModel(BaseModel):
 #######################################
 # CurrentListModel
 #######################################
-class CurrentListModel(BaseModel):
-    countries: List[CurrentModel]
-    dt: str
-    ts: int
+class CurrentListModel:
+    def __init__(self, countries, case):
+        self.countriesList: countries
+        self.caseOBJ: case
 
 
 #######################################
@@ -81,9 +84,9 @@ class RecoveredModel:
 # CountriesModel
 #######################################
 class CountriesModel(BaseModel):
-    countries: List[str]
-    dt: str
-    ts: int
+    def __init__(self, confirmed, case):
+        self.confirmed: confirmed
+        self.caseOBJ: case
 
 
 #######################################
