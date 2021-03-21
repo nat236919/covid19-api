@@ -140,7 +140,7 @@ class CovidAPIv2Integrator:
         """ Summation of all confirmed cases """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
         data = ConfirmedModel(
-            confirmed=int(self.df['Confirmed'].sum())
+            confirmed=int(self.get_total().confirmed)
         )
         return data
 
@@ -152,7 +152,7 @@ class CovidAPIv2Integrator:
         """ Summation of all deaths """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
         data = DeathsModel(
-            deaths=int(self.df['Deaths'].sum())
+            deaths=int(self.get_total().deaths)
         )
         return data
     
@@ -164,7 +164,7 @@ class CovidAPIv2Integrator:
         """ Summation of all recovers """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
         data = RecoveredModel(
-            recovered=int(self.df['Recovered'].sum())
+            recovered=int(self.get_total.recovered)
         )
         return data
     
@@ -176,7 +176,7 @@ class CovidAPIv2Integrator:
         """ Summation of all actives """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
         data = ActiveModel(
-            active=int(self.df['Active'].sum())
+            active=int(self.get_total().active)
         )
         return data
     
