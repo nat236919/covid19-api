@@ -64,7 +64,7 @@ async def get_current_us(request: Request, background_tasks: BackgroundTasks) ->
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_current_US()
+        data = COVID_API_V2.get_current()
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
