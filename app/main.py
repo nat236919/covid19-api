@@ -42,6 +42,7 @@ app.add_middleware(
 SECTION: Default route
 DESCRIPTION: Route to API documentation
 """
+
 # API documentation
 @app.get('/', include_in_schema=False)
 def read_docs() -> None:
