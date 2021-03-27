@@ -30,9 +30,29 @@ def get_data_lookup_table() -> Dict[str, str]:
 
 # Get Daily Reports Data (General and US)
 class DailyReports:
+
+    __instance = None
+
+    @staticmethod
+    def getInstance():
+        if DailyReports.__instance is None:
+            """
+            Static method create a single instance
+            """
+            __instance = DailyReports()
+            return __instance
+
+
     def __init__(self) -> None: 
-        self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
-        self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
+        """
+        Dont call the constructor use the static method getInstance
+        """
+        if DailyReports.__instance != None:
+            raise Exception("This is a sinleton class.")
+        else:    
+            self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+            self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
+            DailyReports.__instance = self
 
     # Get data from daily reports
     def get_data_daily_reports(self, US: bool = False) -> pd.DataFrame:
