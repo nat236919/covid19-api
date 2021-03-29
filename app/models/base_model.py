@@ -14,6 +14,20 @@ from pydantic import BaseModel
 # ResponseModel
 #######################################
 class ResponseModel(BaseModel):
+    _instance: None
     data: Any
     dt: str
     ts: int
+
+
+def __init__(self):
+    self.dt = 'Unknown'
+    self.ts = 0
+
+
+def get_instance(self):
+    if self._instance is None:
+        self.instance = BaseModel
+    else:
+        return self._instance
+
