@@ -8,6 +8,8 @@ install:
 script:
   - pytest app/tests/test_get_data.py
   - pytest app/tests/test_helper.py
+  # - pytest app/tests/test_covid_integrator_api_v1.py # Required paths fixed
+  # - pytest app/tests/test_covid_integrator_api_v2.py # Required paths fixed
 # codecov
 after_success:
   - bash <(curl -s https://codecov.io/bash)
