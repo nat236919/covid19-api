@@ -11,7 +11,7 @@ from ..utils.get_data import (DailyReports, DataTimeSeries, get_data,
                               get_data_lookup_table)
 
 daily_reports = DailyReports()
-time_series = DataTimeSeries()
+time_series = DataTimeSeries.getInstance()
 
 
 # Test - Get Lookup table
@@ -25,14 +25,14 @@ def test_get_data_lookup_table() -> None:
 def test_get_data_daily_reports() -> None:
     result = daily_reports.get_data_daily_reports()
     assert len(result) > 0
-    assert isinstance(result, pd.DataFrame) is True 
+    assert isinstance(result, pd.DataFrame) is True
 
 
 # Test - Get data from daily reports (US)
 def test_get_data_daily_reports_US() -> None:
     result = daily_reports.get_data_daily_reports(US=True)
     assert len(result) > 0
-    assert isinstance(result, pd.DataFrame) is True 
+    assert isinstance(result, pd.DataFrame) is True
 
 
 # Test - Get data from time series

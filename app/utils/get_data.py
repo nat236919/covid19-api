@@ -20,7 +20,7 @@ def get_data_lookup_table() -> Dict[str, str]:
     """ Get lookup table (country references for iso2) """
     lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
     lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
-    
+
     # Create referral dictionary
     data = lookup_df.to_dict('records')
     data = {v['iso2']: v['Country_Region'] for v in data}
@@ -30,7 +30,7 @@ def get_data_lookup_table() -> Dict[str, str]:
 
 # Get Daily Reports Data (General and US)
 class DailyReports:
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
         self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
 
@@ -43,13 +43,22 @@ class DailyReports:
         # Data pre-processing
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         df = helper_df_cols_cleaning(df, concerned_columns, int)
-        
+
         return df
 
-      
+
 # Get data from time series (General and US)
 class DataTimeSeries:
-    """ Get the tiemseires dataset from JHU CSSE and Prepare DataFrames """
+
+    timeSeriesInstance = None
+
+    def getInstance():
+        if DataTimeSeries.timeSeriesInstance == None:
+            timeSeriesInstance = DataTimeSeries()
+
+        return timeSeriesInstance
+
+    """ Get the timeseries dataset from JHU CSSE and Prepare DataFrames """
     def get_data_time_series(self, US: bool = False) -> Dict[str, pd.DataFrame]:
         """ Get the dataset from JHU CSSE """
         dataframes = {}
@@ -71,14 +80,14 @@ class DataTimeSeries:
             dataframes[category] = df
 
         return dataframes
-    
+
     def _clean_timeseries_dataframe(self, df: pd.DataFrame, US: bool = False) -> pd.DataFrame:
         df_cleaned = helper_df_cleaning(df) # main pre-processing
         if US:
             df_cleaned = helper_df_cols_cleaning(df_cleaned, ['Lat', 'Long_'], float)
         return df_cleaned
 
-      
+
 # API v1
 def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
     """ Get the dataset from JHU CSSE """
