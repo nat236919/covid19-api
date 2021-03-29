@@ -4,15 +4,9 @@ DESCRIPTION: Keep file paths from the data source
 AUTHOR: Nuttaphat Arunoprayoch
 DATE: 17-April-2020
 """
-# Johns Hopkins CSSE - Datasets (https://github.com/CSSEGISandData/COVID-19)
-
 from abc import ABCMeta, abstractmethod
-"""
-FILE: file_paths.py
-DESCRIPTION: Keep file paths from the data source
-AUTHOR: Nuttaphat Arunoprayoch
-DATE: 17-April-2020
-"""
+
+# Johns Hopkins CSSE - Datasets (https://github.com/CSSEGISandData/COVID-19)
 
 
 class Path_IBuilder(metaclass=ABCMeta):
