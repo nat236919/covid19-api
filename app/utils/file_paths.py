@@ -54,7 +54,7 @@ class Path_IBuilder(metaclass=ABCMeta):
 
     @staticmethod
     @abstractmethod
-    def get_Path():
+    def return_Path():
         " returns the constructed path "
 
 
@@ -65,54 +65,54 @@ class Path_Builder(Path_IBuilder):
         self.path = Path()
 
     def build_JHU_CSSE_BASE_PATH(self):
-        self.path.parts.join(
+        self.path.parts.append(
             'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/'
         )
         return self
 
     def build_DAILY_REPORT_PATH(self):
-        self.path.parts.join(
+        self.path.parts.append(
             'csse_covid_19_daily_reports/'
         )
         return self
 
     def build_DAILY_REPORT_US_PATH(self):
-        self.path.parts.join(
+        self.path.parts.append(
             'csse_covid_19_daily_reports_us/'
         )
         return self
 
     def build_TIME_SERIES_PATH(self):
-        self.path.parts.join(
+        self.path.parts.append(
             'csse_covid_19_time_series/'
         )
         return self
 
     def build_LOOKUP_TABLE_PATH(self):
-        self.path.parts.join(
+        self.path.parts.append(
             'UID_ISO_FIPS_LookUp_Table.csv'
         )
         return self
 
     def build_CSV_EXTENSTION(self):
-        self.path.parts.join(
+        self.path.parts.append(
             '{}.csv'
         )
         return self
 
     def build_time_series_global_CSV_EXTENSTION(self):
-        self.path.parts.join(
+        self.path.parts.append(
             'time_series_covid19_{}_global.csv'
         )
         return self
 
     def build_time_series_US_CSV_EXTENSTION(self):
-        self.path.parts.join(
+        self.path.parts.append(
             'time_series_covid19_{}_US.csv'
         )
         return self
 
-    def get_Path(self):
+    def return_Path(self):
         return self.path
 
 
@@ -120,7 +120,10 @@ class Path():
     "The Path"
 
     def __init__(self):
-        self.parts = ''
+        self.parts = []
+
+    def path_to_string(self):
+        return ''.join(self.parts)
 
 
 class Director():
@@ -133,7 +136,8 @@ class Director():
             .build_JHU_CSSE_BASE_PATH()\
             .build_DAILY_REPORT_PATH()\
             .build_CSV_EXTENSTION()\
-            .get_Path()
+            .return_Path()\
+            .path_to_string()
 
     @staticmethod
     def construct_Daily_Report_US_Path():
@@ -142,7 +146,8 @@ class Director():
             .build_JHU_CSSE_BASE_PATH()\
             .build_DAILY_REPORT_US_PATH()\
             .build_CSV_EXTENSTION()\
-            .get_Path()
+            .return_Path()\
+            .path_to_string()
 
     @staticmethod
     def construct_global_TimeSeries_Path():
@@ -151,7 +156,8 @@ class Director():
             .build_JHU_CSSE_BASE_PATH()\
             .build_TIME_SERIES_PATH()\
             .build_time_series_global_CSV_EXTENSTION()\
-            .get_Path()
+            .return_Path()\
+            .path_to_string()
 
     @staticmethod
     def construct_US_TimeSeries_Path():
@@ -160,7 +166,8 @@ class Director():
             .build_JHU_CSSE_BASE_PATH()\
             .build_TIME_SERIES_PATH()\
             .build_time_series_US_CSV_EXTENSTION()\
-            .get_Path()
+            .return_Path()\
+            .path_to_string()
 
     @staticmethod
     def construct_LOOKUP_TABLE_path():
@@ -168,7 +175,8 @@ class Director():
         return Path_Builder()\
             .build_JHU_CSSE_BASE_PATH()\
             .build_LOOKUP_TABLE_PATH()\
-            .get_Path()
+            .return_Path()\
+            .path_to_string()
 
 
 JHU_CSSE_CATEGORIES = ['confirmed', 'deaths', 'recovered']
