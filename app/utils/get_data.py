@@ -54,6 +54,9 @@ class DataTimeSeries:
 
     def getInstance():
 
+        if DataTimeSeries.timeSeriesInstance == None:
+            timeSeriesInstance = DataTimeSeries()
+
         return timeSeriesInstance
 
     def __init__(self) -> None:
