@@ -18,7 +18,7 @@ from utils.get_data import DailyReports, DataTimeSeries
 
 # Initiate Integrator
 DAILY_REPORTS = DailyReports()
-DATA_TIME_SERIES = DataTimeSeries.getInstance()
+DATA_TIME_SERIES = DataTimeSeries()
 COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
 
 

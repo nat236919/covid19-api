@@ -11,7 +11,7 @@ from ..utils.get_data import (DailyReports, DataTimeSeries, get_data,
                               get_data_lookup_table)
 
 daily_reports = DailyReports()
-time_series = DataTimeSeries.getInstance()
+time_series = DataTimeSeries()
 
 
 # Test - Get Lookup table

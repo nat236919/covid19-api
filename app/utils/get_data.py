@@ -53,10 +53,15 @@ class DataTimeSeries:
     timeSeriesInstance = None
 
     def getInstance():
-        if DataTimeSeries.timeSeriesInstance == None:
-            timeSeriesInstance = DataTimeSeries()
 
         return timeSeriesInstance
+
+    def __init__(self) -> None:
+        if DataTimeSeries.timeSeriesInstance != None:
+            raise Exception("Multiple instances of singleton class not allowed")
+
+        else:
+            timeSeriesInstance=self
 
     """ Get the timeseries dataset from JHU CSSE and Prepare DataFrames """
     def get_data_time_series(self, US: bool = False) -> Dict[str, pd.DataFrame]:
