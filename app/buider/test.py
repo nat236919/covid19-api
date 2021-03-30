@@ -1,8 +1,8 @@
 """
-FILE: covid_api_v2_integrator.py
-DESCRIPTION: Integrators for API v2
-AUTHOR: Nuttaphat Arunoprayoch
-DATE: 01-March-2021
+FILE:
+DESCRIPTION:
+AUTHOR:
+DATE:
 """
 # Import libraries
 from datetime import datetime
@@ -27,14 +27,12 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
 from utils.get_data import (get_data_daily_reports,
                               get_data_daily_reports_us, get_data_lookup_table,
                               get_data_time_series, get_US_time_series)
-from interface import IIntegrator
 
-
-class CovidAPIv2Integrator(IIntegrator):
+class CovidAPIv2Integrator:
     """ Covid-19 API v2 methods
         SCHEMA: {
             "data": Any,
-            "dt": str = "{datetime}",kl
+            "dt": str = "{datetime}",
             "ts": int = "{timestamp}
         }
     """
@@ -321,3 +319,69 @@ class CovidAPIv2Integrator(IIntegrator):
             time_series_data.append(data)
 
         return time_series_data
+
+
+
+
+
+
+
+
+
+""" Test """
+
+"The Factory Concept"
+from abc import ABCMeta, abstractmethod
+
+class IGet_Data(metaclass=ABCMeta):
+    ""
+
+    @staticmethod
+    @abstractmethod
+    def get_data():
+        ""
+
+class ConcreteProductA(IProduct):
+    "A Concrete Class that implements the IProduct interface"
+
+    def __init__(self):
+        self.name = "ConcreteProductA"
+
+    def create_object(self):
+        return self
+
+class ConcreteProductB(IProduct):
+    "A Concrete Class that implements the IProduct interface"
+
+    def __init__(self):
+        self.name = "ConcreteProductB"
+
+    def create_object(self):
+        return self
+
+class ConcreteProductC(IProduct):
+    "A Concrete Class that implements the IProduct interface"
+
+    def __init__(self):
+        self.name = "ConcreteProductC"
+
+    def create_object(self):
+        return self
+
+class Creator:
+    "The Factory Class"
+
+    @staticmethod
+    def create_object(some_property):
+        "A static method to get a concrete product"
+        if some_property == 'a':
+            return ConcreteProductA()
+        if some_property == 'b':
+            return ConcreteProductB()
+        if some_property == 'c':
+            return ConcreteProductC()
+        return None
+
+# The Client
+PRODUCT = Creator().create_object('b')
+print(PRODUCT.name)

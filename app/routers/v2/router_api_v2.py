@@ -12,11 +12,12 @@ from typing import Any, Dict
 from fastapi import BackgroundTasks, HTTPException
 from integrators.covid_api_v2_integrator import CovidAPIv2Integrator
 from starlette.requests import Request
+from integrators.factory import Factory
 
 from . import v2
 
 # Initiate Integrator
-COVID_API_V2 = CovidAPIv2Integrator()
+COVID_API_V2 = Factory.select_version('v2')
 
 
 # Logging
