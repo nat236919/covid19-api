@@ -7,17 +7,17 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/nat236919/Covid2019API/issues" target="_blank">
-      <img src="https://img.shields.io/github/issues/nat236919/Covid2019API" alt="issues">
+  <a href="https://github.com/nat236919/covid19-api/issues" target="_blank">
+      <img src="https://img.shields.io/github/issues/nat236919/covid19-api" alt="issues">
   </a>
-  <a href="https://github.com/nat236919/Covid2019API/forks" target="_blank">
-      <img src="https://img.shields.io/github/forks/nat236919/Covid2019API" alt="forks">
+  <a href="https://github.com/nat236919/covid19-api/network/members" target="_blank">
+      <img src="https://img.shields.io/github/forks/nat236919/covid19-api" alt="forks">
   </a>
-  <a href="https://github.com/nat236919/Covid2019API/stars" target="_blank">
-      <img src="https://img.shields.io/github/stars/nat236919/Covid2019API" alt="starts">
+  <a href="https://github.com/nat236919/covid19-api/stargazers" target="_blank">
+      <img src="https://img.shields.io/github/stars/nat236919/covid19-api" alt="starts">
   </a>
-  <a href="https://github.com/nat236919/Covid2019API/blob/master/LICENCE" target="_blank">
-      <img src="https://img.shields.io/github/license/nat236919/Covid2019API" alt="licence">
+  <a href="https://github.com/nat236919/covid19-api/blob/master/LICENCE" target="_blank">
+      <img src="https://img.shields.io/github/license/nat236919/covid19-api" alt="licence">
   </a>
   <a href="https://travis-ci.org/github/nat236919/covid19-api" target="_blank">
       <img src="https://travis-ci.org/nat236919/covid19-api.svg?branch=development" alt="build">
@@ -30,27 +30,27 @@ This API provides the information regarding '2019 Novel Coronavirus (covid-19)'.
 
 ## Example
 
-* https://covid19.nuttaphat.com/
-* https://covid2019-api.herokuapp.com/
+-   https://covid19api.azurewebsites.net/
+-   https://covid2019-api.herokuapp.com/
 
 ## Applications
 
-* [Coronavirus App by YaseenAbdullah](https://github.com/YaseenAbdullah/coronavirus)
-* [Covid 19 App - Map, info & help by DavidBarbaran](https://github.com/DavidBarbaran/Covid19App)
-* [COVID-19 Visual Explorer by FitnessAI](https://www.fitnessai.com/covid-19-charts-coronavirus-growth-rate-visual-explorer)
-* [BAILAM (Data and API Integration)](https://www.bailam.com/covid19)
-* [Coronavirus Tech Handbook (Data Tools)](https://coronavirustechhandbook.com/data-tools)
+-   [Coronavirus App by YaseenAbdullah](https://github.com/YaseenAbdullah/coronavirus)
+-   [Covid 19 App - Map, info & help by DavidBarbaran](https://github.com/DavidBarbaran/Covid19App)
+-   [COVID-19 Visual Explorer by FitnessAI](https://www.fitnessai.com/covid-19-charts-coronavirus-growth-rate-visual-explorer)
+-   [BAILAM (Data and API Integration)](https://www.bailam.com/covid19)
+-   [Coronavirus Tech Handbook (Data Tools)](https://coronavirustechhandbook.com/data-tools)
 
-### References
+### Reference
 
-https://github.com/CSSEGISandData/COVID-19
+-   https://github.com/CSSEGISandData/COVID-19
 
 ## Branches
 
-|  Branch           |     Feature                      |              Description                                     |
-| ----------------- | -------------------------------- |  ----------------------------------------------------------- |
-| master            | Docker + Web API                 | For deploying to a server                                    |
-| development       | Docker + Web API                 | For testing before merging to Master                         |
+| Branch      | Feature          | Description                          |
+| ----------- | ---------------- | ------------------------------------ |
+| master      | Docker + Web API | For deploying to a server            |
+| development | Docker + Web API | For testing before merging to Master |
 
 ## Features
 
@@ -62,7 +62,7 @@ https://github.com/CSSEGISandData/COVID-19
 
 ## How to install
 
-* Run the following command in your command line to run the server
+-   Run the following command in your command line to run the server
 
 ```console
 uvicorn main:app
@@ -70,42 +70,42 @@ uvicorn main:app
 
 ## How to install (Docker-compose)
 
-* Run the following command in your command line to run the server
+-   Run the following command in your command line to run the server
 
 ```console
 docker-compose up
 ```
 
-* Or run the server in the background
+-   Or run the server in the background
 
 ```console
 docker-compose up -d
 ```
 
-* The port can be changed at <b>docker-compose.override.yml</b>
+-   The port can be changed at <b>docker-compose.override.yml</b>
 
 ```yml
 version: '3'
 services:
-  web:
-    container_name: "covid19_api_web_container"
-    volumes:
-      - ./app:/app
-    ports:
-      - "80:80"
-    environment:
-      - 'RUN=uvicorn main:app'
+    web:
+        container_name: 'covid19_api_web_container'
+        volumes:
+            - ./app:/app
+        ports:
+            - '80:80'
+        environment:
+            - 'RUN=uvicorn main:app'
 ```
 
 ## How to install (from Dockerhub)
 
-* Download the latest image
+-   Download the latest image
 
 ```console
 docker pull nat236919/covid19-api:latest
 ```
 
-* Create a container and run
+-   Create a container and run
 
 ```console
 docker run nat236919/covid19-api
@@ -128,12 +128,12 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://nuttaphat.azurewebsites.net"><img src="https://avatars0.githubusercontent.com/u/9074112?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nuttaphat Arunoprayoch</b></sub></a><br /><a href="#maintenance-nat236919" title="Maintenance">🚧</a> <a href="https://github.com/nat236919/covid19-api/commits?author=nat236919" title="Code">💻</a> <a href="https://github.com/nat236919/covid19-api/issues?q=author%3Anat236919" title="Bug reports">🐛</a> <a href="https://github.com/nat236919/covid19-api/commits?author=nat236919" title="Documentation">📖</a> <a href="#ideas-nat236919" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/nat236919/covid19-api/pulls?q=is%3Apr+reviewed-by%3Anat236919" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://nuttaphat.com"><img src="https://avatars0.githubusercontent.com/u/9074112?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nuttaphat Arunoprayoch</b></sub></a><br /><a href="#maintenance-nat236919" title="Maintenance">🚧</a> <a href="https://github.com/nat236919/covid19-api/commits?author=nat236919" title="Code">💻</a> <a href="https://github.com/nat236919/covid19-api/issues?q=author%3Anat236919" title="Bug reports">🐛</a> <a href="https://github.com/nat236919/covid19-api/commits?author=nat236919" title="Documentation">📖</a> <a href="https://github.com/nat236919/covid19-api/pulls?q=is%3Apr+reviewed-by%3Anat236919" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/soapy1"><img src="https://avatars0.githubusercontent.com/u/976973?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sophia Castellarin</b></sub></a><br /><a href="https://github.com/nat236919/covid19-api/commits?author=soapy1" title="Code">💻</a></td>
     <td align="center"><a href="https://keybase.io/endoffile78"><img src="https://avatars2.githubusercontent.com/u/11342054?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jeremy</b></sub></a><br /><a href="https://github.com/nat236919/covid19-api/commits?author=endoffile78" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ChooseYourPlan"><img src="https://avatars2.githubusercontent.com/u/32968964?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tim</b></sub></a><br /><a href="#translation-ChooseYourPlan" title="Translation">🌍</a></td>
     <td align="center"><a href="https://github.com/melsaa"><img src="https://avatars0.githubusercontent.com/u/32761948?v=4?s=100" width="100px;" alt=""/><br /><sub><b>melsaa</b></sub></a><br /><a href="https://github.com/nat236919/covid19-api/commits?author=melsaa" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/owen-duncan-snobel"><img src="https://avatars.githubusercontent.com/u/43126781?v=4?s=100" width="100px;" alt=""/><br /><sub><b>owen-duncan-snobel</b></sub></a><br /><a href="https://github.com/nat236919/covid19-api/commits?author=owen-duncan-snobel" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/owen-duncan-snobel"><img src="https://avatars.githubusercontent.com/u/43126781?v=4?s=100" width="100px;" alt=""/><br /><sub><b>owen-duncan-snobel</b></sub></a><br /><a href="https://github.com/nat236919/covid19-api/commits?author=owen-duncan-snobel" title="Code">💻</a> <a href="https://github.com/nat236919/covid19-api/commits?author=owen-duncan-snobel" title="Documentation">📖</a> <a href="#financial-owen-duncan-snobel" title="Financial">💵</a></td>
     <td align="center"><a href="https://www.linkedin.com/in/maria-sitkovets-03994b159/"><img src="https://avatars.githubusercontent.com/u/28634142?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Maria Sitkovets</b></sub></a><br /><a href="https://github.com/nat236919/covid19-api/commits?author=mSitkovets" title="Code">💻</a></td>
   </tr>
 </table>

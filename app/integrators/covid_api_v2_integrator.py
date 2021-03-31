@@ -24,8 +24,8 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          TimeseriesUSDataModel,
                                          TimeseriesUSInfoModel,
                                          TimeseriesUSModel, TotalModel)
-from utils.get_data import (DailyReports, get_data_lookup_table,
-                              get_data_time_series, get_US_time_series)
+from utils.get_data import (DailyReports, DataTimeSeries,
+                              get_data_lookup_table)
 
 
 class CovidAPIv2Integrator:
@@ -36,7 +36,8 @@ class CovidAPIv2Integrator:
             "ts": int = "{timestamp}
         }
     """
-    def __init__(self, daily_reports: DailyReports) -> None:
+    
+    def __init__(self,  daily_reports: DailyReports, time_series: DataTimeSeries) -> None:
         """ Initiate instances """
         self.lookup_table = get_data_lookup_table()
         self.scheme = {
@@ -44,8 +45,9 @@ class CovidAPIv2Integrator:
             'dt': None,
             'ts': None
         }
-        self.daily_reports=daily_reports
-    
+        self.daily_reports = daily_reports
+        self.time_series = time_series
+
     def wrap_data(func) -> ResponseModel:
         """ Wrap a result in a schemed data """
         @wraps(func)
@@ -204,7 +206,7 @@ class CovidAPIv2Integrator:
             1.) global
             2.) confirmed, deaths, recovered
         """
-        self.df_time_series = get_data_time_series() # Get base data
+        self.df_time_series = self.time_series.get_data_time_series() # Get base data
 
         if case not in ['global']:
             raw_data = self.df_time_series[case].T.to_dict()
@@ -272,7 +274,7 @@ class CovidAPIv2Integrator:
         if case not in ['confirmed', 'deaths']:
             data = []
         else:
-            self.df_US_time_series = get_US_time_series() # Get base data
+            self.df_US_time_series = self.time_series.get_data_time_series(US=True) # Get base data
             raw_data = self.df_US_time_series[case].T.to_dict()
             data = self.__extract_US_time_series(raw_data)
 

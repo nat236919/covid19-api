@@ -61,7 +61,17 @@
       "profile": "https://github.com/owen-duncan-snobel",
       "contributions": [
         "code",
-        "doc"
+        "doc",
+        "financial"
+      ]
+    },
+    {
+      "login": "mSitkovets",
+      "name": "Maria Sitkovets",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28634142?v=4",
+      "profile": "https://www.linkedin.com/in/maria-sitkovets-03994b159/",
+      "contributions": [
+        "code"
       ]
     },
     {
