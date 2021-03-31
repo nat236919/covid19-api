@@ -15,10 +15,10 @@ from starlette.requests import Request
 from integrators.factory import Factory
 
 from . import v2
+from utils.get_data import DailyReports, DataTimeSeries
 
 # Initiate Integrator
 COVID_API_V2 = Factory.select_version('v2')
-
 
 # Logging
 def write_log(requested_path: str, client_ip: str) -> None:
