@@ -5,6 +5,7 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 02-March-2021
 """
 # Import libraries
+from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from typing import Any, Dict, List
 
@@ -16,12 +17,79 @@ from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
                                          TimeseriesCoordinatesModel,
                                          TimeseriesDataModel, TimeseriesModel,
                                          TotalModel)
+
 from utils.get_data import get_data
 
+class ICovidAPIv1(metaclass=ABCMeta):
+    "the Builder Interface"
 
-# Create a model and its methods
-class CovidAPIv1:
-    """ Model and Its methods """
+    #######################################################################################
+    # GET - Datetime and Timestamp
+    #######################################################################################
+    @staticmethod
+    @abstractmethod
+    def add_dt_and_ts(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        "A static interface method"
+    
+    #######################################################################################
+    # GET - Current data
+    #######################################################################################
+    @staticmethod
+    @abstractmethod
+    def get_current_status(self, list_required: bool = False) -> Dict[str, Any]:
+        "A static interface method"
+    
+    #######################################################################################
+    # GET - Confirm
+    #######################################################################################
+    @staticmethod
+    @abstractmethod
+    def get_confirmed_cases(self) -> Dict[str, int]:
+        "A static interface method"
+    
+    #######################################################################################
+    # GET - Deaths
+    #######################################################################################
+    @staticmethod
+    @abstractmethod
+    def get_deaths(self) -> Dict[str, int]:
+        "A static interface method"
+    
+    #######################################################################################
+    # GET - Recovered
+    #######################################################################################
+    @staticmethod
+    @abstractmethod
+    def get_recovered(self) -> Dict[str, int]:
+        "A static interface method"
+    
+    #######################################################################################
+    # GET - Total
+    #######################################################################################
+    @staticmethod
+    @abstractmethod
+    def get_total(self) -> Dict[str, Any]:
+        "A static interface method"
+    
+    #######################################################################################
+    # GET - Affected Countries
+    #######################################################################################
+    @staticmethod
+    @abstractmethod
+    def get_affected_countries(self) -> Dict[str, List]:
+        "A static interface method"
+    
+    #######################################################################################
+    # GET - Timeseries
+    #######################################################################################
+    @staticmethod
+    @abstractmethod
+    def get_time_series(self) -> Dict[str, Dict]:
+        "A static interface method"
+
+
+class ConcreteCovidAPIv1(ICovidAPIv1):
+     """ Model and Its methods """
     def __init__(self) -> None:
         """ Get data from helper -> the source data """
         list_of_dataframes = get_data()
@@ -122,3 +190,14 @@ class CovidAPIv1:
         }
         data = self.add_dt_and_ts(data)
         return data
+
+
+class FactoryCovidAPIv1:
+    "The Factory Class"
+
+    @staticmethod
+    def version_name(version):
+        "Construct and return the final product"
+        if version == "v1"
+            return ConcreteCovidAPIv1()  
+        return none
