@@ -7,6 +7,7 @@ DATE: 02-March-2021
 # Import libraries
 from datetime import datetime
 from typing import Any, Dict, List
+import ICovidAPIv1
 
 import pandas as pd
 
@@ -20,7 +21,7 @@ from utils.get_data import get_data
 
 
 # Create a model and its methods
-class CovidAPIv1:
+class ConcreteCovidAPIv1(ICovidAPIv1):
     """ Model and Its methods """
     def __init__(self) -> None:
         """ Get data from helper -> the source data """
