@@ -9,6 +9,7 @@ from datetime import datetime
 from typing import Any, Dict, List
 
 import pandas as pd
+import ICovidAPIv1
 
 from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
                                          CurrentListModel, CurrentModel,
@@ -20,7 +21,7 @@ from utils.get_data import get_data
 
 
 # Create a model and its methods
-class CovidAPIv1:
+class ConcreteCovidAPIv1(ICovidAPIv1):
     """ Model and Its methods """
     def __init__(self) -> None:
         """ Get data from helper -> the source data """
