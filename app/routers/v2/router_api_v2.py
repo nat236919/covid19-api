@@ -27,38 +27,35 @@ class Logger(object):
     __instance = None
 
     @staticmethod
-    def get_instance(requested_path, client_ip):
+    def get_instance():
         if Logger.__instance is None:
             """
             Static method to create a single instance
             """
-            __instance = Logger(requested_path, client_ip)
+            __instance = Logger()
             return __instance
 
-    def __init__(self, requested_path, client_ip) -> None:
+    def __init__(self) -> None:
         """
         Use the static method get_instance, not the constructor
         """
-        self.requested_path = requested_path
-        self.client_ip = client_ip
-        self.log_file = None
         if Logger.__instance is not None:
             raise Exception("This is a singleton class.")
         else:
-            time_format = '%d-%b-%Y'
-            file_name = datetime.now().strftime(time_format)
-            with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
-                date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
-                message = date_time_message + self.requested_path + ' | ' + self.client_ip + '\n'
-                self.log_file.write(message)
             Logger.__instance = self
 
-    def get_logger(self):
-        return self.__instance
+    def create_log(self, requested_path, client_ip):
+        time_format = '%d-%b-%Y'
+        file_name = datetime.now().strftime(time_format)
+        with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
+            date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
+            message = date_time_message + requested_path + ' | ' + client_ip + '\n'
+            log_file.write(message)
 
 
 def write_log(requested_path: str, client_ip: str) -> None:
-    Logger.get_instance(requested_path, client_ip)
+    logger = Logger.get_instance()
+    logger.create_log(requested_path, client_ip)
     return None
 
 
