@@ -10,7 +10,7 @@ from typing import Any, Dict
 
 from fastapi import HTTPException
 
-from integrators.covid_api_v1_integrator import CovidAPIv1
+from integrators.concrete_factory import ConcreteCovidAPIv1
 from utils.helper import helper_lookup_country
 from . import v1
 
@@ -21,7 +21,7 @@ def reload_api_v1_integrator(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         global COVID_API_V1, dt, ts
-        COVID_API_V1 = CovidAPIv1()
+        COVID_API_V1 = ConcreteCovidAPIv1()
         dt, ts = COVID_API_V1.datetime_raw, COVID_API_V1.timestamp
         return func(*args, **kwargs)
     return wrapper
