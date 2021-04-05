@@ -27,6 +27,8 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
 from utils.get_data import (DailyReports, DataTimeSeries,
                               get_data_lookup_table)
 
+from utils.daily_reports_adapter import DailyReportsAdapter
+
 
 class CovidAPIv2Integrator:
     """ Covid-19 API v2 methods
@@ -37,7 +39,7 @@ class CovidAPIv2Integrator:
         }
     """
     
-    def __init__(self,  daily_reports: DailyReports, time_series: DataTimeSeries) -> None:
+    def __init__(self,  daily_reports: DailyReportsAdapter, time_series: DataTimeSeries) -> None:
         """ Initiate instances """
         self.lookup_table = get_data_lookup_table()
         self.scheme = {

@@ -14,11 +14,15 @@ from integrators.covid_api_v2_integrator import CovidAPIv2Integrator
 from starlette.requests import Request
 
 from . import v2
+
 from utils.get_data import DailyReports, DataTimeSeries
-from utils.daily_reports_interface import IDailyReports
+from utils.daily_reports_adapter import DailyReportsAdapter
+from utils.ihelper import IHelper
+from utils.helper import Helpers
 
 # Initiate Integrator
-DAILY_REPORTS = DailyReports(IDailyReports)
+HELPER = Helpers()
+DAILY_REPORTS = DailyReportsAdapter(HELPER)
 DATA_TIME_SERIES = DataTimeSeries()
 COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
 
