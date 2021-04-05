@@ -77,7 +77,7 @@ class DataTimeSeries:
     def _clean_timeseries_dataframe(self, df: pd.DataFrame, US: bool = False) -> pd.DataFrame:
         df_cleaned = helper_df_cleaning(df) # main pre-processing
         if US:
-            df_cleaned = helper_df_cols_cleaning(df_cleaned, ['Lat', 'Long_'], float)
+            df_cleaned = Helpers.helper_df_cols_cleaning(df_cleaned, ['Lat', 'Long_'], float)
         return df_cleaned
 
       
