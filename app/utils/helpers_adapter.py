@@ -11,11 +11,10 @@ from .file_paths import JHU_CSSE_FILE_PATHS
 
 import pandas as pd
 
-from .ihelper import IHelper
 from .daily_reports_interface import IDailyReports
 from .helper import Helpers
 
-class DailyReportsAdapter(IHelper):
+class HelpersAdapter(IDailyReports):
 
     def __init__(self, helper: Helpers) -> None:
         self.helper = helper
