@@ -11,9 +11,9 @@ from typing import Dict
 import pandas as pd
 
 from .file_paths import JHU_CSSE_FILE_PATHS
-from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
-                     helper_get_latest_data_url)
+from .helper import DataProcessingUtilities
 
+helper = DataProcessingUtilities.getInstance()
 
 # Get Lookup table
 def get_data_lookup_table() -> Dict[str, str]:
@@ -31,8 +31,8 @@ def get_data_lookup_table() -> Dict[str, str]:
 # Get Daily Reports Data (General and US)
 class DailyReports:
     def __init__(self) -> None: 
-        self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
-        self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
+        self.latest_base_url = helper.helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+        self.latest_base_US_url = helper.helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
 
     # Get data from daily reports
     def get_data_daily_reports(self, US: bool = False) -> pd.DataFrame:
@@ -42,7 +42,7 @@ class DailyReports:
 
         # Data pre-processing
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        df = helper_df_cols_cleaning(df, concerned_columns, int)
+        df = helper.helper_df_cols_cleaning(df, concerned_columns, int)
         
         return df
 
@@ -73,9 +73,9 @@ class DataTimeSeries:
         return dataframes
     
     def _clean_timeseries_dataframe(self, df: pd.DataFrame, US: bool = False) -> pd.DataFrame:
-        df_cleaned = helper_df_cleaning(df) # main pre-processing
+        df_cleaned = helper.helper_df_cleaning(df) # main pre-processing
         if US:
-            df_cleaned = helper_df_cols_cleaning(df_cleaned, ['Lat', 'Long_'], float)
+            df_cleaned = helper.helper_df_cols_cleaning(df_cleaned, ['Lat', 'Long_'], float)
         return df_cleaned
 
       
