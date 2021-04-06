@@ -26,6 +26,23 @@ def get_data_lookup_table() -> Dict[str, str]:
     data = {v['iso2']: v['Country_Region'] for v in data}
 
     return data
+  
+class DailyReports:
+    def __init__(self) -> None: 
+        self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+        self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
+
+    # Get data from daily reports
+    def get_data_daily_reports(self, US: bool = False) -> pd.DataFrame:
+        """ Get data from BASE_URL_DAILY_REPORTS """
+        # Extract the data
+        df = pd.read_csv(self.latest_base_US_url) if US else pd.read_csv(self.latest_base_url)
+
+        # Data pre-processing
+        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
+        df = helper_df_cols_cleaning(df, concerned_columns, int)
+        
+        return df
 
       
 # API v1
