@@ -109,6 +109,31 @@ class TimeseriesCaseModel(BaseModel):
     Coordinates: TimeseriesCaseCoordinatesModel
     TimeSeries: List[TimeseriesCaseDataModel]
 
+class TimeseriesCaseModelBuilder(object):
+    '''
+    a builder class for building TimeseriesCaseModel
+    that can be used in other parts of the project
+    '''
+
+    def __init__(self, province_state, country_region):
+        self.province_state = province_state
+        self.country_region = country_region
+        self.timeseries = []
+
+    def set_coordinates(self, lat, long):
+        cord = TimeseriesCaseCoordinatesModel(Lat=lat, Long=long)
+        self.coordinates = cord
+
+    def add_time_series(self, date, value):
+        self.timeseries.append(TimeseriesCaseDataModel(date=date, value=value))
+
+    def build(self) -> TimeseriesCaseModel:
+        return TimeseriesCaseModel(
+            Province_State=self.province_state,
+            Country_Region=self.country_region,
+            Coordinates=self.coordinates,
+            TimeSeries=self.timeseries
+        )
 
 #######################################
 # TimeseriesUSModel
