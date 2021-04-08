@@ -27,6 +27,8 @@ def get_data_lookup_table() -> Dict[str, str]:
 
     return data
   
+  
+ # Get Daily Reports Data (General and US)
 class DailyReports:
     def __init__(self) -> None: 
         self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
