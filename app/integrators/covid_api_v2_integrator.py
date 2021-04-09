@@ -19,6 +19,8 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          TimeseriesCaseCoordinatesModel,
                                          TimeseriesCaseDataModel,
                                          TimeseriesCaseModel,
+                                         TimeseriesCaseModelBuilder,
+                                         TimeseriesCaseModelBuilderDirect,
                                          TimeseriesGlobalModel,
                                          TimeseriesUSCoordinatesModel,
                                          TimeseriesUSDataModel,
@@ -223,6 +225,7 @@ class CovidAPIv2Integrator:
         def __unpack_inner_time_series(time_series: Dict[str, Any]) -> TimeseriesCaseModel:
             for data in time_series.values():
                 excluded_cols = ['Province/State', 'Country/Region', 'Lat', 'Long']
+                '''
                 # Coordinates
                 timeseries_coordinates_model = TimeseriesCaseCoordinatesModel(
                     Lat=float(data['Lat']) if data['Lat'] else 0,
@@ -239,6 +242,24 @@ class CovidAPIv2Integrator:
                     Coordinates=timeseries_coordinates_model,
                     TimeSeries=timeseries_data_model_list
                 )
+                '''
+
+                # new code using the builder object to build a TimeseriesCaseModel
+                builder = TimeseriesCaseModelBuilder(data['Province/State'], data['Country/Region'])
+                lat = float(data['Lat']) if data['Lat'] else 0
+                long = float(data['Long']) if data['Long'] else 0
+                builder.set_coordinates(lat, long)
+                builder.add_time_series({k: int(v) for k, v in data.items() if k not in excluded_cols})
+                timeseries_case_model = builder.build()
+
+                # alternatively can use the direct 'one-stop-shop' version of the builder
+
+                #builder = TimeseriesCaseModelBuilderDirect(data)
+                #timeseries_case_model = builder.build()
+
+                # depending on needs future developing of this project can use/change
+                # either type of builder
+
                 yield timeseries_case_model
 
         # Extract the time series data

@@ -124,8 +124,14 @@ class TimeseriesCaseModelBuilder(object):
         cord = TimeseriesCaseCoordinatesModel(Lat=lat, Long=long)
         self.coordinates = cord
 
-    def add_time_series(self, date, value):
+    # adds one entry to the list
+    def add_time_series_entry(self, date, value):
         self.timeseries.append(TimeseriesCaseDataModel(date=date, value=value))
+
+    # add whole map to list
+    def add_time_series(self, temp_time_series_dict):
+        timeseries_data_model_list = [TimeseriesCaseDataModel(date=k, value=v) for k, v in temp_time_series_dict.items()]
+        self.timeseries.extend(timeseries_data_model_list)
 
     def build(self) -> TimeseriesCaseModel:
         return TimeseriesCaseModel(
@@ -134,6 +140,25 @@ class TimeseriesCaseModelBuilder(object):
             Coordinates=self.coordinates,
             TimeSeries=self.timeseries
         )
+
+class TimeseriesCaseModelBuilderDirect(object):
+    '''
+    a builder class for TimeseriesCaseModel like above
+    but this one takes in the 'data' object directly and does not require calling the methods
+    in the code that uses this class
+    '''
+    def __init__(self, data):
+        self.builder = TimeseriesCaseModelBuilder(data['Province/State'], data['Country/Region'])
+        lat = float(data['Lat']) if data['Lat'] else 0
+        long = float(data['Long']) if data['Long'] else 0
+        self.builder.set_coordinates(lat, long)
+        excluded_cols = ['Province/State', 'Country/Region', 'Lat', 'Long']
+        self.builder.add_time_series({k: int(v) for k, v in data.items() if k not in excluded_cols})
+
+    # can be called right after init
+    def build(self) -> TimeseriesCaseModel:
+        return self.builder.build()
+
 
 #######################################
 # TimeseriesUSModel
