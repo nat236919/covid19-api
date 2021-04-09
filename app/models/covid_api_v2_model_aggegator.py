@@ -8,7 +8,7 @@ from functools import wraps
 from typing import List, Dict, Any
 
 from models.covid_api_v2_model import (CurrentCountryModel, CurrentUSModel,
-                                       TimeseriesCaseModel, TimeseriesGlobalModel,
+                                       TimeseriesBuilder,TimeseriesCaseModel, TimeseriesGlobalModel,
                                        TimeseriesCaseDataModel, TimeseriesUSInfoModel,
                                        TimeseriesCaseCoordinatesModel)
 
@@ -259,24 +259,26 @@ class TimeseriesModelRoot:
         def __unpack_inner_time_series(time_series: Dict[str, Any]) -> TimeseriesCaseModel:
             for data in time_series.values():
                 excluded_cols = ['Province/State', 'Country/Region', 'Lat', 'Long']
+
+                builder: TimeseriesBuilder = TimeseriesBuilder()
                 # Coordinates
-                timeseries_coordinates_model = TimeseriesCaseCoordinatesModel(
-                    Lat=float(data['Lat']) if data['Lat'] else 0,
-                    Long=float(data['Long']) if data['Long'] else 0
+
+                builder.set_coordinates(
+                    float(data['Lat']) if data['Lat'] else 0,
+                    float(data['Long']) if data['Long'] else 0
                 )
+
                 # Timeseries Data
-                temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
-                timeseries_data_model_list = [TimeseriesCaseDataModel(date=k, value=v) for k, v in temp_time_series_dict.items()]
+                for k, v in data.items():
+                    if k not in excluded_cols:
+                        v = int(v)
+                        builder.add_data(k, v)
 
                 # Main Model
-                timeseries_case_model = TimeseriesCaseModel(
-                    Province_State=data['Province/State'],
-                    Country_Region=data['Country/Region'],
-                    Coordinates=timeseries_coordinates_model,
-                    Info=None,
-                    TimeSeries=timeseries_data_model_list
-                )
-                yield timeseries_case_model
+                builder.set_province_state(data['Province/State'])
+                builder.set_country_region(data['Country/Region'])
+
+                yield builder.build()
 
         # Extract the time series data
         time_series_data = []
