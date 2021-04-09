@@ -1,4 +1,3 @@
-
 #######################################
 # CurrentModelRoot
 #######################################
@@ -8,9 +7,8 @@ from functools import wraps
 from typing import List, Dict, Any
 
 from models.covid_api_v2_model import (CurrentCountryModel, CurrentUSModel,
-                                       TimeseriesBuilder,TimeseriesCaseModel, TimeseriesGlobalModel,
-                                       TimeseriesCaseDataModel, TimeseriesUSInfoModel,
-                                       TimeseriesCaseCoordinatesModel)
+                                       TimeseriesBuilder, TimeseriesCaseModel, TimeseriesGlobalModel,
+                                       TimeseriesUSInfoBuilder)
 
 from models.covid_api_v2_model import CurrentModel
 from pydantic import BaseModel
@@ -24,7 +22,7 @@ class CurrentModelRoot:
     country_models: List[CurrentCountryModel]
     states_models: List[CurrentUSModel]
 
-    def __init__(self,  daily_reports: DailyReports):
+    def __init__(self, daily_reports: DailyReports):
 
         self.country_models = []
         self.states_models = []
@@ -76,10 +74,11 @@ class CurrentModelRoot:
 
     def update_US_models(self) -> None:
         """ Get current data for USA's situation """
-        self.df_US = self.daily_reports.get_data_daily_reports(US=True) # Get base data
+        self.df_US = self.daily_reports.get_data_daily_reports(US=True)  # Get base data
 
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        df = self.df_US.groupby(['Province_State'])[concerned_columns].sum().sort_values(by='Confirmed', ascending=False)
+        df = self.df_US.groupby(['Province_State'])[concerned_columns].sum().sort_values(by='Confirmed',
+                                                                                         ascending=False)
         df = df[concerned_columns].astype(int)
         df = df.reset_index()
         df.columns = ['Province_State'] + concerned_columns
@@ -112,7 +111,8 @@ class CurrentModelRoot:
         country_name = country_name.lower()
         country_name_from_code = self.lookup_table.get(country_name.upper(), '').lower()
 
-        data = [country_data for country_data in self.country_models if country_data.location.lower() in [country_name, country_name_from_code]]
+        data = [country_data for country_data in self.country_models if
+                country_data.location.lower() in [country_name, country_name_from_code]]
         data = data[0] if data else {}
 
         return data
@@ -185,8 +185,8 @@ class CurrentModelRoot:
             data['confirmed'] += x.confirmed
         return data
 
-class TimeseriesModelRoot:
 
+class TimeseriesModelRoot:
     country_timeseries: List[TimeseriesCaseModel]
     us_timeseries: List[TimeseriesCaseModel]
 
@@ -230,7 +230,7 @@ class TimeseriesModelRoot:
     def _update_time_series(self) -> None:
         """ Update all series
         """
-        self.df_time_series = self.time_series.get_data_time_series() # Get base data
+        self.df_time_series = self.time_series.get_data_time_series()  # Get base data
 
         raw_data = self.df_time_series
 
@@ -242,7 +242,6 @@ class TimeseriesModelRoot:
             raw_d = raw_data[case].T.to_dict()
             self.dict_global_data[case] = self.__extract_time_series(raw_d)
 
-
     def _update_US_time_series(self) -> None:
         self.df_US_time_series = self.time_series.get_data_time_series(US=True)
         self.dict_US_data = {}
@@ -250,8 +249,6 @@ class TimeseriesModelRoot:
         for case in self.df_US_time_series.keys():
             raw_d = self.df_US_time_series[case].T.to_dict()
             self.dict_US_data[case] = self.__extract_US_time_series(raw_d)
-
-
 
     def __extract_time_series(self, time_series: Dict) -> List[TimeseriesCaseModel]:
         """ Extract time series from a given case """
@@ -294,8 +291,9 @@ class TimeseriesModelRoot:
         global_df_list = []
 
         for key, df in dataframe_dict.items():
-            df_temp = pd.DataFrame(df.iloc[:, 4:].astype('int32').sum(axis=0)) # Slice to select time series data (exclude country info)
-            df_temp.columns = [key] # A dataframe with one column named by a key (case), rows are time series
+            df_temp = pd.DataFrame(
+                df.iloc[:, 4:].astype('int32').sum(axis=0))  # Slice to select time series data (exclude country info)
+            df_temp.columns = [key]  # A dataframe with one column named by a key (case), rows are time series
             global_df_list.append(df_temp)
 
         # Combine DataFrames
@@ -310,35 +308,39 @@ class TimeseriesModelRoot:
         def __unpack_US_inner_time_series(time_series: Dict[str, Any]) -> TimeseriesCaseModel:
             for data in time_series.values():
                 excluded_cols = ['UID', 'iso2', 'iso3', 'code3', 'FIPS',
-                                'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_',
-                                'Combined_Key','Population']
+                                 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_',
+                                 'Combined_Key', 'Population']
+
+                builder: TimeseriesBuilder = TimeseriesBuilder(is_info_required=True)
+
                 # Info
-                timeseries_US_info_model = TimeseriesUSInfoModel(
-                    UID=data['UID'],
-                    iso2=data['iso2'],
-                    iso3=data['iso3'],
-                    code3=data['code3'],
-                    FIPS=data['FIPS'],
-                    Admin2=data['Admin2'],
+                us_info_builder: TimeseriesUSInfoBuilder = builder.set_info()
+                (
+                    us_info_builder
+                        .set_UID(data['UID'])
+                        .set_iso2(data['iso2'])
+                        .set_iso3(data['iso3'])
+                        .set_code3(data['code3'])
+                        .set_FIPS(data['FIPS'])
+                        .set_Admin2(data['Admin2'])
                 )
+
                 # Coordinates
-                timeseries_US_coordinates_model = TimeseriesCaseCoordinatesModel(
-                    Lat=float(data['Lat']) if data['Lat'] else 0,
-                    Long=float(data['Long_']) if data['Long_'] else 0
+                builder.set_coordinates(
+                    float(data['Lat']) if data['Lat'] else 0,
+                    float(data['Long_']) if data['Long_'] else 0
                 )
                 # Timeseries
-                temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
-                timeseries_data_model_list = [TimeseriesCaseDataModel(date=k, value=v) for k, v in temp_time_series_dict.items()]
+                for k, v in data.items():
+                    if k not in excluded_cols:
+                        v = int(v)
+                        builder.add_data(k, v)
 
                 # Main Model
-                timeseries_US_model = TimeseriesCaseModel(
-                    Province_State=data['Province_State'],
-                    Country_Region=data['Country_Region'],
-                    Info=timeseries_US_info_model,
-                    Coordinates=timeseries_US_coordinates_model,
-                    TimeSeries=timeseries_data_model_list
-                )
-                yield timeseries_US_model
+                builder.set_province_state(data['Province/State'])
+                builder.set_country_region(data['Country/Region'])
+
+                yield builder.build()
 
         # Extract the time series data
         time_series_data = []
