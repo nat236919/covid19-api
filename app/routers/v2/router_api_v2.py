@@ -23,14 +23,43 @@ COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
 
 
 # Logging
-def write_log(requested_path: str, client_ip: str) -> None:
-    time_format = '%d-%b-%Y'
-    file_name = datetime.now().strftime(time_format)
-    with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
-        date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
-        message = date_time_message + requested_path + ' | ' + client_ip + '\n'
-        log_file.write(message)
-    return None
+
+class Logging:
+    #private static instance
+    __instance = None
+
+    #method must be static for singleton
+    @staticmethod
+    def getInstance(self):
+        if Logging.__instance is None:
+            __instance = Logging()
+            return __instance
+
+    def __init__(self) -> None:
+        if Logging.__instance is None:
+            Logging.__instance = self
+
+    def new_log(self, requested_path, client_ip):
+        time_format = '%d-%b-%Y'
+        file_name = datetime.now().strftime(time_format)
+        with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
+              date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
+              message = date_time_message + requested_path + ' | ' + client_ip + '\n'
+              log_file.write(message)
+
+    def write_log(requested_path: str, client_ip: str) -> None:
+        Logging.getInstance(requested_path, client_ip)
+        logging = Logging.getInstance()
+        logging.create_log(requested_path, client_ip)
+        #Moved to new_log function
+        # time_format = '%d-%b-%Y'
+        # file_name = datetime.now().strftime(time_format)
+        # with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
+         #   date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
+         #   message = date_time_message + requested_path + ' | ' + client_ip + '\n'
+         #  log_file.write(message)
+        return None
+
 
 
 @v2.get('/current')
