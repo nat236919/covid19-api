@@ -118,16 +118,11 @@ class CurrentModelRoot:
 
     def update_country_models(self) -> None:
         """ Sets country_models to the current data from all locations (Lastest date) """
-        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        self.df = self.daily_reports.get_data_daily_reports()  # Get base data
-        self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
-        self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
+        fetcher: DataFetcher = CurrentDataFetcher()
+        organizer: DataOrganizer = DataOrganizer(fetcher)
 
-        df_grp_by_country = self.df_grp_by_country.sort_values(by='Confirmed', ascending=False)
-        df_grp_by_country = df_grp_by_country.reset_index()
-        df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
-
-        data = [CurrentModel(**v) for v in df_grp_by_country.to_dict('index').values()]
+        df = organizer.fetch_data(self.daily_reports)
+        data = organizer.get_as_data_model_list(df)
         self.country_models = data
 
     def update_US_models(self) -> None:
