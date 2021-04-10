@@ -17,6 +17,38 @@ from models.base_model import ResponseModel
 
 from utils.get_data import get_data_lookup_table, DailyReports, DataTimeSeries
 
+class DataFetcher:
+    def get_reports(self, daily_reports: 'DataOrganizer') -> pd.DataFrame:
+        raise NotImplemented
+
+    def get_grouped(self, df: pd.DataFrame) -> pd.DataFrame:
+        raise NotImplemented
+
+    def cast_to_int(self, df: pd.DataFrame) -> pd.DataFrame:
+        raise NotImplemented
+
+    def reorder_df(self, df: pd.DataFrame) -> pd.DataFrame:
+        raise NotImplemented
+
+    def get_as_data_model_list(self, df: pd.DataFrame) -> list:
+        raise NotImplemented
+
+
+class DataOrganizer:
+    fetcher: DataFetcher
+
+    def __init__(self, fetcher: DataFetcher):
+        self.fetcher = fetcher
+
+    def fetch_data(self, daily_reports: DailyReports) -> pd.DataFrame:
+        reports = self.fetcher.get_reports(daily_reports)
+        reports = self.fetcher.get_grouped(reports)
+        reports = self.fetcher.cast_to_int(reports)
+        reports = self.fetcher.reorder_df(reports)
+        return reports
+
+    def get_as_data_model_list(self, df: pd.DataFrame) -> list:
+        return self.fetcher.get_as_data_model_list(df)
 
 class CurrentModelRoot:
     country_models: List[CurrentCountryModel]
