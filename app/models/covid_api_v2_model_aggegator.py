@@ -17,6 +17,7 @@ from models.base_model import ResponseModel
 
 from utils.get_data import get_data_lookup_table, DailyReports, DataTimeSeries
 
+
 class DataFetcher:
     def get_reports(self, daily_reports: DailyReports) -> pd.DataFrame:
         raise NotImplemented
@@ -75,6 +76,36 @@ class CurrentDataFetcher(DataFetcher):
 
     def get_concerned_columns(self) -> List[str]:
         return ['Confirmed', 'Deaths', 'Recovered', 'Active']
+
+
+class USDataFetcher(DataFetcher):
+
+    def get_reports(self, daily_reports: DailyReports) -> pd.DataFrame:
+        return daily_reports.get_data_daily_reports(US=True)
+
+    def get_grouped(self, df: pd.DataFrame) -> pd.DataFrame:
+        return (
+            df
+            .groupby(['Province_State'])[self.get_concerned_columns()]
+            .sum()
+        )
+
+    def cast_to_int(self, df: pd.DataFrame) -> pd.DataFrame:
+        return df[self.get_concerned_columns()].astype(int)
+
+    def reorder_df(self, df: pd.DataFrame) -> pd.DataFrame:
+        df = df.sort_values(by='Confirmed', ascending=False)
+        df = df.reset_index()
+        df.columns = ['Province_State'] + self.get_concerned_columns()
+        df.columns = ['province_state', 'confirmed', 'deaths', 'recovered', 'active']
+        return df
+
+    def get_as_data_model_list(self, df: pd.DataFrame) -> list:
+        return [CurrentUSModel(**v) for v in df.to_dict('index').values()]
+
+    def get_concerned_columns(self) -> List[str]:
+        return ['Confirmed', 'Deaths', 'Recovered', 'Active']
+
 
 class CurrentModelRoot:
     country_models: List[CurrentCountryModel]
