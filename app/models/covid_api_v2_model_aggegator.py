@@ -158,17 +158,11 @@ class CurrentModelRoot:
 
     def update_US_models(self) -> None:
         """ Get current data for USA's situation """
-        self.df_US = self.daily_reports.get_data_daily_reports(US=True)  # Get base data
+        fetcher: DataFetcher = USDataFetcher()
+        organizer: DataOrganizer = DataOrganizer(fetcher)
 
-        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        df = self.df_US.groupby(['Province_State'])[concerned_columns].sum().sort_values(by='Confirmed',
-                                                                                         ascending=False)
-        df = df[concerned_columns].astype(int)
-        df = df.reset_index()
-        df.columns = ['Province_State'] + concerned_columns
-        df.columns = ['province_state', 'confirmed', 'deaths', 'recovered', 'active']
-
-        data = [CurrentUSModel(**v) for v in df.to_dict('index').values()]
+        df = organizer.fetch_data(self.daily_reports)
+        data = organizer.get_as_data_model_list(df)
         self.states_models = data
 
     @wrap_data
