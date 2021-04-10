@@ -18,7 +18,7 @@ from models.base_model import ResponseModel
 from utils.get_data import get_data_lookup_table, DailyReports, DataTimeSeries
 
 class DataFetcher:
-    def get_reports(self, daily_reports: 'DataOrganizer') -> pd.DataFrame:
+    def get_reports(self, daily_reports: DailyReports) -> pd.DataFrame:
         raise NotImplemented
 
     def get_grouped(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -33,6 +33,9 @@ class DataFetcher:
     def get_as_data_model_list(self, df: pd.DataFrame) -> list:
         raise NotImplemented
 
+    def get_concerned_columns(self) -> List[str]:
+        raise NotImplemented
+
 
 class DataOrganizer:
     fetcher: DataFetcher
@@ -43,12 +46,35 @@ class DataOrganizer:
     def fetch_data(self, daily_reports: DailyReports) -> pd.DataFrame:
         reports = self.fetcher.get_reports(daily_reports)
         reports = self.fetcher.get_grouped(reports)
-        reports = self.fetcher.cast_to_int(reports)
+        reports[self.fetcher.get_concerned_columns()] = self.fetcher.cast_to_int(reports)
         reports = self.fetcher.reorder_df(reports)
         return reports
 
     def get_as_data_model_list(self, df: pd.DataFrame) -> list:
         return self.fetcher.get_as_data_model_list(df)
+
+
+class CurrentDataFetcher(DataFetcher):
+    def get_reports(self, daily_reports: DailyReports) -> pd.DataFrame:
+        return daily_reports.get_data_daily_reports()
+
+    def get_grouped(self, df: pd.DataFrame) -> pd.DataFrame:
+        return df.groupby('Country_Region')[self.get_concerned_columns()].sum()
+
+    def cast_to_int(self, df: pd.DataFrame) -> pd.DataFrame:
+        return df[self.get_concerned_columns()].astype(int)
+
+    def reorder_df(self, df: pd.DataFrame) -> pd.DataFrame:
+        df = df.sort_values(by='Confirmed', ascending=False)
+        df = df.reset_index()
+        df.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
+        return df
+
+    def get_as_data_model_list(self, df: pd.DataFrame) -> list:
+        return [CurrentModel(**v) for v in df.to_dict('index').values()]
+
+    def get_concerned_columns(self) -> List[str]:
+        return ['Confirmed', 'Deaths', 'Recovered', 'Active']
 
 class CurrentModelRoot:
     country_models: List[CurrentCountryModel]
