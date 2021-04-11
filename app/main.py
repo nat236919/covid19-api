@@ -18,9 +18,6 @@ from config import CONFIG
 from routers.v1 import v1
 from routers.v2 import v2
 
-from abc import ABCMeta, abstractmethod
-
-
 # Setup application
 # Note: Please visit config.py for modification
 app = FastAPI(
@@ -51,43 +48,18 @@ def read_docs() -> None:
     """ API documentation """
     return RedirectResponse(url='/docs')
 
-class IBuilder(metaclass=ABCMeta):
-    "The Builder Interface"
 
-    @staticmethod
-    @abstractmethod
-    def build_router_v1():
-        "Builds router v1"
-
-    @staticmethod
-    @abstractmethod
-    def build_router_v2():
-        "Builds router v2"
-class Builder(IBuilder):
-    "The Concrete Builder."
-
-    def __init__(self):
-        self.routes = []
-
-    def build_router_v1(self):
-        self.routes.append('v1')
-        app.include_router(v1, prefix="", tags=["v1"])
-        return self
-
-    def build_router_v2(self):
-        self.routes.append('v2')
-        app.include_router(v2, prefix="/v2", tags=["v2"])
-        return self
-
-class Director:
-    "The Director, building a complex representation."
-
-    @staticmethod
-    def construct():
-        "Constructs and returns the final product"
-        return Builder()\
-            .build_router_v2()\
-            .build_router_v1()
+"""
+SECTION: API v2
+DESCRIPTION: New API (v2)
+DATE: 14-March-2020
+"""
+app.include_router(v2, prefix="{adapter}/v2", tags=["v2"])
 
 
-ROUTES = Director.construct()
+"""
+SECTION: API v1
+REMARK: No further improvement intended unless necessary
+"""
+app.include_router(v1, prefix="", tags=["v1"])
+
