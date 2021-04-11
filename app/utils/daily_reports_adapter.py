@@ -7,8 +7,8 @@ import pandas as pd
 from .file_paths import JHU_CSSE_FILE_PATHS
 from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
                      helper_get_latest_data_url)
-from time_series_interface import IDataTimeSeries
-from daily_report import DailyReports
+from .time_series_interface import IDataTimeSeries
+from .daily_report import DailyReports
 
 class DailyReportsAdapter(IDataTimeSeries)
     def __init__(self):
