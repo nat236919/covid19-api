@@ -13,6 +13,9 @@ import pandas as pd
 from .file_paths import JHU_CSSE_FILE_PATHS
 from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
                      helper_get_latest_data_url)
+from daily_report_interface import IDailyReports
+from time_series_interface import IDataTimeSeries
+
 
 
 # Get Lookup table
@@ -29,7 +32,7 @@ def get_data_lookup_table() -> Dict[str, str]:
 
 
 # Get Daily Reports Data (General and US)
-class DailyReports:
+class DailyReports(IDailyReports):
     def __init__(self) -> None: 
         self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
         self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
@@ -48,7 +51,7 @@ class DailyReports:
 
       
 # Get data from time series (General and US)
-class DataTimeSeries:
+class DataTimeSeries(IDataTimeSeries):
     """ Get the tiemseires dataset from JHU CSSE and Prepare DataFrames """
     def get_data_time_series(self, US: bool = False) -> Dict[str, pd.DataFrame]:
         """ Get the dataset from JHU CSSE """
