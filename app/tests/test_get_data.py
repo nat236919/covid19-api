@@ -9,8 +9,8 @@ import pandas as pd
 
 from ..utils.get_data import (DailyReports, DataTimeSeries, get_data,
                               get_data_lookup_table)
-from time_series_interface import IDataTimeSeries
-from daily_report_interface import IDailyReports
+from ..utils.time_series_interface import IDataTimeSeries
+from ..utils.daily_report_interface import IDailyReports
 
 
 daily_reports = DailyReports()
