@@ -54,7 +54,7 @@ SECTION: API v2
 DESCRIPTION: New API (v2)
 DATE: 14-March-2020
 """
-app.include_router(v2, prefix="{adapter}/v2", tags=["v2"])
+app.include_router(v2, prefix="/v2/{adapter}", tags=["v2"])
 
 
 """

@@ -33,7 +33,7 @@ def write_log(requested_path: str, client_ip: str) -> None:
     return None
 
 
-@v2.get('/current')
+@v2.get('{adapter}/current')
 async def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the current situation data from all reported countries
@@ -54,7 +54,7 @@ async def get_current(request: Request, background_tasks: BackgroundTasks) -> Di
     return data
 
 
-@v2.get('/current/US')
+@v2.get('{adapter}/current/US')
 async def get_current_us(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get all data from USA's current situation
@@ -75,7 +75,7 @@ async def get_current_us(request: Request, background_tasks: BackgroundTasks) ->
     return data
 
 
-@v2.get('/total')
+@v2.get('{adapter}/total')
 async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the total numbers of all cases
@@ -95,7 +95,7 @@ async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict
     return data
 
 
-@v2.get('/confirmed')
+@v2.get('{adapter}/confirmed')
 async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of confirmed cases
@@ -112,7 +112,7 @@ async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> 
     return data
 
 
-@v2.get('/deaths')
+@v2.get('{adapter}/deaths')
 async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of death cases
@@ -129,7 +129,7 @@ async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dic
     return data
 
 
-@v2.get('/recovered')
+@v2.get('{adapter}/recovered')
 async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of recovered cases
@@ -146,7 +146,7 @@ async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> 
     return data
 
 
-@v2.get('/active')
+@v2.get('{adapter}/active')
 async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of active cases
@@ -163,7 +163,7 @@ async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dic
     return data
 
 
-@v2.get('/country/{country_name}')
+@v2.get('{adapter}/country/{country_name}')
 async def get_country(country_name: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the data based on a county's name or its ISO code
@@ -186,7 +186,7 @@ async def get_country(country_name: str, request: Request, background_tasks: Bac
     return raw_data
 
 
-@v2.get('/timeseries/{case}')
+@v2.get('{adapter}/timeseries/{case}')
 async def get_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the time series based on a given case: global, confirmed, deaths, recovered
@@ -215,7 +215,7 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
     return data
 
 
-@v2.get('/timeseries/US/{case}')
+@v2.get('{adapter}/timeseries/US/{case}')
 async def get_US_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the USA time series based on a given case:
