@@ -21,7 +21,7 @@ from utils.vaccine  import vaccine
 DAILY_REPORTS = DailyReports()
 DATA_TIME_SERIES = DataTimeSeries()
 COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
-Vaccine = vaccine()
+VACCINE = vaccine()
 
 
 # Logging
@@ -254,14 +254,14 @@ async def get_US_time_series(case: str, request: Request, background_tasks: Back
     return data
 
 
-@v2.get('/vaccine_data')
+@v2.get('/vaccineData')
 async def get_vaccine_data(request: Request, background_tasks: BackgroundTasks) -> Any:
     """
     Get the vaccine data from the another API
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = Vaccine.get_vaccine_data()
+        data = VACCINE.get_vaccine_data()
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
