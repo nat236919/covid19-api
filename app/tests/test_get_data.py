@@ -6,46 +6,48 @@ DATE: 11-April-2020
 """
 # Import libraries
 import pandas as pd
-from ..utils import get_data
+from ..utils import getData
 
+
+getdataRep = getInstance.get_data()
 
 # Test - Get Lookup table
 def test_get_data_lookup_table() -> None:
-    result = get_data.get_data_lookup_table()
+    result = getdataRep.get_data_lookup_table()
     assert len(result) > 0
     assert isinstance(result, dict) is True
 
 
 # Test - Get data from daily reports
 def test_get_data_daily_reports() -> None:
-    result = get_data.get_data_daily_reports()
+    result = getdataRep.get_data_daily_reports()
     assert len(result) > 0
     assert isinstance(result, pd.DataFrame) is True 
 
 
 # Test - Get data from time series
 def test_get_data_time_series() -> None:
-    result = get_data.get_data_time_series()
+    result = getdataRep.get_data_time_series()
     assert len(result) > 0
     assert isinstance(result, dict) is True
 
 
 # Test - Get data from time series (US)
 def test_get_US_time_series() -> None:
-    result = get_data.get_US_time_series()
+    result = getdataRep.get_US_time_series()
     assert len(result) > 0
     assert isinstance(result, dict) is True
 
 
 # Test - Get Data (API v1)
 def test_get_data() -> None:
-    result = get_data.get_data()
+    result = getdataRep.get_data()
     assert len(result) > 0
     assert isinstance(result, dict) is True
 
 
 # Test - Get Data (API v1)
 def test_get_data(time_series = True) -> None:
-    result = get_data.get_data()
+    result = getdataRep.get_data()
     assert len(result) > 0
     assert isinstance(result, dict) is True
