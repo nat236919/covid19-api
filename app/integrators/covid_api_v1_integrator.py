@@ -16,7 +16,7 @@ from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
                                          TimeseriesCoordinatesModel,
                                          TimeseriesDataModel, TimeseriesModel,
                                          TotalModel)
-from utils.get_data import get_data
+from utils.get_data import getData
 
 
 # Create a model and its methods
@@ -24,12 +24,12 @@ class CovidAPIv1:
     """ Model and Its methods """
     def __init__(self) -> None:
         """ Get data from helper -> the source data """
-        list_of_dataframes = get_data()
+        list_of_dataframes = getInstance.get_data()
         self.df_confirmed = list_of_dataframes['confirmed']
         self.df_deaths = list_of_dataframes['deaths']
         self.df_recovered = list_of_dataframes['recovered']
 
-        list_of_time_series = get_data(time_series=True)
+        list_of_time_series = getInstace.get_data(time_series=True)
         self.df_time_series_confirmed = list_of_time_series['confirmed']
         self.df_time_series_deaths = list_of_time_series['deaths']
         self.df_time_series_recovered = list_of_time_series['recovered']
