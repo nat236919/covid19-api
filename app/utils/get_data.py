@@ -95,37 +95,58 @@ def get_US_time_series() -> Dict[str, pd.DataFrame]:
 
     return dataframes
 
+class getData:
+  
+  __instance = None
+  
+  @staticmethod
+  def getInstance():
+       if getData.__instance is None:
+           """
+           Static method create a single instance
+           """
+           __instance = getData()
+           return __instance
+          
+          
+  def __init__(self) -> None: 
+       if getData.__instance != None:
+          raise Exception("An instance has already been created for this singleton!")
+       else:    
+          getData.__instance = self
+ 
+          
+  
+  # API v1
+  def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
+      """ Get the dataset from JHU CSSE """
+      dataframes = {}
 
-# API v1
-def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
-    """ Get the dataset from JHU CSSE """
-    dataframes = {}
+      # Iterate through all files
+      for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
+          url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
 
-    # Iterate through all files
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
+          # Extract data
+          df = pd.read_csv(url)
+          df = df.fillna('')
+          df['Country/Region'] = df['Country/Region'].apply(lambda country_name: country_name.strip()) # Eliminate whitespace
+          df['Country/Region'] = df['Country/Region'].str.replace(' ', '_')
 
-        # Extract data
-        df = pd.read_csv(url)
-        df = df.fillna('')
-        df['Country/Region'] = df['Country/Region'].apply(lambda country_name: country_name.strip()) # Eliminate whitespace
-        df['Country/Region'] = df['Country/Region'].str.replace(' ', '_')
+          # Data Preprocessing
+          if time_series:
+              df = df.T.to_dict()
+          else:
+              df = df.iloc[:, [0, 1, -1]] # Select only Region, Country and its last values
+              datetime_raw = list(df.columns.values)[-1] # Ex) '2/11/20 20:44'
+              df.columns = ['Province/State', 'Country/Region', category]
 
-        # Data Preprocessing
-        if time_series:
-            df = df.T.to_dict()
-        else:
-            df = df.iloc[:, [0, 1, -1]] # Select only Region, Country and its last values
-            datetime_raw = list(df.columns.values)[-1] # Ex) '2/11/20 20:44'
-            df.columns = ['Province/State', 'Country/Region', category]
+              df[category].fillna(0, inplace=True) # Replace empty cells with 0
+              df[category].replace('', 0, inplace=True) # Replace '' with 0
 
-            df[category].fillna(0, inplace=True) # Replace empty cells with 0
-            df[category].replace('', 0, inplace=True) # Replace '' with 0
+              df['datetime'] = datetime_raw
+              pd.to_numeric(df[category])
+              df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
 
-            df['datetime'] = datetime_raw
-            pd.to_numeric(df[category])
-            df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
+          dataframes[category.lower()] = df
 
-        dataframes[category.lower()] = df
-
-    return dataframes
+      return dataframes
