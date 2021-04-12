@@ -15,11 +15,13 @@ from starlette.requests import Request
 
 from . import v2
 from utils.get_data import DailyReports, Timeseries
+from utils.vaccine import vaccine
 
 # Initiate Integrator
 DAILY_REPORTS = DailyReports()
 timeSeries = Timeseries()
 COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, timeSeries)
+Vaccine = vaccine()
 
 
 # Logging
@@ -208,7 +210,7 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
     background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
 
     if case.lower() not in ['global', 'confirmed', 'deaths', 'recovered']:
-            raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found")
 
     data = COVID_API_V2.get_time_series(case.lower())
 
@@ -245,8 +247,23 @@ async def get_US_time_series(case: str, request: Request, background_tasks: Back
     background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
 
     if case.lower() not in ['confirmed', 'deaths']:
-            raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found")
 
     data = COVID_API_V2.get_US_time_series(case.lower())
+
+    return data
+
+
+@v2.get('/vaccine_data')
+async def get_vaccine_data(request: Request, background_tasks: BackgroundTasks) -> Any:
+    """
+    Get the vaccine data from the another API
+    """
+    try:
+        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        data = Vaccine.get_vaccine_data()
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
 
     return data
