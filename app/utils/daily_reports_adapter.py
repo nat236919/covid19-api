@@ -10,7 +10,7 @@ from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
 from .time_series_interface import IDataTimeSeries
 from .daily_report import DailyReports
 
-class DailyReportsAdapter(IDataTimeSeries)
+class DailyReportsAdapter(IDataTimeSeries):
     def __init__(self):
         self.report = DailyReports()
 
