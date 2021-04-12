@@ -30,13 +30,16 @@ from utils.get_data import (get_data_daily_reports,
 
 
 class CovidAPIv2Integrator:
-    """ Covid-19 API v2 methods
-        SCHEMA: {
-            "data": Any,
-            "dt": str = "{datetime}",
-            "ts": int = "{timestamp}
-        }
-    """
+
+
+    def __init__(self):
+        """ Constructor.
+       """
+        if CovidAPIv2Integrator.__instance__ is None:
+            CovidAPIv2Integrator.__instance__ = self
+        else:
+            raise Exception("You cannot create another SingletonGovt class")
+
     def __init__(self) -> None:
         """ Initiate DataFrames """
         self.lookup_table = get_data_lookup_table()
@@ -45,7 +48,14 @@ class CovidAPIv2Integrator:
             'dt': None,
             'ts': None
         }
-    
+
+    def get_instance(self):
+        """ Static method to fetch the current instance.
+       """
+        if not CovidAPIv2Integrator.__instance__:
+            CovidAPIv2Integrator()
+        return CovidAPIv2Integrator.__instance__
+
     def wrap_data(func) -> ResponseModel:
         """ Wrap a result in a schemed data """
         @wraps(func)
