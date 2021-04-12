@@ -11,10 +11,10 @@ from ..utils.get_data import (DailyReports, DataTimeSeries, get_data,
                               get_data_lookup_table)
 from ..utils.time_series_interface import IDataTimeSeries
 from ..utils.daily_report_interface import IDailyReports
-
+from ..utils.daily_reports_adapter import DailyReportsAdapter
 
 daily_reports = DailyReports()
-time_series = DataTimeSeries()
+time_series = DailyReportsAdapter()
 
 
 # Test - Get Lookup table
