@@ -1,5 +1,4 @@
-import datetime
-
+from datetime import datetime
 
 class Static_Log:
     '''
@@ -10,14 +9,7 @@ class Static_Log:
     __log_file = None
     __instance = None
     
-    @staticmethod
-    def get_instance(requested_path: str, client_ip: str):
-        if Static_Log.__instance:
-            return Static_Log.__instance(requested_path, client_ip)
-        else:
-
-            raise Exception("No instance was made.")
-            
+   
     def __init__(self, requested_path: str, client_ip: str) -> None:
         self.requested_path = requested_path
         self.client_ip = client_ip
@@ -33,3 +25,10 @@ class Static_Log:
                 message = date_time_message + requested_path + ' | ' + client_ip + '\n'
                 self.__log_file.write(message)
     
+    @staticmethod
+    def get_instance(requested_path: str, client_ip: str):
+        if Static_Log.__instance:
+            return Static_Log.__instance
+        else:
+            Static_Log(requested_path=requested_path, client_ip=client_ip)
+            

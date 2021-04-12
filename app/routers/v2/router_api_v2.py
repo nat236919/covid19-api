@@ -21,8 +21,9 @@ DAILY_REPORTS = DailyReports()
 DATA_TIME_SERIES = DataTimeSeries()
 COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
 
-from app.utils.Logging import Static_Log
+from utils.Logging import Static_Log
 # Logging
+
 def write_log(requested_path: str, client_ip: str) -> None:
     Static_Log.get_instance(requested_path=requested_path, client_ip=client_ip)
     #this is where the logging can be extended to handle more security related tasks.
