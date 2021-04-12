@@ -94,8 +94,8 @@ def country(country_name: str) -> Dict[str, Any]:
         data['ts'] = raw_data['ts']
 
     except:
-        raise HTTPException(status_code=404, detail="Item not found")
-
+        # make custom exception class (ItemNotFoundException)
+        
     return data
 
 
