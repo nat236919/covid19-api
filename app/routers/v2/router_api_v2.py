@@ -21,15 +21,11 @@ DAILY_REPORTS = DailyReports()
 DATA_TIME_SERIES = DataTimeSeries()
 COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
 
-
+from app.utils.Logging import Static_Log
 # Logging
 def write_log(requested_path: str, client_ip: str) -> None:
-    time_format = '%d-%b-%Y'
-    file_name = datetime.now().strftime(time_format)
-    with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
-        date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
-        message = date_time_message + requested_path + ' | ' + client_ip + '\n'
-        log_file.write(message)
+    Static_Log.get_instance(requested_path=requested_path, client_ip=client_ip)
+    #this is where the logging can be extended to handle more security related tasks.
     return None
 
 
