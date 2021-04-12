@@ -250,3 +250,18 @@ async def get_US_time_series(case: str, request: Request, background_tasks: Back
     data = COVID_API_V2.get_US_time_series(case.lower())
 
     return data
+
+
+@v2.get('/vaccine_data')
+async def get_vaccine_data(request: Request, background_tasks: BackgroundTasks) -> Any:
+    """
+    Get the vaccine data from the another API
+    """
+    try:
+        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        data = Vaccine.get_vaccine_data()
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
+
+    return data
