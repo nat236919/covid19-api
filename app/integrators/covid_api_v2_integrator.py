@@ -37,13 +37,23 @@ class CovidAPIv2Integrator:
             "ts": int = "{timestamp}
         }
     """
+
+    def getInstance(self):
+        if CovidAPIv2Integrator.__instance is None:
+            """creating single instance """
+            CovidAPIv2Integrator()
+            return CovidAPIv2Integrator.__instance
+
     def __init__(self) -> None:
         """ Initiate DataFrames """
-        self.lookup_table = get_data_lookup_table()
-        self.scheme = {
-            'data': None,
-            'dt': None,
-            'ts': None
+        if CovidAPIv2Integrator.__instance != None:
+            raise Exception("This class is a singleton!")
+        else:
+            self.lookup_table = get_data_lookup_table()
+            self.scheme = {
+                'data': None,
+                'dt': None,
+                'ts': None
         }
     
     def wrap_data(func) -> ResponseModel:
