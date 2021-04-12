@@ -16,51 +16,34 @@ from starlette.requests import Request
 from . import v2
 from utils.get_data import DailyReports, DataTimeSeries
 
+import socket
+
 # Initiate Integrator
 DAILY_REPORTS = DailyReports()
 DATA_TIME_SERIES = DataTimeSeries()
 COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
 
 
+class WriteToSocket(object):
+
+    #initialize UDP socket for log to be written to
+    def __init__(self, client_ip, client_port):
+        self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._ip = client_ip
+        self._port = client_port
+
+    def write(self, message):
+        self._socket.send(message, (self._ip,self._port))
+
 # Logging
-#reference: https://www.tutorialspoint.com/python_design_patterns/python_design_patterns_singleton.htm
-class Logging:
-    #private static instance
-    __instance = None
-
-
-    @staticmethod
-    def getInstance():
-        if Logging.__instance is None:
-            Logging()
-            return Logging.__instance
-
-    def __init__(self) -> None:
-        if Logging.__instance is not None:
-            raise Exception("Singleton class")
-        else:
-            Logging.__instance = self
-
-    def new_log(self, requested_path, client_ip):
-        time_format = '%d-%b-%Y'
-        file_name = datetime.now().strftime(time_format)
-        with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
-              date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
-              message = date_time_message + requested_path + ' | ' + client_ip + '\n'
-              log_file.write(message)
-
-    def write_log(requested_path: str, client_ip: str) -> None:
-        logging = Logging.getInstance()
-        logging.new_log(requested_path, client_ip)
-        #Moved to new_log function
-        # time_format = '%d-%b-%Y'
-        # file_name = datetime.now().strftime(time_format)
-        # with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
-         #   date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
-         #   message = date_time_message + requested_path + ' | ' + client_ip + '\n'
-         #  log_file.write(message)
-        return None
-
+def write_log(requested_path: str, client_ip: str) -> None:
+    time_format = '%d-%b-%Y'
+    file_name = datetime.now().strftime(time_format)
+    with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
+        date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
+        message = date_time_message + requested_path + ' | ' + client_ip + '\n'
+        log_file.write(message)
+    return None
 
 
 @v2.get('/current')
