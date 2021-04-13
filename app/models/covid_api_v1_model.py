@@ -11,8 +11,8 @@ from pydantic import BaseModel]
 
 class case:
     def __init__(self, dt, ts):
-        self.dt: str
-        self.ts: int
+        self.datatype: dt
+        self.ts: ts
 
 class countries:
     def __init__(self, countries):
@@ -43,20 +43,18 @@ class CurrentListModel:
 # TotalModel
 #######################################
 class TotalModel:
-    def __init__(self, confirmed, recovered, deaths, case):
-        self.confirmed: confirmed
-        self.recovered: recovered
-        self.deaths: deaths
-        self.caseOBJ: case
+    confirmed: int
+    recovered: int
+    deaths: int
+    case(self, "total", ts)
 
 
 #######################################
 # ConfirmedModel
 #######################################
 class ConfirmedModel:
-    def __init__(self, confirmed, case):
-        self.confirmed: confirmed
-        self.caseOBJ: case
+    confirmed: int
+    case(self, "confirmed", ts)
     
 
 
@@ -74,9 +72,8 @@ class DeathsModel:
 # RecoveredModel
 #######################################
 class RecoveredModel:
-    def __init__(self, recovered, case):
-        self.recoveredCases: recovered
-        self.caseOBJ: case
+    recovered: int
+    case(self, "recovered", ts)
     
 
 
@@ -84,9 +81,8 @@ class RecoveredModel:
 # CountriesModel
 #######################################
 class CountriesModel(BaseModel):
-    def __init__(self, confirmed, case):
-        self.confirmed: confirmed
-        self.caseOBJ: case
+    confirmed: int
+    case(self, "confirmed", ts)
 
 
 #######################################
