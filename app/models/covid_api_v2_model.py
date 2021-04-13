@@ -11,7 +11,7 @@ from pydantic import BaseModel
 
 
 #######################################
-# CurrentModel
+# CurrentModel ( a random change to see if i can commit )
 #######################################
 class CurrentModel(BaseModel):
     location: str
