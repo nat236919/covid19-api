@@ -22,6 +22,34 @@ from utils.get_data import get_data
 # Create a model and its methods
 class CovidAPIv1:
     """ Model and Its methods """
+
+    def get_instance():
+        if CovidAPIv1.__instance is None:
+            """
+            Static method to create a single instance
+            """
+            __instance = CovidAPIv1()
+            return __instance
+
+    def __init__(self) -> None:
+        """
+        Use the static method get_instance, not the constructor
+        """
+        if CovidAPIv1.__instance is not None:
+            raise Exception("This is a singleton class.")
+        else:
+            list_of_dataframes = get_data()
+            self.df_confirmed = list_of_dataframes['confirmed']
+            self.df_deaths = list_of_dataframes['deaths']
+            self.df_recovered = list_of_dataframes['recovered']
+
+            list_of_time_series = get_data(time_series=True)
+            self.df_time_series_confirmed = list_of_time_series['confirmed']
+            self.df_time_series_deaths = list_of_time_series['deaths']
+            self.df_time_series_recovered = list_of_time_series['recovered']
+
+            self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
+            self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y').timestamp()
     def __init__(self) -> None:
         """ Get data from helper -> the source data """
         list_of_dataframes = get_data()
