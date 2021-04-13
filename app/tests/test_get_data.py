@@ -6,13 +6,13 @@ DATE: 11-April-2020
 """
 # Import libraries
 import pandas as pd
-from ..utils import getData
+from ..utils import getData # Calling getData function instead of get_data method
 
-getDataVar = getInstance.get_data()
+getDataVar = getInstance.get_data() # Creating object which contains single instance of class and so we do not have to continually instantiate the class 
 
 # Test - Get Lookup table
 def test_get_data_lookup_table() -> None:
-    result = getDataVar.get_data_lookup_table()
+    result = getDataVar.get_data_lookup_table() 
     assert len(result) > 0
     assert isinstance(result, dict) is True
 
