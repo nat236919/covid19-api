@@ -16,10 +16,19 @@ from starlette.requests import Request
 from . import v2
 from utils.get_data import DailyReports, DataTimeSeries
 
-# Initiate Integrator
-DAILY_REPORTS = DailyReports()
-DATA_TIME_SERIES = DataTimeSeries()
-COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
+# Refresh ADAPTER
+# Refresh Integrator while transversing thorugh different routes (APIv2)
+def reload_api_v2_integrator(func):
+    """ Reload a model for each quest """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        global COVID_API_V2
+        #instantiating v2_integrator
+        DAILY_REPORTS = DailyReports()
+        DATA_TIME_SERIES = DataTimeSeries()
+        COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
+        return func(*args, **kwargs)
+    return wrapper
 
 
 # Logging
@@ -27,13 +36,15 @@ def write_log(requested_path: str, client_ip: str) -> None:
     time_format = '%d-%b-%Y'
     file_name = datetime.now().strftime(time_format)
     with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
-        date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
+        date_time_message = datetime.now().strftime(
+            f'{time_format}, %H:%M:%S | ')
         message = date_time_message + requested_path + ' | ' + client_ip + '\n'
         log_file.write(message)
     return None
 
 
 @v2.get('/current')
+@reload_api_v2_integrator
 async def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the current situation data from all reported countries
@@ -45,7 +56,8 @@ async def get_current(request: Request, background_tasks: BackgroundTasks) -> Di
     - **active**: active cases
     """
     try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        background_tasks.add_task(write_log, requested_path=str(
+            request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_current()
 
     except Exception as e:
@@ -55,6 +67,7 @@ async def get_current(request: Request, background_tasks: BackgroundTasks) -> Di
 
 
 @v2.get('/current/US')
+@reload_api_v2_integrator
 async def get_current_us(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get all data from USA's current situation
@@ -66,7 +79,8 @@ async def get_current_us(request: Request, background_tasks: BackgroundTasks) ->
     - **Active**: active cases
     """
     try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        background_tasks.add_task(write_log, requested_path=str(
+            request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_current_US()
 
     except Exception as e:
@@ -76,6 +90,7 @@ async def get_current_us(request: Request, background_tasks: BackgroundTasks) ->
 
 
 @v2.get('/total')
+@reload_api_v2_integrator
 async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the total numbers of all cases
@@ -86,7 +101,8 @@ async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict
     - **active**: active cases
     """
     try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        background_tasks.add_task(write_log, requested_path=str(
+            request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_total()
 
     except Exception as e:
@@ -96,6 +112,7 @@ async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict
 
 
 @v2.get('/confirmed')
+@reload_api_v2_integrator
 async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of confirmed cases
@@ -103,7 +120,8 @@ async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> 
     - **confirmed**: confirmed cases
     """
     try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        background_tasks.add_task(write_log, requested_path=str(
+            request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_confirmed()
 
     except Exception as e:
@@ -113,6 +131,7 @@ async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> 
 
 
 @v2.get('/deaths')
+@reload_api_v2_integrator
 async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of death cases
@@ -120,7 +139,8 @@ async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dic
     - **deaths**:  death cases
     """
     try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        background_tasks.add_task(write_log, requested_path=str(
+            request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_deaths()
 
     except Exception as e:
@@ -130,6 +150,7 @@ async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dic
 
 
 @v2.get('/recovered')
+@reload_api_v2_integrator
 async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of recovered cases
@@ -137,7 +158,8 @@ async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> 
     - **recovered**: recovered case
     """
     try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        background_tasks.add_task(write_log, requested_path=str(
+            request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_recovered()
 
     except Exception as e:
@@ -147,6 +169,7 @@ async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> 
 
 
 @v2.get('/active')
+@reload_api_v2_integrator
 async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
     """
     Get the total numbers of active cases
@@ -154,7 +177,8 @@ async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dic
     - **active**: active case
     """
     try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        background_tasks.add_task(write_log, requested_path=str(
+            request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_active()
 
     except Exception as e:
@@ -164,6 +188,7 @@ async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dic
 
 
 @v2.get('/country/{country_name}')
+@reload_api_v2_integrator
 async def get_country(country_name: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the data based on a county's name or its ISO code
@@ -177,7 +202,8 @@ async def get_country(country_name: str, request: Request, background_tasks: Bac
     :param country_name: A country name or its ISO code (ALPHA-2)
     """
     try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        background_tasks.add_task(write_log, requested_path=str(
+            request.url), client_ip=str(request.client))
         raw_data = COVID_API_V2.get_country(country_name.lower())
 
     except Exception:
@@ -187,10 +213,11 @@ async def get_country(country_name: str, request: Request, background_tasks: Bac
 
 
 @v2.get('/timeseries/{case}')
+@reload_api_v2_integrator
 async def get_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the time series based on a given case: global, confirmed, deaths, recovered
-    
+
     global
     - **key**: datetime
     - **confirmed**: confirmed cases
@@ -205,10 +232,11 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
     \f
     param: case: string case -> global, confirmed, deaths, recovered
     """
-    background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+    background_tasks.add_task(write_log, requested_path=str(
+        request.url), client_ip=str(request.client))
 
     if case.lower() not in ['global', 'confirmed', 'deaths', 'recovered']:
-            raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found")
 
     data = COVID_API_V2.get_time_series(case.lower())
 
@@ -216,6 +244,7 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
 
 
 @v2.get('/timeseries/US/{case}')
+@reload_api_v2_integrator
 async def get_US_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the USA time series based on a given case:
@@ -242,10 +271,11 @@ async def get_US_time_series(case: str, request: Request, background_tasks: Back
     \f
     param: case: string case -> confirmed, deaths
     """
-    background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+    background_tasks.add_task(write_log, requested_path=str(
+        request.url), client_ip=str(request.client))
 
     if case.lower() not in ['confirmed', 'deaths']:
-            raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found")
 
     data = COVID_API_V2.get_US_time_series(case.lower())
 
