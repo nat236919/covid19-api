@@ -10,13 +10,16 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
-from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
+from ..models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
                                          CurrentListModel, CurrentModel,
                                          DeathsModel, RecoveredModel,
                                          TimeseriesCoordinatesModel,
                                          TimeseriesDataModel, TimeseriesModel,
                                          TotalModel)
-from utils.get_data import get_data
+
+from ..models.model_creator import Model_Creator
+
+from ..utils.get_data import get_data
 
 
 # Create a model and its methods
@@ -36,6 +39,9 @@ class CovidAPIv1:
 
         self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
         self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y').timestamp()
+
+        #initialise the model creator
+        self.mCreator = Model_Creator(1)
 
     def add_dt_and_ts(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """ Add datetime and timestamp to Dict data """
@@ -80,19 +86,19 @@ class CovidAPIv1:
     def get_confirmed_cases(self) -> Dict[str, int]:
         """ Summation of all confirmed cases """
         data = {'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']])}
-        data = ConfirmedModel(**self.add_dt_and_ts(data))
+        data = self.mCreator.get_ConfirmedModel(**self.add_dt_and_ts(data))
         return data
 
     def get_deaths(self) -> Dict[str, int]:
         """ Summation of all deaths """
         data = {'deaths': sum([int(i) for i in self.df_deaths['deaths']])}
-        data = DeathsModel(**self.add_dt_and_ts(data))
+        data = self.mCreator.get_DeathsModel(**self.add_dt_and_ts(data))
         return data
 
     def get_recovered(self) -> Dict[str, int]:
         """ Summation of all recovers """
         data = {'recovered': sum([int(i) for i in self.df_recovered['recovered']])}
-        data = RecoveredModel(**self.add_dt_and_ts(data))
+        data = self.mCreator.get_RecoveredModel(**self.add_dt_and_ts(data))
         return data
 
     def get_total(self) -> Dict[str, Any]:
@@ -102,7 +108,7 @@ class CovidAPIv1:
             'deaths': self.get_deaths().deaths,
             'recovered': self.get_recovered().recovered
             }
-        data = TotalModel(**self.add_dt_and_ts(data))
+        data = self.mCreator.get_TotalModel(**self.add_dt_and_ts(data))
         return data
 
     def get_affected_countries(self) -> Dict[str, List]:
@@ -110,7 +116,7 @@ class CovidAPIv1:
         # Sorted alphabetically and exlucde 'Others'
         sort_filter_others = lambda country_list: sorted([country for country in country_list if country not in ['Others']])
         data = {'countries': sort_filter_others(self.df_confirmed['Country/Region'].unique().tolist())}
-        data = CountriesModel(**self.add_dt_and_ts(data))
+        data = self.mCreator.get_CountriesModel(**self.add_dt_and_ts(data))
         return data
 
     def get_time_series(self) -> Dict[str, Dict]:

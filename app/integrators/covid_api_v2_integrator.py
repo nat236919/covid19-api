@@ -11,8 +11,9 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
-from models.base_model import ResponseModel
-from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
+from ..models.base_model import ResponseModel
+
+from ..models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          CountryModel, CurrentModel,
                                          CurrentUSModel, DeathsModel,
                                          RecoveredModel,
@@ -24,7 +25,11 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          TimeseriesUSDataModel,
                                          TimeseriesUSInfoModel,
                                          TimeseriesUSModel, TotalModel)
-from utils.get_data import (DailyReports, DataTimeSeries,
+
+from ..models.model_creator import Model_Creator
+
+
+from ..utils.get_data import (DailyReports, DataTimeSeries,
                               get_data_lookup_table)
 
 
@@ -48,8 +53,11 @@ class CovidAPIv2Integrator:
         self.daily_reports = daily_reports
         self.time_series = time_series
 
+        #initialise the model creator
+        self.mCreator = Model_Creator(2)
+
     def wrap_data(func) -> ResponseModel:
-        """ Wrap a result in a schemed data """
+        """ Wrap a result in a schemed Fdata """
         @wraps(func)
         def wrapper(self, *args, **kwargs):
             packed_data = self.scheme
@@ -141,7 +149,7 @@ class CovidAPIv2Integrator:
     def get_confirmed(self) -> ConfirmedModel:
         """ Summation of all confirmed cases """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = ConfirmedModel(
+        data = self.mCreator.get_ConfirmedModel(
             confirmed=int(self.df['Confirmed'].sum())
         )
         return data
@@ -153,7 +161,7 @@ class CovidAPIv2Integrator:
     def get_deaths(self) -> DeathsModel:
         """ Summation of all deaths """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = DeathsModel(
+        data = self.mCreator.get_DeathsModel(
             deaths=int(self.df['Deaths'].sum())
         )
         return data
@@ -165,7 +173,7 @@ class CovidAPIv2Integrator:
     def get_recovered(self) -> RecoveredModel:
         """ Summation of all recovers """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = RecoveredModel(
+        data = self.mCreator.get_RecoveredModel(
             recovered=int(self.df['Recovered'].sum())
         )
         return data
@@ -177,7 +185,7 @@ class CovidAPIv2Integrator:
     def get_active(self) -> ActiveModel:
         """ Summation of all actives """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = ActiveModel(
+        data = self.mCreator.get_ActiveModel(
             active=int(self.df['Active'].sum())
         )
         return data
@@ -189,7 +197,7 @@ class CovidAPIv2Integrator:
     def get_total(self) -> TotalModel:
         """ Summation of Confirmed, Deaths, Recovered, Active """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = TotalModel(
+        data = self.mCreator.get_TotalModel(
             confirmed=int(self.df['Confirmed'].sum()),
             deaths=int(self.df['Deaths'].sum()),
             recovered=int(self.df['Recovered'].sum()),
@@ -233,7 +241,7 @@ class CovidAPIv2Integrator:
                 timeseries_data_model_list = [TimeseriesCaseDataModel(date=k, value=v) for k, v in temp_time_series_dict.items()]
 
                 # Main Model
-                timeseries_case_model = TimeseriesCaseModel(
+                timeseries_case_model = self.mCreator.get_TimeseriesCaseModel(
                     Province_State=data['Province/State'],
                     Country_Region=data['Country/Region'],
                     Coordinates=timeseries_coordinates_model,
@@ -289,7 +297,7 @@ class CovidAPIv2Integrator:
                                 'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_', 
                                 'Combined_Key','Population']
                 # Info
-                timeseries_US_info_model = TimeseriesUSInfoModel(
+                timeseries_US_info_model = self.mCreator.get_TimeseriesUSInfoModel(
                     UID=data['UID'],
                     iso2=data['iso2'],
                     iso3=data['iso3'],
@@ -298,7 +306,7 @@ class CovidAPIv2Integrator:
                     Admin2=data['Admin2'],
                 )
                 # Coordinates
-                timeseries_US_coordinates_model = TimeseriesUSCoordinatesModel(
+                timeseries_US_coordinates_model = self.mCreator.get_TimeseriesUSCoordinatesModel(
                     Lat=float(data['Lat']) if data['Lat'] else 0,
                     Long=float(data['Long_']) if data['Long_'] else 0
                 )
@@ -307,7 +315,7 @@ class CovidAPIv2Integrator:
                 timeseries_data_model_list = [TimeseriesUSDataModel(date=k, value=v) for k, v in temp_time_series_dict.items()]
 
                 # Main Model
-                timeseries_US_model = TimeseriesUSModel(
+                timeseries_US_model = self.mCreator.get_TimeseriesUSModel(
                     Province_State=data['Province_State'],
                     Country_Region=data['Country_Region'],
                     Info=timeseries_US_info_model,
