@@ -10,7 +10,7 @@ class news_updates:
     @staticmethod
     def getInstance():
         if news_updates.instance is None:
-            """creating single instance """
+            """here we are creating singleton instance """
             news_updates()
             return news_updates.instance
 
@@ -20,7 +20,6 @@ class news_updates:
             'x-rapidapi-key': "64c524732fmshd3fcb40147d3b4bp1ce897jsn83f4f7602433",
             'x-rapidapi-host': "covid-19-india2.p.rapidapi.com"
         }
-
 
     def get_news_updates_india(self) -> Any:
         try:
