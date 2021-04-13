@@ -5,7 +5,7 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 01-March-2021
 """
 # Import libraries
-from typing import Any, Dict, List
+from typing import Any
 
 from pydantic import BaseModel
 

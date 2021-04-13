@@ -10,22 +10,21 @@ from functools import wraps
 from typing import Any, Dict, List
 
 import pandas as pd
-
 from models.base_model import ResponseModel
 from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
-                                         CountryModel, CurrentModel,
-                                         CurrentUSModel, DeathsModel,
-                                         RecoveredModel,
-                                         TimeseriesCaseCoordinatesModel,
-                                         TimeseriesCaseDataModel,
-                                         TimeseriesCaseModel,
-                                         TimeseriesGlobalModel,
-                                         TimeseriesUSCoordinatesModel,
-                                         TimeseriesUSDataModel,
-                                         TimeseriesUSInfoModel,
-                                         TimeseriesUSModel, TotalModel)
+                                       CountryModel, CurrentModel,
+                                       CurrentUSModel, DeathsModel,
+                                       RecoveredModel,
+                                       TimeseriesCaseCoordinatesModel,
+                                       TimeseriesCaseDataModel,
+                                       TimeseriesCaseModel,
+                                       TimeseriesGlobalModel,
+                                       TimeseriesUSCoordinatesModel,
+                                       TimeseriesUSDataModel,
+                                       TimeseriesUSInfoModel,
+                                       TimeseriesUSModel, TotalModel)
 from utils.get_data import (DailyReports, get_data_lookup_table,
-                              get_data_time_series, get_US_time_series)
+                            get_data_time_series, get_US_time_series)
 
 
 class CovidAPIv2Integrator:

@@ -4,12 +4,11 @@ DESCRIPTION: Test Covid-19 Model for API v2
 AUTHOR: Nuttaphat Arunoprayoch
 DATE: 12-April-2020
 """
+import pandas as pd
 # Import libraries
 import pytest
-import pandas as pd
-from ..utils import get_data
-from ..integrators import covid_api_v2_integrator
 
+from ..integrators import covid_api_v2_integrator
 
 # Prepare the model
 INTEGRATOR = covid_api_v2_integrator.CovidAPIv2Integrator()

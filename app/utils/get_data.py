@@ -5,7 +5,6 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 9-Feb-2020
 """
 # Import libraries
-import csv
 from typing import Dict
 
 import pandas as pd

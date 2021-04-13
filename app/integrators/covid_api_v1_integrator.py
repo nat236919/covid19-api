@@ -9,13 +9,10 @@ from datetime import datetime
 from typing import Any, Dict, List
 
 import pandas as pd
-
 from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
-                                         CurrentListModel, CurrentModel,
-                                         DeathsModel, RecoveredModel,
-                                         TimeseriesCoordinatesModel,
-                                         TimeseriesDataModel, TimeseriesModel,
-                                         TotalModel)
+                                       CurrentModel,
+                                       DeathsModel, RecoveredModel,
+                                       TotalModel)
 from utils.get_data import get_data
 
 

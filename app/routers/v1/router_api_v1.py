@@ -9,9 +9,9 @@ from functools import wraps
 from typing import Any, Dict
 
 from fastapi import HTTPException
-
 from integrators.covid_api_v1_integrator import CovidAPIv1
 from utils.helper import helper_lookup_country
+
 from . import v1
 
 
