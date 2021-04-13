@@ -95,12 +95,12 @@ def get_US_time_series() -> Dict[str, pd.DataFrame]:
 
     return dataframes
 
-class getData:
+class getData:  # encapsulating get_data function into getData Singleton Class
   
   __instance = None
   
   @staticmethod
-  def getInstance():
+  def getInstance():   
        if getData.__instance is None:
            """
            Static method create a single instance
