@@ -12,6 +12,8 @@ from typing import Any, Dict, List
 import pandas as pd
 
 from models.base_model import ResponseModel
+from utils.get_data import (DailyReports, DataTimeSeries,
+                              get_data_lookup_table)
 from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          CountryModel, CurrentModel,
                                          CurrentUSModel, DeathsModel,
@@ -24,11 +26,10 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          TimeseriesUSDataModel,
                                          TimeseriesUSInfoModel,
                                          TimeseriesUSModel, TotalModel)
-from utils.get_data import (DailyReports, DataTimeSeries,
-                              get_data_lookup_table)
+from integrators import update_Interface
 
 
-class CovidAPIv2Integrator:
+class CovidAPIv2Integrator(update_Interface):
     """ Covid-19 API v2 methods
         SCHEMA: {
             "data": Any,

@@ -11,16 +11,15 @@ from typing import Any, Dict, List
 import pandas as pd
 
 from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
-                                         CurrentListModel, CurrentModel,
-                                         DeathsModel, RecoveredModel,
-                                         TimeseriesCoordinatesModel,
-                                         TimeseriesDataModel, TimeseriesModel,
-                                         TotalModel)
+                    CurrentListModel, CurrentModel, DeathsModel, 
+                    RecoveredModel,TimeseriesCoordinatesModel,TimeseriesDataModel, 
+                    TimeseriesModel,TotalModel)
 from utils.get_data import get_data
+from integrators import update_Interface
 
 
 # Create a model and its methods
-class CovidAPIv1:
+class CovidAPIv1(update_Interface):
     """ Model and Its methods """
     def __init__(self) -> None:
         """ Get data from helper -> the source data """
