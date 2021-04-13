@@ -6,20 +6,20 @@ DATE: 04-April-2020
 """
 # Import libraries
 from datetime import datetime
-from functools import wraps
 from typing import Any, Dict
 
 from fastapi import BackgroundTasks, HTTPException
 from integrators.covid_api_v2_integrator import CovidAPIv2Integrator
 from starlette.requests import Request
+from utils.get_data import DailyReports
+from utils.news_updates import news_updates
 
 from . import v2
-from utils.get_data import DailyReports, DataTimeSeries
 
 # Initiate Integrator
 DAILY_REPORTS = DailyReports()
-DATA_TIME_SERIES = DataTimeSeries()
-COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
+COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS)
+NEWS = news_updates()
 
 
 # Logging
@@ -68,6 +68,21 @@ async def get_current_us(request: Request, background_tasks: BackgroundTasks) ->
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
         data = COVID_API_V2.get_current_US()
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
+
+    return data
+
+
+@v2.get('/newsIndia')
+async def indianNews(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    """
+        COVID-19 Updates in India
+    """
+    try:
+        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        data = NEWS.get_news_updates_india()
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -248,5 +263,19 @@ async def get_US_time_series(case: str, request: Request, background_tasks: Back
             raise HTTPException(status_code=404, detail="Item not found")
 
     data = COVID_API_V2.get_US_time_series(case.lower())
+
+    return data
+
+async def get_news_updates(request: Request, background_tasks: BackgroundTasks) -> Any:
+    """
+    Get the news updates, headlines, guidlines related to COVID19 based on a given case:
+
+
+    """
+    try:
+        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        data = news_updates.get_news_updates()
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
 
     return data
