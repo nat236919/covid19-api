@@ -9,23 +9,38 @@ import csv
 from typing import Dict
 
 import pandas as pd
+from abc import ABC, abstractmethod
 
 from .file_paths import JHU_CSSE_FILE_PATHS
 from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
                      helper_get_latest_data_url)
 
 
+
+class Itarget(ABC):
+
+    def __init__(self):
+        self._lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
+
+    @abstractmethod
+    def get_data_lookup_table(self) -> Dict[str,str]:
+        pass
+
+class Adapter(Itarget):
+
+    def get_data_lookup_table(self) -> Dict[str,str]:
+        lookup_df = pd.read_csv(self._lookup_table_url)[['iso2', 'Country_Region']]
+        # Create referral dictionary
+        data = lookup_df.to_dict('records')
+        data = {v['iso2']: v['Country_Region'] for v in data}
+        return data       
+
+
 # Get Lookup table
 def get_data_lookup_table() -> Dict[str, str]:
     """ Get lookup table (country references for iso2) """
-    lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
-    lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
-    
-    # Create referral dictionary
-    data = lookup_df.to_dict('records')
-    data = {v['iso2']: v['Country_Region'] for v in data}
-
-    return data
+    adapter = Adapter()
+    return adapter.get_data_lookup_table()
 
 
 # Get Daily Reports Data (General and US)
