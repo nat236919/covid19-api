@@ -13,6 +13,7 @@ from starlette.requests import Request
 from app.integrators.Adapter import Adapter
 
 from . import v2
+from utils.get_data import DailyReports, DataTimeSeries
 
 
 # Logging
