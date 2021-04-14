@@ -28,73 +28,62 @@ def get_data_lookup_table() -> Dict[str, str]:
     return data
 
 
-# Get data from daily reports
-def get_data_daily_reports() -> pd.DataFrame:
-    """ Get data from BASE_URL_DAILY_REPORTS """
-    # Check the latest file
-    latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+# Get Daily Reports Data (General and US)
+class DailyReports:
+    def __init__(self) -> None: 
+        self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
+        self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
 
-    # Extract the data
-    df = pd.read_csv(latest_base_url)
+    # Get data from daily reports
+    def get_data_daily_reports(self, US: bool = False) -> pd.DataFrame:
+        """ Get data from BASE_URL_DAILY_REPORTS """
+        # Extract the data
+        df = pd.read_csv(self.latest_base_US_url) if US else pd.read_csv(self.latest_base_url)
 
-    # Data pre-processing
-    concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-    df = helper_df_cols_cleaning(df, concerned_columns, int)
-    
-    return df
-
-
-# Get data from daily reports (USA)
-def get_data_daily_reports_us() -> pd.DataFrame:
-    """ Get data from BASE_URL_DAILY_REPORTS """
-    # Check the latest file
-    latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
-
-    # Extract the data
-    df = pd.read_csv(latest_base_url)
-
-    # Data pre-processing
-    concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-    df = helper_df_cols_cleaning(df, concerned_columns, int)
-    
-    return df
-
-
-# Get data from time series
-def get_data_time_series() -> Dict[str, pd.DataFrame]:
-    """ Get the dataset from JHU CSSE """
-    dataframes = {}
-
-    # Iterate through all files
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES']:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES'].format(category)
-
-        # Extract data
-        df = pd.read_csv(url)
-        df = helper_df_cleaning(df)
-        dataframes[category] = df
-
-    return dataframes
-
-
-# Get data from time series (US)
-def get_US_time_series() -> Dict[str, pd.DataFrame]:
-    """ Get the dataset of time series for USA """
-    dataframes = {}
-
-    # Iterate through categories ('confirmed', 'deaths')
-    for category in JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1]:
-        url = JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES'].format(category)
+        # Data pre-processing
+        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
+        df = helper_df_cols_cleaning(df, concerned_columns, int)
         
-        # Extract data
-        df = pd.read_csv(url)
-        df = helper_df_cleaning(df)
-        concerned_columns = ['Lat', 'Long_']
-        df = helper_df_cols_cleaning(df, concerned_columns, float)
-        dataframes[category] = df
+        return df
 
-    return dataframes
+      
+# Get data from time series (General and US)
+class DataTimeSeries:
+    """ Get the timeseries dataset from JHU CSSE and Prepare DataFrames """
+    def get_country(self, US: bool = False) -> None:
+        if US == False:
+            return self.get_data_time_series(US)
+        else:
+            return self.get_data_time_series_US(US)
+                
+    def get_data_time_series(self, US : bool = False) -> Dict[str, pd.DataFrame]:
+        dataframes = {}
+        categories = JHU_CSSE_FILE_PATHS['CATEGORIES']
+        url = JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES']
+        iterate(dataframes, url, categories)
+       
+        return dataframes
 
+    def get_data_time_series_US(self, US : bool = False) -> Dict[str, pd.DataFrame]:
+        dataframes = {}
+        categories = JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1] # Select only 'confirmed' and 'deaths'
+        url = JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES']
+        iterate(dataframes, url, categories)
+       
+        return dataframes
+
+    def iterate(self, dataframes, url, categories) -> None:
+        for category in categories:
+          url = url.format(category)
+          df = pd.read_csv(url)
+          df = self._clean_timeseries_dataframe(df, US)
+          dataframes[category] = df  
+    
+    def _clean_timeseries_dataframe(self, df: pd.DataFrame, US: bool = False) -> pd.DataFrame:
+        df_cleaned = helper_df_cleaning(df) # main pre-processing
+        if US:
+            df_cleaned = helper_df_cols_cleaning(df_cleaned, ['Lat', 'Long_'], float)
+        return df_cleaned
 
 # API v1
 def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
