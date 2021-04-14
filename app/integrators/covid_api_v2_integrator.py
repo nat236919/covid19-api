@@ -11,8 +11,8 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
-from models.base_model import ResponseModel
-from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
+from app.models.base_model import ResponseModel
+from app.models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          CountryModel, CurrentModel,
                                          CurrentUSModel, DeathsModel,
                                          RecoveredModel,
@@ -24,7 +24,7 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          TimeseriesUSDataModel,
                                          TimeseriesUSInfoModel,
                                          TimeseriesUSModel, TotalModel)
-from utils.get_data import (get_data_daily_reports,
+from app.utils.get_data import (get_data_daily_reports,
                               get_data_daily_reports_us, get_data_lookup_table,
                               get_data_time_series, get_US_time_series)
 

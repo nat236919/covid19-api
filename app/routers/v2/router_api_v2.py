@@ -6,17 +6,13 @@ DATE: 04-April-2020
 """
 # Import libraries
 from datetime import datetime
-from functools import wraps
 from typing import Any, Dict
 
 from fastapi import BackgroundTasks, HTTPException
-from integrators.covid_api_v2_integrator import CovidAPIv2Integrator
 from starlette.requests import Request
+from app.integrators.Adapter import Adapter
 
 from . import v2
-
-# Initiate Integrator
-COVID_API_V2 = CovidAPIv2Integrator()
 
 
 # Logging
@@ -43,7 +39,7 @@ async def get_current(request: Request, background_tasks: BackgroundTasks) -> Di
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_current()
+        data = Adapter.current_status(get_current, 2)
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -64,7 +60,7 @@ async def get_current_us(request: Request, background_tasks: BackgroundTasks) ->
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_current_US()
+        data = Adapter.current_us(get_current_us, 2)
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -84,7 +80,7 @@ async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_total()
+        data = Adapter.total(get_total, 2)
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -101,7 +97,7 @@ async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> 
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_confirmed()
+        data = Adapter.confirmed_cases(get_confirmed, 2)
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -118,7 +114,7 @@ async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dic
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_deaths()
+        data = Adapter.deaths(get_deaths, 2)
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -135,7 +131,7 @@ async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> 
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_recovered()
+        data = Adapter.recovered(get_recovered, 2)
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -152,7 +148,7 @@ async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dic
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_active()
+        data = Adapter.active(get_active, 2)
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -175,7 +171,7 @@ async def get_country(country_name: str, request: Request, background_tasks: Bac
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        raw_data = COVID_API_V2.get_country(country_name.lower())
+        raw_data = Adapter.affected_countries(get_country, 2)
 
     except Exception:
         raise HTTPException(status_code=404, detail="Item not found")
@@ -207,7 +203,7 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
     if case.lower() not in ['global', 'confirmed', 'deaths', 'recovered']:
             raise HTTPException(status_code=404, detail="Item not found")
 
-    data = COVID_API_V2.get_time_series(case.lower())
+    data = Adapter.time_series(get_time_series, 2)(case.lower())
 
     return data
 
@@ -244,6 +240,6 @@ async def get_US_time_series(case: str, request: Request, background_tasks: Back
     if case.lower() not in ['confirmed', 'deaths']:
             raise HTTPException(status_code=404, detail="Item not found")
 
-    data = COVID_API_V2.get_US_time_series(case.lower())
+    data = Adapter.us_time_series(get_US_time_series, 2)(case.lower())
 
     return data
