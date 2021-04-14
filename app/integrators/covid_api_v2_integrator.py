@@ -28,6 +28,103 @@ from utils.get_data import (DailyReports, DataTimeSeries,
                             get_data_lookup_table)
 
 
+class Country:
+    def extract_time_series(self, time_series: Dict[str, Any], case) -> List[Any]:
+        pass
+
+
+class Global(Country):
+    def extract_time_series(self, time_series: Dict[str, Any]):
+        """ Extract time series for global case
+            Iterating all cases from all time series
+        """
+        global_df_list = []
+
+        for key, df in time_series.items():
+            df_temp = pd.DataFrame(
+                df.iloc[:, 4:].astype('int32').sum(axis=0))  # Slice to select time series data (exclude country info)
+            df_temp.columns = [key]  # A dataframe with one column named by a key (case), rows are time series
+            global_df_list.append(df_temp)
+
+        # Combine DataFrames
+        global_dict = pd.concat(global_df_list, axis=1, sort=False).T.to_dict()
+        data = [{k: TimeseriesGlobalModel(**v)} for k, v in global_dict.items()]
+
+        return data
+
+
+class US(Country):
+    def extract_time_series(self, time_series: Dict[str, Any]):
+        """ Extract USA time series """
+
+        def __unpack_US_inner_time_series(time_series: Dict[str, Any]) -> TimeseriesUSModel:
+            for data in time_series.values():
+                excluded_cols = ['UID', 'iso2', 'iso3', 'code3', 'FIPS',
+                                 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_',
+                                 'Combined_Key', 'Population']
+                # Info
+                timeseries_US_info_model = TimeseriesUSInfoModel(
+                    UID=data['UID'],
+                    iso2=data['iso2'],
+                    iso3=data['iso3'],
+                    code3=data['code3'],
+                    FIPS=data['FIPS'],
+                    Admin2=data['Admin2'],
+                )
+                # Coordinates
+                timeseries_US_coordinates_model = TimeseriesUSCoordinatesModel(
+                    Lat=float(data['Lat']) if data['Lat'] else 0,
+                    Long=float(data['Long_']) if data['Long_'] else 0
+                )
+                # Timeseries
+                temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
+                timeseries_data_model_list = [TimeseriesUSDataModel(date=k, value=v) for k, v in
+                                              temp_time_series_dict.items()]
+
+                # Main Model
+                timeseries_US_model = TimeseriesUSModel(
+                    Province_State=data['Province_State'],
+                    Country_Region=data['Country_Region'],
+                    Info=timeseries_US_info_model,
+                    Coordinates=timeseries_US_coordinates_model,
+                    TimeSeries=timeseries_data_model_list
+                )
+                yield timeseries_US_model
+
+        # Extract the time series data
+        time_series_data = []
+        for data in __unpack_US_inner_time_series(time_series):
+            time_series_data.append(data)
+
+        return time_series_data
+
+
+class TimeSeries:
+    def __init__(self, country: Country):
+        self.country = country
+
+    def get_extracted_time_series(self, time_series: Dict[str, Any]):
+        pass
+
+
+class GlobalTimeSeries(TimeSeries):
+    def __init__(self, country: Country, time_series: Dict[str, Any]):
+        super().__init__(country)
+        self.time_series = time_series
+
+    def get_extracted_time_series(self):
+        return self.country.extract_time_series(self.time_series)
+
+
+class USTimeSeries(TimeSeries):
+    def __init__(self, country: Country, time_series: Dict[str, Any]):
+        super().__init__(country)
+        self.time_series = time_series
+
+    def get_extracted_time_series(self):
+        return self.country.extract_time_series(self.time_series)
+
+
 class CovidAPIv2Integrator:
     """ Covid-19 API v2 methods
         SCHEMA: {
@@ -270,100 +367,3 @@ class CovidAPIv2Integrator:
             data = time_series.get_extracted_time_series()
 
         return data
-
-
-class Country:
-    def extract_time_series(self, time_series: Dict[str, Any], case) -> List[Any]:
-        pass
-
-
-class Global(Country):
-    def extract_time_series(self, time_series: Dict[str, Any]):
-        """ Extract time series for global case
-            Iterating all cases from all time series
-        """
-        global_df_list = []
-
-        for key, df in time_series.items():
-            df_temp = pd.DataFrame(
-                df.iloc[:, 4:].astype('int32').sum(axis=0))  # Slice to select time series data (exclude country info)
-            df_temp.columns = [key]  # A dataframe with one column named by a key (case), rows are time series
-            global_df_list.append(df_temp)
-
-        # Combine DataFrames
-        global_dict = pd.concat(global_df_list, axis=1, sort=False).T.to_dict()
-        data = [{k: TimeseriesGlobalModel(**v)} for k, v in global_dict.items()]
-
-        return data
-
-
-class US(Country):
-    def extract_time_series(self, time_series: Dict[str, Any]):
-        """ Extract USA time series """
-
-        def __unpack_US_inner_time_series(time_series: Dict[str, Any]) -> TimeseriesUSModel:
-            for data in time_series.values():
-                excluded_cols = ['UID', 'iso2', 'iso3', 'code3', 'FIPS',
-                                 'Admin2', 'Province_State', 'Country_Region', 'Lat', 'Long_',
-                                 'Combined_Key', 'Population']
-                # Info
-                timeseries_US_info_model = TimeseriesUSInfoModel(
-                    UID=data['UID'],
-                    iso2=data['iso2'],
-                    iso3=data['iso3'],
-                    code3=data['code3'],
-                    FIPS=data['FIPS'],
-                    Admin2=data['Admin2'],
-                )
-                # Coordinates
-                timeseries_US_coordinates_model = TimeseriesUSCoordinatesModel(
-                    Lat=float(data['Lat']) if data['Lat'] else 0,
-                    Long=float(data['Long_']) if data['Long_'] else 0
-                )
-                # Timeseries
-                temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
-                timeseries_data_model_list = [TimeseriesUSDataModel(date=k, value=v) for k, v in
-                                              temp_time_series_dict.items()]
-
-                # Main Model
-                timeseries_US_model = TimeseriesUSModel(
-                    Province_State=data['Province_State'],
-                    Country_Region=data['Country_Region'],
-                    Info=timeseries_US_info_model,
-                    Coordinates=timeseries_US_coordinates_model,
-                    TimeSeries=timeseries_data_model_list
-                )
-                yield timeseries_US_model
-
-        # Extract the time series data
-        time_series_data = []
-        for data in __unpack_US_inner_time_series(time_series):
-            time_series_data.append(data)
-
-        return time_series_data
-
-
-class TimeSeries:
-    def __init__(self, country: Country):
-        self.country = country
-
-    def get_extracted_time_series(self, time_series: Dict[str, Any]):
-        pass
-
-
-class GlobalTimeSeries(TimeSeries):
-    def __init__(self, country: Country, time_series: Dict[str, Any]):
-        super().__init__(country)
-        self.time_series = time_series
-
-    def get_extracted_time_series(self):
-        return self.country.extract_time_series(self.time_series)
-
-
-class USTimeSeries(TimeSeries):
-    def __init__(self, country: Country, time_series: Dict[str, Any]):
-        super().__init__(country)
-        self.time_series = time_series
-
-    def get_extracted_time_series(self):
-        return self.country.extract_time_series(self.time_series)
