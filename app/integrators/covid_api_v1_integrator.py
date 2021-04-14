@@ -10,16 +10,18 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
-from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
+from app.models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
                                          CurrentListModel, CurrentModel,
                                          DeathsModel, RecoveredModel,
                                          TimeseriesCoordinatesModel,
                                          TimeseriesDataModel, TimeseriesModel,
                                          TotalModel)
-from utils.get_data import get_data
+
+from app.utils.get_data import get_data
+
+from app.integrators.builder import DataBuilder
 
 
-# Create a model and its methods
 class CovidAPIv1:
     """ Model and Its methods """
     def __init__(self) -> None:
@@ -77,30 +79,41 @@ class CovidAPIv1:
 
         return current_data
 
+    class DataDirector:
+        def construct(self):
+            return DataBuilder() \
+                .set_confirmed(sum([int(i) for i in CovidAPIv1.df_confirmed['confirmed']]))\
+                .set_death(sum([int(i) for i in CovidAPIv1.df_deaths['deaths']]))\
+                .set_recovered(sum([int(i) for i in self.df_recovered['recovered']]))\
+                .get_result()
+
+    if __name__ == "__main__":
+        DataDirector.construct()
+
     def get_confirmed_cases(self) -> Dict[str, int]:
         """ Summation of all confirmed cases """
-        data = {'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']])}
+        data = {'confirmed': self.DataBuilder.confirmed}
         data = ConfirmedModel(**self.add_dt_and_ts(data))
         return data
 
     def get_deaths(self) -> Dict[str, int]:
         """ Summation of all deaths """
-        data = {'deaths': sum([int(i) for i in self.df_deaths['deaths']])}
+        data = {'deaths': self.DataBuilder.death}
         data = DeathsModel(**self.add_dt_and_ts(data))
         return data
 
     def get_recovered(self) -> Dict[str, int]:
         """ Summation of all recovers """
-        data = {'recovered': sum([int(i) for i in self.df_recovered['recovered']])}
+        data = {'recovered': self.DataBuilder.recovered}
         data = RecoveredModel(**self.add_dt_and_ts(data))
         return data
 
     def get_total(self) -> Dict[str, Any]:
         """ Summation of Confirmed, Deaths, Recovered """
         data = {
-            'confirmed': self.get_confirmed_cases().confirmed,
-            'deaths': self.get_deaths().deaths,
-            'recovered': self.get_recovered().recovered
+            'confirmed': self.DataBuilder.confirmed,
+            'deaths': self.DataBuilder.death,
+            'recovered': self.DataBuilder.recovered
             }
         data = TotalModel(**self.add_dt_and_ts(data))
         return data
