@@ -112,3 +112,22 @@ def get_data(time_series: bool = False) -> Dict[str, pd.DataFrame]:
         dataframes[category.lower()] = df
 
     return dataframes
+
+
+class UniversalGetReports:
+    def get():
+        pass 
+
+class DailyReportsAdapter(UniversalGetReports, DailyReports):
+
+    def get(self):
+        return self.get_data_daily_reports()
+
+
+class UniversalDataTimeSeries:
+    def get():
+        pass 
+
+class DataTimeSeriesAdapter(UniversalDataTimeSeries, DataTimeSeries):
+    def get(self):
+        return self.get_data_time_series()

@@ -138,3 +138,5 @@ class TimeseriesUSModel(BaseModel):
     Info: TimeseriesUSInfoModel
     Coordinates: TimeseriesUSCoordinatesModel
     TimeSeries: List[TimeseriesUSDataModel]
+
+
