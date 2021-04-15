@@ -1,7 +1,7 @@
 """
 FILE: country.py
 DESCRIPTION: Countries for API v2
-AUTHOR: Waseefa Ahmed
+AUTHOR:
 DATE: 14-April-2021
 """
 
