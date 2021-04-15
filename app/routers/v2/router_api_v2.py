@@ -20,16 +20,34 @@ from utils.get_data import DailyReports
 DAILY_REPORTS = DailyReports()
 COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS)
 
+class Log:
+    __instance = None
+    @staticmethod
 
-# Logging
-def write_log(requested_path: str, client_ip: str) -> None:
-    time_format = '%d-%b-%Y'
-    file_name = datetime.now().strftime(time_format)
-    with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
-        date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
-        message = date_time_message + requested_path + ' | ' + client_ip + '\n'
-        log_file.write(message)
-    return None
+    def getInstance():
+        """ Static method. """
+        if Log.__instance == None:
+            Log()
+        return Log.__instance   
+    
+    def __init__(self):
+        if Log.__instance != None:
+            raise Exception("This is a singleton class.")
+        else:
+            Log.__instance = self
+    
+    def newLog(self, requested_path: str, client_ip: str) -> None:
+        time_format = '%d-%b-%Y'
+        file_name = datetime.now().strftime(time_format)
+        with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
+            date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
+            message = date_time_message + requested_path + ' | ' + client_ip + '\n'
+            log_file.write(message)
+        return None
+
+
+def write_log(self, requested_path: str, client_ip: str) -> None:
+    Log.getInstance().newLog(requested_path, client_ip)
 
 
 @v2.get('/current')
