@@ -16,6 +16,7 @@ from starlette.requests import Request
 from . import v2
 from utils.get_data import DailyReports, DataTimeSeries
 
+
 # Initiate Integrator
 DAILY_REPORTS = DailyReports()
 DATA_TIME_SERIES = DataTimeSeries()
@@ -190,7 +191,7 @@ async def get_country(country_name: str, request: Request, background_tasks: Bac
 async def get_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
     """
     Get the time series based on a given case: global, confirmed, deaths, recovered
-    
+
     global
     - **key**: datetime
     - **confirmed**: confirmed cases
