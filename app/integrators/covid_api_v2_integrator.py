@@ -81,7 +81,7 @@ class CovidAPIv2Integrator:
         df_grp_by_country = df_grp_by_country.reset_index()
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
 
-        data = [CurrentModel((**v) for v in df_grp_by_country.to_dict('index').values())]
+        data = [CurrentModel.set(((**v) for v in df_grp_by_country.to_dict('index').values()))]
 
         return data
     
