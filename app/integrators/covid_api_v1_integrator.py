@@ -16,11 +16,14 @@ from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
                                          TimeseriesCoordinatesModel,
                                          TimeseriesDataModel, TimeseriesModel,
                                          TotalModel)
+
+                                        
 from utils.get_data import get_data
+from integrators import Interface 
 
 
 # Create a model and its methods
-class CovidAPIv1:
+class CovidAPIv1(Interface):
     """ Model and Its methods """
     def __init__(self) -> None:
         """ Get data from helper -> the source data """
