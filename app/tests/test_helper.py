@@ -17,7 +17,7 @@ DF = pd.DataFrame(DATA)
 # Test df cleaning
 def test_helper_df_cleaning() -> None:
     df = DF.copy()
-    res_df = helper.helper_df_cleaning(df)
+    res_df = helper.Helper.helper_df_cleaning(df)
     res_col_1 = [i for i in res_df['col_1'].values]
     res_col_2 = [i for i in res_df['col_2'].values]
     assert isinstance(res_df, pd.DataFrame) is True
@@ -28,7 +28,7 @@ def test_helper_df_cleaning() -> None:
 # Test df cleaning on columns
 def test_helper_df_cols_cleaning() -> None:
     df = DF.copy()
-    res_df = helper.helper_df_cols_cleaning(df, ['col_2'], str)
+    res_df = helper.Helper.helper_df_cols_cleaning(df, ['col_2'], str)
     res_col_1 = [i for i in res_df['col_1'].values]
     res_col_2 = [i for i in res_df['col_2'].values]
     assert isinstance(res_df, pd.DataFrame) is True
@@ -38,9 +38,9 @@ def test_helper_df_cols_cleaning() -> None:
 
 # Test get latest data
 def test_helper_get_latest_data_url() -> None:
-    assert isinstance(helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']), str)
-    assert isinstance(helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS']), str)
-    assert isinstance(helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US']), str)
+    assert isinstance(helper.Helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']), str)
+    assert isinstance(helper.Helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS']), str)
+    assert isinstance(helper.Helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US']), str)
     ## Temporily disable timeseries testing
     # assert isinstance(helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_TIME_SERIES']), str)
     # assert isinstance(helper.helper_get_latest_data_url(file_paths.JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES']), str)
