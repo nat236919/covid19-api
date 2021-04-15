@@ -29,17 +29,17 @@ def get_data_lookup_table() -> Dict[str, str]:
 
 
 # Get Daily Reports Data (General and US)
-class DailyReportsSingleton:
+class DailyReports:
     __instance = None
 
     @staticmethod
     def get_instance():
-        if DailyReportsSingleton.__instance is None:
-            DailyReportsSingleton()
-        return DailyReportsSingleton.__instance
+        if DailyReports.__instance is None:
+            DailyReports()
+        return DailyReports.__instance
 
     def __init__(self) -> None:
-        if DailyReportsSingleton.__instance is not None:
+        if DailyReports.__instance is not None:
             raise Exception("This class cannot be instantiated more than once")
         else:
             self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
