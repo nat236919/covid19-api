@@ -1,252 +1,155 @@
-"""
-FILE: router_api_v2.py
-DESCRIPTION: all routes for API v2
-AUTHOR: Nuttaphat Arunoprayoch
-DATE: 04-April-2020
-"""
-# Import libraries
-from datetime import datetime
-from functools import wraps
-from typing import Any, Dict
+import datetime
+import json
+import logging
+import os
+import re
 
-from fastapi import BackgroundTasks, HTTPException
-from integrators.covid_api_v2_integrator import CovidAPIv2Integrator
-from starlette.requests import Request
+import dateutil
+import numpy as np
+import pandas as pd
 
-from . import v2
-from utils.get_data import DailyReports, DataTimeSeries
+__CWD__ = os.path.abspath(os.path.dirname(__file__))
 
-# Initiate Integrator
-DAILY_REPORTS = DailyReports()
-DATA_TIME_SERIES = DataTimeSeries()
-COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
+logging.basicConfig()
+logger = logging.getLogger('cleansing.full')
+logger.setLevel(logging.INFO)
 
+GEO_COLS = ['country','nuts_1', 'nuts_2', 'nuts_3', 'lau']
 
-# Logging
-def write_log(requested_path: str, client_ip: str) -> None:
-    time_format = '%d-%b-%Y'
-    file_name = datetime.now().strftime(time_format)
-    with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
-        date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
-        message = date_time_message + requested_path + ' | ' + client_ip + '\n'
-        log_file.write(message)
-    return None
+class Wrangler:
+    def __init__(self, csv_path, json_path):
+        super().__init__()
+        self.csv_path = csv_path
+        self.json_path = json_path
 
+        self.df = self._load_data()
 
-@v2.get('/current')
-async def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """
-    Get the current situation data from all reported countries
+        self.calculate_daily()
+        self.convert_to_json()
 
-    - **location**: a country's name
-    - **confirmed**: confirmed cases
-    - **deaths**:  death cases
-    - **recovered**: recovered cases
-    - **active**: active cases
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_current()
+    def _load_data(self):
+        df = pd.read_csv(self.csv_path)
+        return df
 
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
+    def calculate_daily(self):
+        self.df['date'] = self.df.datetime.apply(lambda x: dateutil.parser.parse(x).date())
+        self.df['time'] = self.df.datetime.apply(lambda x: dateutil.parser.parse(x).time())
 
-    return data
+        cols = self.df.columns.tolist()
+        geo_cols = []
+        for col in cols:
+            if col in GEO_COLS:
+                geo_cols.append(col)
 
+        if not geo_cols:
+            raise Exception(f'No geo columns found among {cols}')
 
-@v2.get('/current/US')
-async def get_current_us(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """
-    Get all data from USA's current situation
+        for col in geo_cols:
+            self.df[col] = self.df[col].apply(
+                lambda x: x.lower() if (
+                    (not pd.isnull(x)) and (isinstance(x, str))
+                ) else x
+            )
+        self.df_daily = self.df.groupby(
+            ['date'] + geo_cols
+        ).apply(
+            lambda x: x.sort_values(by='time').reset_index(drop=True).iloc[-1]
+        )
 
-    - **Province_State**: State's name
-    - **Confirmed**: confirmed cases
-    - **Deaths**: death cases
-    - **Recovered**: recovered cases
-    - **Active**: active cases
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_current_US()
+        self.df_daily.reset_index(drop=True, inplace=True)
+        self.df_daily.drop('time', inplace=True, axis=1)
 
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
+        logger.debug('Calculated daily data')
 
-    return data
+    def convert_to_json(self):
 
+        df = self.df_daily.copy()
+        df.replace({np.nan:None}, inplace=True)
+        logger.debug("Convert date to isoformat")
+        df['date'] = df.date.apply(
+            lambda x: x.isoformat() if isinstance(x, (datetime.date)) else x
+        )
+        logger.debug('Get country date combinations')
+        country_dates = df[['country', 'date']].drop_duplicates().values
 
-@v2.get('/total')
-async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """
-    Get the total numbers of all cases
+        self.data = []
+        for i in country_dates:
+            i_records = df.loc[
+                (
+                    df.country == i[0]
+                ) & (
+                    df.date == i[1]
+                )
+            ].to_dict(orient='records')
 
-    - **confirmed**: confirmed cases
-    - **deaths**:  death cases
-    - **recovered**: recovered cases
-    - **active**: active cases
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_total()
+            self.data.append(
+                {
+                    "country": i[0],
+                    "date": i[1],
+                    "records": i_records
+                }
+            )
 
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
-
-    return data
-
-
-@v2.get('/confirmed')
-async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
-    """
-    Get the total numbers of confirmed cases
-
-    - **confirmed**: confirmed cases
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_confirmed()
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
-
-    return data
+    def save_json(self):
+        with open(self.json_path, 'w+') as fp:
+            json.dump(self.data, fp)
 
 
-@v2.get('/deaths')
-async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
-    """
-    Get the total numbers of death cases
+def get_datasets(dataset_path):
 
-    - **deaths**:  death cases
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_deaths()
+    re_find_country = re.compile(r'covid-19-(.*).csv')
 
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
+    files = os.listdir(dataset_path)
 
-    return data
-
-
-@v2.get('/recovered')
-async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
-    """
-    Get the total numbers of recovered cases
-
-    - **recovered**: recovered case
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_recovered()
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
-
-    return data
-
-
-@v2.get('/active')
-async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dict[str, int]:
-    """
-    Get the total numbers of active cases
-
-    - **active**: active case
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_active()
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
-
-    return data
-
-
-@v2.get('/country/{country_name}')
-async def get_country(country_name: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """
-    Get the data based on a county's name or its ISO code
-
-    - **location**: a country's name
-    - **confirmed**: confirmed cases
-    - **deaths**:  death cases
-    - **recovered**: recovered cases
-    - **active**: active cases
-    \f
-    :param country_name: A country name or its ISO code (ALPHA-2)
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        raw_data = COVID_API_V2.get_country(country_name.lower())
-
-    except Exception:
-        raise HTTPException(status_code=404, detail="Item not found")
-
-    return raw_data
-
-
-@v2.get('/timeseries/{case}')
-async def get_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """
-    Get the time series based on a given case: global, confirmed, deaths, recovered
-    
-    global
-    - **key**: datetime
-    - **confirmed**: confirmed cases
-    - **deaths**:  death cases
-    - **recovered**: recovered case
-
-    confirmed, deaths, recovered
-    - **Province_State**: State's name
-    - **Country_Region**: Country's name
-    - **Coordinates**: {"Lat": int, "Long": int}
-    - **TimeSeries**: [{"date": datetime, "value": int}]
-    \f
-    param: case: string case -> global, confirmed, deaths, recovered
-    """
-    background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-
-    if case.lower() not in ['global', 'confirmed', 'deaths', 'recovered']:
-            raise HTTPException(status_code=404, detail="Item not found")
-
-    data = COVID_API_V2.get_time_series(case.lower())
-
-    return data
-
-
-@v2.get('/timeseries/US/{case}')
-async def get_US_time_series(case: str, request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """
-    Get the USA time series based on a given case:
-
-    **confirmed**, **deaths**
-
-    - **Province_State**: State's name
-    - **Country_Region**: Country's name
-    - **Info**:{
-        - **UID**: UID
-        - **iso2**: ISO2
-        - **iso3**: ISO3
-        - **code3**: CODE3
-        - **FIPS**: FIPS
-        - **Admin2**: Admin2
+    files_full = {
+        re_find_country.findall(i)[0]:i for i in files if (i.endswith('.csv') and not i.startswith('.'))
     }
-    - **Coordinates**: {
-        - **Lat**: float
-        - **Long**: float
-    }
-    - **TimeSeries**: [
-        - {"date: datetime, "value": int}
+
+    daily_path = os.path.join(dataset_path, 'daily')
+    daily_countries = [
+        i for i in os.listdir(
+            daily_path
+        ) if not i.startswith('.')
     ]
-    \f
-    param: case: string case -> confirmed, deaths
-    """
-    background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
 
-    if case.lower() not in ['confirmed', 'deaths']:
-            raise HTTPException(status_code=404, detail="Item not found")
+    files_daily = {}
 
-    data = COVID_API_V2.get_US_time_series(case.lower())
+    for i in daily_countries:
+        i_path = os.path.join(daily_path, i)
+        i_files = os.listdir(i_path)
+        i_files = [os.path.join('daily', i, f) for f in i_files if not f.startswith('.')]
+        files_daily[i] = i_files
 
-    return data
+    return {
+        'full': files_full,
+        'daily': files_daily
+    }
+
+
+
+
+if __name__ == "__main__":
+
+    dataset_path = os.path.join(__CWD__, '..', 'dataset')
+    db_path = os.path.join(__CWD__, '..', 'api', 'db')
+
+    dataset = get_datasets(dataset_path)
+
+    logger.info('Convert csv to json')
+    for ct, path in dataset['full'].items():
+        logger.info(f'cleaning up {ct}')
+        csv_path = os.path.join(
+            dataset_path,
+            path
+        )
+        ct_wrangler = Wrangler(
+            csv_path=csv_path,
+            json_path=os.path.join(
+                db_path,
+                f'{ct}.json'
+            )
+        )
+        logger.info(f'saving {ct} data as json')
+        ct_wrangler.save_json()
+
+    pass
