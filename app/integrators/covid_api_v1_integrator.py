@@ -17,10 +17,11 @@ from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
                                          TimeseriesDataModel, TimeseriesModel,
                                          TotalModel)
 from utils.get_data import get_data
+import api_v1_integrator_interface
 
 
 # Create a model and its methods
-class CovidAPIv1:
+class CovidAPIv1(APIv1):
     """ Model and Its methods """
      __instance = None
 
