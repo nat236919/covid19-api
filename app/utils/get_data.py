@@ -30,11 +30,17 @@ def get_data_lookup_table() -> Dict[str, str]:
 
 # Get Daily Reports Data (General and US)
 class DailyReports:
+    DailyReportsBridge1()
+    DailyReportsBridge2()
+
+
+class DailyReportsBridge1:
     def __init__(self) -> None:
         self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
         self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
 
-    # Get data from daily reports
+
+class DailyReportsBridge2:
     def get_data_daily_reports(self, US: bool = False) -> pd.DataFrame:
         """ Get data from BASE_URL_DAILY_REPORTS """
         # Extract the data
