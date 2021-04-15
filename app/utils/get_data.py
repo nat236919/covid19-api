@@ -41,6 +41,7 @@ class Adaptee:
 class Adapter(GlobalGetReports, Adaptee):
     """
     The Adapter makes the Adaptee's interface compatible with the Target's
+
     interface via multiple inheritance.
     """
 
