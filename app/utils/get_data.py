@@ -54,11 +54,11 @@ class DataTimeSeries:
     TS_Instance = None
 
     def __init__(self) -> None:
-        if DataTimeSeries.TS_Instance != None:
-            raise Exception("Activity not permitted")
-
+        if DataTimeSeries.TS_Instance == None:
+            TS_Instance = self
+            
         else:
-                TS_Instance = self
+            raise Exception("Activity not permitted")
 
     def getTimeInstance():
         if DataTimeSeries.TS_Instance == None:
