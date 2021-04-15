@@ -39,7 +39,9 @@ class CovidAPIv2Integrator:
     
     def __init__(self,  daily_reports: DailyReports, time_series: DataTimeSeries) -> None:
         """ Initiate instances """
-        self.lookup_table = get_data_lookup_table()
+        data = DataTable.get_data_lookup_table() 
+        self.lookup_table = data
+
         self.scheme = {
             'data': None,
             'dt': None,

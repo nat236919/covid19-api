@@ -16,16 +16,32 @@ from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
 
 
 # Get Lookup table
-def get_data_lookup_table() -> Dict[str, str]:
-    """ Get lookup table (country references for iso2) """
-    lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
-    lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
-    
-    # Create referral dictionary
-    data = lookup_df.to_dict('records')
-    data = {v['iso2']: v['Country_Region'] for v in data}
+class DataTable
+    __instanceSingleton = None
 
-    return data
+    @staticmethod
+    def getInstance():
+	if DataTable.__instanceSingleton == None:
+            DataTable()
+	return DataTable.__instanceSingleton
+	
+    def __init__(self)
+        if DataTable.__instanceSingleton != None:
+            raise Exception("Singleton Class")
+        else:
+            DataTable.__instanceSingleton = self
+
+	
+    def get_data_lookup_table() -> Dict[str, str]:
+        """ Get lookup table (country references for iso2) """
+        lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
+   	lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
+    
+        # Create referral dictionary
+    	data = lookup_df.to_dict('records')
+    	data = {v['iso2']: v['Country_Region'] for v in data}
+
+    	return data
 
 
 # Get Daily Reports Data (General and US)
