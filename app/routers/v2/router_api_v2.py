@@ -15,11 +15,14 @@ from starlette.requests import Request
 
 from . import v2
 from utils.get_data import DailyReports, DataTimeSeries
+from utils.logger import Logger
+
 
 # Initiate Integrator
 DAILY_REPORTS = DailyReports()
 DATA_TIME_SERIES = DataTimeSeries()
 COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
+log = Logger.__call__().get_log()
 
 
 # Logging
@@ -51,6 +54,7 @@ async def get_current(request: Request, background_tasks: BackgroundTasks) -> Di
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
+    log.info("v2_get_current")
     return data
 
 
@@ -72,6 +76,7 @@ async def get_current_us(request: Request, background_tasks: BackgroundTasks) ->
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
+    log.info("v2_get_current_us")
     return data
 
 
@@ -92,6 +97,7 @@ async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
+    log.info("v2_get_current_us")
     return data
 
 
@@ -109,6 +115,7 @@ async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
+    log.info("v2_get_confirmed")
     return data
 
 
@@ -126,6 +133,7 @@ async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dic
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
+    log.info("v2_get_deaths")
     return data
 
 
@@ -143,6 +151,7 @@ async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
+    log.info("v2_get_recovered")
     return data
 
 
@@ -160,6 +169,7 @@ async def get_active(request: Request, background_tasks: BackgroundTasks) -> Dic
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
 
+    log.info("v2_get_active")
     return data
 
 
@@ -182,7 +192,7 @@ async def get_country(country_name: str, request: Request, background_tasks: Bac
 
     except Exception:
         raise HTTPException(status_code=404, detail="Item not found")
-
+    log.info("v2_get_country")
     return raw_data
 
 
@@ -211,7 +221,7 @@ async def get_time_series(case: str, request: Request, background_tasks: Backgro
             raise HTTPException(status_code=404, detail="Item not found")
 
     data = COVID_API_V2.get_time_series(case.lower())
-
+    log.info("v2_get_time_series")
     return data
 
 
@@ -248,5 +258,5 @@ async def get_US_time_series(case: str, request: Request, background_tasks: Back
             raise HTTPException(status_code=404, detail="Item not found")
 
     data = COVID_API_V2.get_US_time_series(case.lower())
-
+    log.info("v2_get_US_time_series")
     return data

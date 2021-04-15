@@ -13,6 +13,7 @@ from fastapi import HTTPException
 from integrators.covid_api_v1_integrator import CovidAPIv1
 from utils.helper import LookupCountry
 from utils.get_data import GetData
+from utils.logger import Logger
 from . import v1
 
 
@@ -31,11 +32,14 @@ GET_DATA = GetData()
 GET_DATA_SERIES = GetData()
 COVID_API_V1 = CovidAPIv1(GET_DATA)
 lookup_country = LookupCountry()
+log = Logger.__call__().get_log()
+
 
 
 @v1.get('/current')
 def current_status() -> Dict[str, int]:
     data = COVID_API_V1.get_current_status()
+    log.info("v1_get_current_status")
     return data
 
 
@@ -43,36 +47,42 @@ def current_status() -> Dict[str, int]:
 def current_status_list() -> Dict[str, Any]:
     """ Coutries are kept in a List """
     data = COVID_API_V1.get_current_status(list_required=True)
+    log.info("v1_current_status_list")
     return data
 
 
 @v1.get('/total')
 def total() -> Dict[str, Any]:
     data = COVID_API_V1.get_total()
+    log.info("v1_total")
     return data
 
 
 @v1.get('/confirmed')
 def confirmed_cases() -> Dict[str, int]:
     data = COVID_API_V1.get_confirmed_cases()
+    log.info("v1_confirmed_cases")
     return data
 
 
 @v1.get('/deaths')
 def deaths() -> Dict[str, int]:
     data = COVID_API_V1.get_deaths()
+    log.info("v1_deaths")
     return data
 
 
 @v1.get('/recovered')
 def recovered() -> Dict[str, int]:
     data = COVID_API_V1.get_recovered()
+    log.info("v1_recovered")
     return data
 
 
 @v1.get('/countries')
 def affected_countries() -> Dict[int, str]:
     data = COVID_API_V1.get_affected_countries()
+    log.info("v1_affected_countries")
     return data
 
 
@@ -94,6 +104,7 @@ def country(country_name: str) -> Dict[str, Any]:
     except:
         raise HTTPException(status_code=404, detail="Item not found")
 
+    log.info("v1_country")
     return data
 
 
@@ -111,4 +122,5 @@ def timeseries(case: str) -> Dict[str, Any]:
     else:
         raise HTTPException(status_code=404, detail="Item not found")
 
+    log.info("v1_timeseries")
     return data

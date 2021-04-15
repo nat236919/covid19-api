@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6f513655-7b94-4b8e-98f0-b3cc1bfdf682" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/v1/router_api_v1.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/v1/router_api_v1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/helper.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -111,8 +109,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/routers/v1/router_api_v1.py</url>
-          <line>7</line>
+          <line>8</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/routers/__init__.py</url>
+          <line>6</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
