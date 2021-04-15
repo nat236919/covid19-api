@@ -13,13 +13,13 @@ from pydantic import BaseModel
 #######################################
 # CurrentModel
 #######################################
-class CurrentModel():
+class CurrentModel(BaseModel):
     location: str
     confirmed: int
     deaths: int
     recovered: int
     active: int
-    def set(BaseModel)
+    
 
 #######################################
 # CurrentUSModel
@@ -47,7 +47,7 @@ class TotalModel(BaseModel):
 #######################################
 class ConfirmedModel(BaseModel):
     confirmed: int
-    def set(self,value):
+    def setConfirmedModel(self,value):
     self.confirmed = value
 
 
@@ -56,7 +56,7 @@ class ConfirmedModel(BaseModel):
 #######################################
 class DeathsModel(BaseModel):
     deaths: int
-    def set(self,value):
+    def setDeathsModel(self,value):
     self.deaths = value
 
 #######################################
@@ -64,7 +64,7 @@ class DeathsModel(BaseModel):
 #######################################
 class RecoveredModel(BaseModel):
     recovered: int
-    def set(self,value):
+    def setRecoveredModel(self,value):
     self.recovered = value
 
 #######################################
@@ -72,7 +72,7 @@ class RecoveredModel(BaseModel):
 #######################################
 class ActiveModel(BaseModel):
     active: int
-    def set(self,value):
+    def setActiveModel(self,value):
     self.active = value
 
 #######################################
