@@ -10,131 +10,117 @@ from typing import List
 from pydantic import BaseModel
 
 
-#######################################
-# CurrentModel
-#######################################
-class CurrentModel(BaseModel):
-    location: str
-    confirmed: int
-    deaths: int
-    recovered: int
-    active: int
+class Model:
+    #######################################
+    # CurrentModel
+    #######################################
+    class CurrentModel(BaseModel):
+        location: str
+        confirmed: int
+        deaths: int
+        recovered: int
+        active: int
 
+    #######################################
+    # CurrentUSModel
+    #######################################
+    class CurrentUSModel(BaseModel):
+        Province_State: str
+        Confirmed: int
+        Deaths: int
+        Recovered: int
+        Active: int
 
-#######################################
-# CurrentUSModel
-#######################################
-class CurrentUSModel(BaseModel):
-    Province_State: str
-    Confirmed: int
-    Deaths: int
-    Recovered: int
-    Active: int
+    #######################################
+    # TotalModel
+    #######################################
+    class TotalModel(BaseModel):
+        confirmed: int
+        deaths: int
+        recovered: int
+        active: int
 
+    #######################################
+    # ConfirmedModel
+    #######################################
+    class ConfirmedModel(BaseModel):
+        confirmed: int
 
-#######################################
-# TotalModel
-#######################################
-class TotalModel(BaseModel):
-    confirmed: int
-    deaths: int
-    recovered: int
-    active: int
+    #######################################
+    # DeathsModel
+    #######################################
+    class DeathsModel(BaseModel):
+        deaths: int
 
+    #######################################
+    # RecoveredModel
+    #######################################
+    class RecoveredModel(BaseModel):
+        recovered: int
 
-#######################################
-# ConfirmedModel
-#######################################
-class ConfirmedModel(BaseModel):
-    confirmed: int
+    #######################################
+    # ActiveModel
+    #######################################
+    class ActiveModel(BaseModel):
+        active: int
 
+    #######################################
+    # CountryModel
+    #######################################
+    class CountryModel(BaseModel):
+        location: str
+        confirmed: int
+        deaths: int
+        recovered: int
+        active: int
 
-#######################################
-# DeathsModel
-#######################################
-class DeathsModel(BaseModel):
-    deaths: int
+    #######################################
+    # TimeseriesGlobalModel
+    #######################################
+    class TimeseriesGlobalModel(BaseModel):
+        confirmed: int
+        deaths: int
+        recovered: int
 
+    #######################################
+    # TimeseriesCaseModel
+    #######################################
+    class TimeseriesCaseCoordinatesModel(BaseModel):
+        Lat: float
+        Long: float
 
-#######################################
-# RecoveredModel
-#######################################
-class RecoveredModel(BaseModel):
-    recovered: int
+    class TimeseriesCaseDataModel(BaseModel):
+        date: str
+        value: int
 
+    class TimeseriesCaseModel(BaseModel):
+        Province_State: str
+        Country_Region: str
+        Coordinates: TimeseriesCaseCoordinatesModel
+        TimeSeries: List[TimeseriesCaseDataModel]
 
-#######################################
-# ActiveModel
-#######################################
-class ActiveModel(BaseModel):
-    active: int
+    #######################################
+    # TimeseriesUSModel
+    #######################################
+    class TimeseriesUSInfoModel(BaseModel):
+        UID: str
+        iso2: str
+        iso3: str
+        code3: str
+        FIPS: str
+        Admin2: str
 
+    class TimeseriesUSCoordinatesModel(BaseModel):
+        Lat: float
+        Long: float
 
-#######################################
-# CountryModel
-#######################################
-class CountryModel(BaseModel):
-    location: str
-    confirmed: int
-    deaths: int
-    recovered: int
-    active: int
+    class TimeseriesUSDataModel(BaseModel):
+        date: str
+        value: int
 
-
-#######################################
-# TimeseriesGlobalModel
-#######################################
-class TimeseriesGlobalModel(BaseModel):
-    confirmed: int
-    deaths: int
-    recovered: int
-
-
-#######################################
-# TimeseriesCaseModel
-#######################################
-class TimeseriesCaseCoordinatesModel(BaseModel):
-    Lat: float
-    Long: float
-
-
-class TimeseriesCaseDataModel(BaseModel):
-    date: str
-    value: int
-
-
-class TimeseriesCaseModel(BaseModel):
-    Province_State: str
-    Country_Region: str
-    Coordinates: TimeseriesCaseCoordinatesModel
-    TimeSeries: List[TimeseriesCaseDataModel]
-
-
-#######################################
-# TimeseriesUSModel
-#######################################
-class TimeseriesUSInfoModel(BaseModel):
-    UID: str
-    iso2: str
-    iso3: str
-    code3: str
-    FIPS: str
-    Admin2: str
-
-
-class TimeseriesUSCoordinatesModel(BaseModel):
-    Lat: float
-    Long: float
-
-
-class TimeseriesUSDataModel(BaseModel):
-    date: str
-    value: int
-
-
-class TimeseriesUSModel(BaseModel):
-    Province_State: str
-    Country_Region: str
-    Info: TimeseriesUSInfoModel
-    Coordinates: TimeseriesUSCoordinatesModel
-    TimeSeries: List[TimeseriesUSDataModel]
+    class TimeseriesUSModel(BaseModel):
+        Province_State: str
+        Country_Region: str
+        Info: TimeseriesUSInfoModel
+        Coordinates: TimeseriesUSCoordinatesModel
+        TimeSeries: List[TimeseriesUSDataModel]
