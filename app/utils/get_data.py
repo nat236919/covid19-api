@@ -50,6 +50,21 @@ class DailyReports:
 # Get data from time series (General and US)
 class DataTimeSeries:
     """ Get the tiemseires dataset from JHU CSSE and Prepare DataFrames """
+
+    TS_Instance = None
+
+    def __init__(self) -> None:
+        if DataTimeSeries.TS_Instance != None:
+            raise Exception("Activity not permitted")
+
+        else:
+                TS_Instance = self
+
+    def getTimeInstance():
+        if DataTimeSeries.TS_Instance == None:
+             TS_Instance = DataTimeSeries()
+             return TS_Instance
+
     def get_data_time_series(self, US: bool = False) -> Dict[str, pd.DataFrame]:
         """ Get the dataset from JHU CSSE """
         dataframes = {}
