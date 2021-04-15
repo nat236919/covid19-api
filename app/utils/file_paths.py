@@ -5,48 +5,23 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 17-April-2020
 """
 
-from abc import ABC, abstractmethod
 
 # Johns Hopkins CSSE - Datasets (https://github.com/CSSEGISandData/COVID-19)
-class IdataSets(ABC):
-    
-    def __init__(self):
-        self.JHU_CSSE_BASE_PATH = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/'
-        self.JHU_CSSE_DAILY_REPORT_PATH = self.JHU_CSSE_BASE_PATH + 'csse_covid_19_daily_reports/'
-        self.JHU_CSSE_DAILY_REPORT_US_PATH = self.JHU_CSSE_BASE_PATH + 'csse_covid_19_daily_reports_us/'
-        self.JHU_CSSE_TIME_SERIES_PATH = self.JHU_CSSE_BASE_PATH + 'csse_covid_19_time_series/'
-        self.JHU_CSSE_LOOKUP_TABLE_PATH = self.JHU_CSSE_BASE_PATH + 'UID_ISO_FIPS_LookUp_Table.csv'
-        self.JHU_CSSE_CATEGORIES = ['confirmed', 'deaths', 'recovered']
 
-        self.JHU_CSSE_FILE_PATHS = {
-            'BASE_URL_LOOKUP_TABLE': self.JHU_CSSE_LOOKUP_TABLE_PATH,
-            'BASE_URL_DAILY_REPORTS': self.JHU_CSSE_DAILY_REPORT_PATH + '{}.csv',
-            'BASE_URL_DAILY_REPORTS_US': self.JHU_CSSE_DAILY_REPORT_US_PATH + '{}.csv',
-            'BASE_URL_TIME_SERIES': self.JHU_CSSE_TIME_SERIES_PATH + 'time_series_covid19_{}_global.csv',
-            'BASE_URL_US_TIME_SERIES': self.JHU_CSSE_TIME_SERIES_PATH + 'time_series_covid19_{}_US.csv',
-            'CATEGORIES': self.JHU_CSSE_CATEGORIES
-        }
+JHU_CSSE_BASE_PATH = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/'
+JHU_CSSE_DAILY_REPORT_PATH = JHU_CSSE_BASE_PATH + 'csse_covid_19_daily_reports/'
+JHU_CSSE_DAILY_REPORT_US_PATH = JHU_CSSE_BASE_PATH + 'csse_covid_19_daily_reports_us/'
+JHU_CSSE_TIME_SERIES_PATH = JHU_CSSE_BASE_PATH + 'csse_covid_19_time_series/'
+JHU_CSSE_LOOKUP_TABLE_PATH = JHU_CSSE_BASE_PATH + 'UID_ISO_FIPS_LookUp_Table.csv'
+JHU_CSSE_CATEGORIES = ['confirmed', 'deaths', 'recovered']
+
+JHU_CSSE_FILE_PATHS = {
+            'BASE_URL_LOOKUP_TABLE': JHU_CSSE_LOOKUP_TABLE_PATH,
+            'BASE_URL_DAILY_REPORTS': JHU_CSSE_DAILY_REPORT_PATH + '{}.csv',
+            'BASE_URL_DAILY_REPORTS_US': JHU_CSSE_DAILY_REPORT_US_PATH + '{}.csv',
+            'BASE_URL_TIME_SERIES': JHU_CSSE_TIME_SERIES_PATH + 'time_series_covid19_{}_global.csv',
+            'BASE_URL_US_TIME_SERIES': JHU_CSSE_TIME_SERIES_PATH + 'time_series_covid19_{}_US.csv',
+            'CATEGORIES': JHU_CSSE_CATEGORIES
+}
        
-    @abstractmethod
-    def get_data_lookup_table(self) -> Dict[str,str]:
-        pass
-      
-    @abstractmethod
-    def get_data_daily_reports(self) -> pd.DataFrame:
-        pass
-      
-    @abstractmethod
-    def get_data_daily_reports_us(self) -> pd.DataFrame:
-        pass
-      
-    @abstractmethod
-    def get_data_time_series(self) -> Dict[str, pd.DataFrame]:
-        pass
-      
-    @abstractmethod
-    def get_US_time_series(self) -> Dict[str, pd.DataFrame]:
-        pass      
-      
-    @abstractmethod
-    def get_data(self, time_series: bool = False) -> Dict[str, pd.DataFrame]:
-        pass  
+
