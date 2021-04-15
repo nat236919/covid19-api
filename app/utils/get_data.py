@@ -16,7 +16,7 @@ from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
 
 
 # Get Lookup table
-class DataTable
+class DataTable:
     __instanceSingleton = None
 
     @staticmethod
