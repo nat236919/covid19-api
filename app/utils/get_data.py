@@ -14,6 +14,27 @@ from .file_paths import JHU_CSSE_FILE_PATHS
 from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
                      helper_get_latest_data_url)
 
+#We can use a get data class to create a single instance to retrieve the data.
+class getDataSingleton:
+
+    __instance__ = None
+
+    def __init__(self) -> None:
+        if getDataSingleton.__instance__ is None:
+            getDataSingleton.__instance__=self
+        
+        else:
+            raise Exception("You cannot create another Singleton instance class!!")
+
+    @staticmethod
+    def getSingletonInstance():
+        """This is a static method to retrieve the singleton instance!
+        """
+        if not getDataSingleton.__instance__:
+            getDataSingleton()
+        return getDataSingleton.__instance__
+
+
 
 # Get Lookup table
 def get_data_lookup_table() -> Dict[str, str]:
