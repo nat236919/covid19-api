@@ -138,3 +138,18 @@ class TimeseriesUSModel(BaseModel):
     Info: TimeseriesUSInfoModel
     Coordinates: TimeseriesUSCoordinatesModel
     TimeSeries: List[TimeseriesUSDataModel]
+        
+        
+        
+ class structuralpattern(BaseModel):
+        Province_State: str
+    Country_Region: str
+    Info: TimeseriesUSInfoModel
+    Coordinates: TimeseriesUSCoordinatesModel
+    TimeSeries: List[TimeseriesUSDataModel]
+    UID: str
+    iso2: str
+    iso3: str
+    code3: str
+    FIPS: str
+    Admin2: str
