@@ -81,7 +81,7 @@ class CovidAPIv2Integrator:
         df_grp_by_country = df_grp_by_country.reset_index()
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
 
-        data = [CurrentModel.set((**v) for v in df_grp_by_country.to_dict('index').values())]
+        data = [CurrentModel((**v) for v in df_grp_by_country.to_dict('index').values())]
 
         return data
     
@@ -142,7 +142,7 @@ class CovidAPIv2Integrator:
         """ Summation of all confirmed cases """
 
         self.df = get_data_daily_reports() # Get base data
-        data = ConfirmedModel.set(int(self.df['Confirmed'].sum()))
+        data = ConfirmedModel.setConfirmedModel(int(self.df['Confirmed'].sum()))
      
 
         return data
@@ -155,7 +155,7 @@ class CovidAPIv2Integrator:
         """ Summation of all deaths """
 
         self.df = get_data_daily_reports() # Get base data
-        data = DeathsModel.set(int(self.df['Deaths'].sum()))
+        data = DeathsModel.setDeathsModel(int(self.df['Deaths'].sum()))
         
 
         return data
@@ -168,7 +168,7 @@ class CovidAPIv2Integrator:
         """ Summation of all recovers """
 
         self.df = get_data_daily_reports() # Get base data
-        data = RecoveredModel.set(int(self.df['Recovered'].sum()))
+        data = RecoveredModel.setRecoveredModel(int(self.df['Recovered'].sum()))
         
 
     
@@ -182,7 +182,7 @@ class CovidAPIv2Integrator:
         """ Summation of all actives """
 
         self.df = get_data_daily_reports() # Get base data
-        data = ActiveModel.set(int(self.df['Active'].sum()))
+        data = ActiveModel.setActiveModel(int(self.df['Active'].sum()))
         
 
         return data
