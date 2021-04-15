@@ -25,5 +25,5 @@ class DataTimeSeriesAdapter(HelperInterface):
         """ Fill all empty values with am empty string (e.g., '') """
 
     def helper_df_cols_cleaning(df: pd.DataFrame, cols: List[str], ensure_dtype: var_types = None) -> pd.DataFrame:
-        return Helper.helper_df_cols_cleaning(df,cols,ensure_dtype)
+        return Helper.helper_df_cols_cleaning(df,cols,ensure_dtype) 
         """ Clean certain columns in a DataFrame """
