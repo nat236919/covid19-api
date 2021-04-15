@@ -3,7 +3,7 @@ FILE: covid_api_v2_integrator.py
 DESCRIPTION: Integrators for API v2
 AUTHOR: Nuttaphat Arunoprayoch
 DATE: 01-March-2021
-"""
+"""    
 # Import libraries
 from datetime import datetime
 from functools import wraps
@@ -12,18 +12,7 @@ from typing import Any, Dict, List
 import pandas as pd
 
 from models.base_model import ResponseModel
-from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
-                                         CountryModel, CurrentModel,
-                                         CurrentUSModel, DeathsModel,
-                                         RecoveredModel,
-                                         TimeseriesCaseCoordinatesModel,
-                                         TimeseriesCaseDataModel,
-                                         TimeseriesCaseModel,
-                                         TimeseriesGlobalModel,
-                                         TimeseriesUSCoordinatesModel,
-                                         TimeseriesUSDataModel,
-                                         TimeseriesUSInfoModel,
-                                         TimeseriesUSModel, TotalModel)
+from models.covid_api_v2_model import (ModelFactory)
 from utils.get_data import (DailyReports, DataTimeSeries,
                               get_data_lookup_table)
 
@@ -70,7 +59,7 @@ class CovidAPIv2Integrator:
     # GET - Current
     #######################################################################################
     @wrap_data
-    def get_current(self) -> List[CurrentModel]:
+    def get_current(self) -> List[ModelFactory.get_model("CurrentModel")]:
         """ Current data from all locations (Lastest date) """
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
@@ -81,7 +70,7 @@ class CovidAPIv2Integrator:
         df_grp_by_country = df_grp_by_country.reset_index()
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
 
-        data = [CurrentModel(**v) for v in df_grp_by_country.to_dict('index').values()]
+        data = [(ModelFactory.get_model("CurrentModel"))(**v) for v in df_grp_by_country.to_dict('index').values()]
 
         return data
     
@@ -89,7 +78,8 @@ class CovidAPIv2Integrator:
     # GET - Current US
     #######################################################################################
     @wrap_data
-    def get_current_US(self) -> List[CurrentUSModel]:
+    def get_current_US(self) -> List[ModelFactory.get_model("CurrentUSModel")]:
+        
         """ Get current data for USA's situation """
         self.df_US = self.daily_reports.get_data_daily_reports(US=True) # Get base data
 
@@ -99,7 +89,7 @@ class CovidAPIv2Integrator:
         df = df.reset_index()
         df.columns = ['Province_State'] + concerned_columns
 
-        data = [CurrentUSModel(**v) for v in df.to_dict('index').values()]
+        data = [(ModelFactory.get_model("CurrentUSModel"))(**v) for v in df.to_dict('index').values()]
 
         return data
     
@@ -107,7 +97,8 @@ class CovidAPIv2Integrator:
     # GET - Country
     #######################################################################################
     @wrap_data
-    def get_country(self, country_name: str) -> CountryModel:
+    def get_country(self, country_name: str) -> ModelFactory.get_model("CountryModel"):
+        
         """ Get a country data from its name or ISO 2 """
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
@@ -118,7 +109,7 @@ class CovidAPIv2Integrator:
         df_grp_by_country = df_grp_by_country.reset_index()
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
 
-        all_country_data = [CountryModel(**v) for v in df_grp_by_country.to_dict('index').values()]
+        all_country_data = [(ModelFactory.get_model("CountryModel"))(**v) for v in df_grp_by_country.to_dict('index').values()]
 
 
         # Check input
@@ -141,7 +132,7 @@ class CovidAPIv2Integrator:
     def get_confirmed(self) -> ConfirmedModel:
         """ Summation of all confirmed cases """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = ConfirmedModel(
+        data = ModelFactory.get_model("ConfirmedModel")(
             confirmed=int(self.df['Confirmed'].sum())
         )
         return data
@@ -153,7 +144,7 @@ class CovidAPIv2Integrator:
     def get_deaths(self) -> DeathsModel:
         """ Summation of all deaths """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = DeathsModel(
+        data = ModelFactory.get_model("DeathsModel")(
             deaths=int(self.df['Deaths'].sum())
         )
         return data
@@ -165,7 +156,7 @@ class CovidAPIv2Integrator:
     def get_recovered(self) -> RecoveredModel:
         """ Summation of all recovers """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = RecoveredModel(
+        data = ModelFactory.get_model("RecoveredModel")(
             recovered=int(self.df['Recovered'].sum())
         )
         return data
@@ -177,7 +168,7 @@ class CovidAPIv2Integrator:
     def get_active(self) -> ActiveModel:
         """ Summation of all actives """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = ActiveModel(
+        data = ModelFactory.get_model("ActiveModel")(
             active=int(self.df['Active'].sum())
         )
         return data
@@ -189,7 +180,7 @@ class CovidAPIv2Integrator:
     def get_total(self) -> TotalModel:
         """ Summation of Confirmed, Deaths, Recovered, Active """
         self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = TotalModel(
+        data = ModelFactory.get_model("TotalModel")(
             confirmed=int(self.df['Confirmed'].sum()),
             deaths=int(self.df['Deaths'].sum()),
             recovered=int(self.df['Recovered'].sum()),
@@ -224,16 +215,16 @@ class CovidAPIv2Integrator:
             for data in time_series.values():
                 excluded_cols = ['Province/State', 'Country/Region', 'Lat', 'Long']
                 # Coordinates
-                timeseries_coordinates_model = TimeseriesCaseCoordinatesModel(
+                timeseries_coordinates_model = (ModelFactory.get_model("TimeseriesCaseCoordinatesModel"))(
                     Lat=float(data['Lat']) if data['Lat'] else 0,
                     Long=float(data['Long']) if data['Long'] else 0
                 )
                 # Timeseries Data
                 temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
-                timeseries_data_model_list = [TimeseriesCaseDataModel(date=k, value=v) for k, v in temp_time_series_dict.items()]
+                timeseries_data_model_list = [(ModelFactory.get_model("TimeseriesCaseDataModel")) (date=k, value=v) for k, v in temp_time_series_dict.items()]
 
                 # Main Model
-                timeseries_case_model = TimeseriesCaseModel(
+                timeseries_case_model = ModelFactory.get_model("TimeseriesCaseModel")(
                     Province_State=data['Province/State'],
                     Country_Region=data['Country/Region'],
                     Coordinates=timeseries_coordinates_model,
@@ -261,7 +252,7 @@ class CovidAPIv2Integrator:
 
         # Combine DataFrames
         global_dict = pd.concat(global_df_list, axis=1, sort=False).T.to_dict()
-        data = [{k: TimeseriesGlobalModel(**v)} for k, v in global_dict.items()]
+        data = [{k: (ModelFactory.get_model("TimeseriesGlobalModel"))(**v)} for k, v in global_dict.items()]
 
         return data
     
@@ -289,7 +280,7 @@ class CovidAPIv2Integrator:
                                 'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_', 
                                 'Combined_Key','Population']
                 # Info
-                timeseries_US_info_model = TimeseriesUSInfoModel(
+                timeseries_US_info_model = (ModelFactory.get_model("TimeseriesUSInfoModel"))(
                     UID=data['UID'],
                     iso2=data['iso2'],
                     iso3=data['iso3'],
@@ -298,16 +289,16 @@ class CovidAPIv2Integrator:
                     Admin2=data['Admin2'],
                 )
                 # Coordinates
-                timeseries_US_coordinates_model = TimeseriesUSCoordinatesModel(
+                timeseries_US_coordinates_model = (ModelFactory.get_model("TimeseriesUSCoordinatesModel"))(
                     Lat=float(data['Lat']) if data['Lat'] else 0,
                     Long=float(data['Long_']) if data['Long_'] else 0
                 )
                 # Timeseries
                 temp_time_series_dict = {k: int(v) for k, v in data.items() if k not in excluded_cols}
-                timeseries_data_model_list = [TimeseriesUSDataModel(date=k, value=v) for k, v in temp_time_series_dict.items()]
+                timeseries_data_model_list = [(ModelFactory.get_model("TimeseriesUSDataModel"))(date=k, value=v) for k, v in temp_time_series_dict.items()]
 
                 # Main Model
-                timeseries_US_model = TimeseriesUSModel(
+                timeseries_US_model = (ModelFactory.get_model("TimeseriesUSModel"))(
                     Province_State=data['Province_State'],
                     Country_Region=data['Country_Region'],
                     Info=timeseries_US_info_model,
