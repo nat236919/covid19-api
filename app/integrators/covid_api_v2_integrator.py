@@ -14,6 +14,8 @@ import pandas as pd
 from models.base_model import ResponseModel
 from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          CountryModel, CurrentModel,
+                                         CurrentWithCountryInfoModel,
+                                         CountryContinentModel,
                                          CurrentUSModel, DeathsModel,
                                          RecoveredModel,
                                          TimeseriesCaseCoordinatesModel,
@@ -27,16 +29,10 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
 from utils.get_data import (DailyReports, DataTimeSeries,
                               get_data_lookup_table)
 
+import pycountry_convert as pc
+
 
 class CovidAPIv2Integrator:
-    __instance = None
-
-    @staticmethod
-    def getInstance():
-        if CovidAPIv2Integrator.__instance == None:
-            CovidAPIv2Integrator()
-        return CovidAPIv2Integrator.__instance
-
     """ Covid-19 API v2 methods
         SCHEMA: {
             "data": Any,
@@ -46,11 +42,6 @@ class CovidAPIv2Integrator:
     """
     
     def __init__(self,  daily_reports: DailyReports, time_series: DataTimeSeries) -> None:
-        if CovidAPIv2Integrator.__instance != None:
-            raise Exception("Singleton Class already initialized. Please use getInstance()")
-        else:
-            CovidAPIv2Integrator.__instance = self
-
         """ Initiate instances """
         self.lookup_table = get_data_lookup_table()
         self.scheme = {
@@ -95,6 +86,47 @@ class CovidAPIv2Integrator:
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
 
         data = [CurrentModel(**v) for v in df_grp_by_country.to_dict('index').values()]
+
+        return data
+
+    #######################################################################################
+    # GET - Current With Country Info
+    #######################################################################################
+    @wrap_data
+    def get_current_with_country_info(self) -> List[CurrentWithCountryInfoModel]:
+        """ Current data from all locations (Lastest date) """
+        concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
+        self.df = self.daily_reports.get_data_daily_reports() # Get base data
+        self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
+        self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
+
+        df_grp_by_country = self.df_grp_by_country.sort_values(by='Confirmed', ascending=False)
+        df_grp_by_country = df_grp_by_country.reset_index()
+        df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
+
+        countryObjs = []
+        for index, row in df_grp_by_country.iterrows():
+            country_name = row["location"]
+            #country_alpha2 = pc.country_name_to_country_alpha2(country_name)
+            #country_continent_code = pc.country_alpha2_to_continent_code(country_alpha2)
+            #country_continent_name = pc.convert_continent_code_to_continent_name(country_continent_code)
+            #print(country_continent_name)
+
+            #countryCode = pc.country_name_to_country_alpha2(row['location'], cn_name_format="default")
+            #continentName = pc.country_alpha2_to_continent_code(countryCode)
+            #countryInfo = CountryContinentModel({"name": row['location'], "continent": continentName})
+            #print(countryInfo.name, countryInfo.continent)
+            countryInfo = CountryContinentModel(name=row['location'])
+            countryObjs.append(countryInfo)
+        
+        df_grp_by_country.drop("location", axis = 1, inplace = True)
+        df_grp_by_country["countryInfo"] = countryObjs
+
+
+        #print(df_grp_by_country)
+
+        #data = [CurrentModel(**v) for v in df_grp_by_country.to_dict('index').values()]
+        data = [CurrentWithCountryInfoModel(**v) for v in df_grp_by_country.to_dict('index').values()]
 
         return data
     

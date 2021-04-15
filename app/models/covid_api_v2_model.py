@@ -138,3 +138,19 @@ class TimeseriesUSModel(BaseModel):
     Info: TimeseriesUSInfoModel
     Coordinates: TimeseriesUSCoordinatesModel
     TimeSeries: List[TimeseriesUSDataModel]
+
+#######################################
+# CurrentModel
+#######################################
+class CountryContinentModel(BaseModel):
+    name: str
+
+#######################################
+# CurrentModel
+#######################################
+class CurrentWithCountryInfoModel(BaseModel):
+    countryInfo: CountryContinentModel
+    confirmed: int
+    deaths: int
+    recovered: int
+    active: int

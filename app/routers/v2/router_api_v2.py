@@ -53,6 +53,26 @@ async def get_current(request: Request, background_tasks: BackgroundTasks) -> Di
 
     return data
 
+@v2.get('/currentwithcountryinfo')
+async def get_current_with_country_info(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    """
+    Get the current situation data from all reported countries
+
+    - **country**: a country object
+    - **confirmed**: confirmed cases
+    - **deaths**:  death cases
+    - **recovered**: recovered cases
+    - **active**: active cases
+    """
+    try:
+        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+        data = COVID_API_V2.get_current_with_country_info()
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=e)
+
+    return data
+
 
 @v2.get('/current/US')
 async def get_current_us(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:

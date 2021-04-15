@@ -21,21 +21,8 @@ from utils.get_data import get_data
 
 # Create a model and its methods
 class CovidAPIv1:
-    __instance = None
-
-    @staticmethod
-    def getInstance():
-        if CovidAPIv1.__instance == None:
-            CovidAPIv1()
-        return CovidAPIv1.__instance
-
     """ Model and Its methods """
     def __init__(self) -> None:
-        if CovidAPIv1.__instance != None:
-            raise Exception("Singleton Class already initialized. Please use getInstance()")
-        else:
-            CovidAPIv1.__instance = self
-
         """ Get data from helper -> the source data """
         list_of_dataframes = get_data()
         self.df_confirmed = list_of_dataframes['confirmed']
