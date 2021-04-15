@@ -19,8 +19,20 @@ class CurrentModel(BaseModel):
     deaths: int
     recovered: int
     active: int
+ 
     
-
+class CurrentModel():
+    location: str
+    confirmed: int
+    deaths: int
+    recovered: int
+    active: int
+    def set(BaseModel):
+    location: str
+    confirmed: int
+    deaths: int
+    recovered: int
+    active: int
 #######################################
 # CurrentUSModel
 #######################################
