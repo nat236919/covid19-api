@@ -20,17 +20,12 @@ class CurrentModel(BaseModel):
     recovered: int
     active: int
 
-
-#######################################
-# CurrentUSModel
-#######################################
 class CurrentUSModel(BaseModel):
     Province_State: str
     Confirmed: int
     Deaths: int
     Recovered: int
     Active: int
-
 
 #######################################
 # TotalModel

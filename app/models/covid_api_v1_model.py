@@ -24,8 +24,8 @@ class CurrentModel(BaseModel):
 #######################################
 class CurrentListModel(BaseModel):
     countries: List[CurrentModel]
-    dt: str
-    ts: int
+    type: str
+    script: int
 
 
 #######################################
@@ -35,8 +35,8 @@ class TotalModel(BaseModel):
     confirmed: int
     deaths: int
     recovered: int
-    dt: str
-    ts: int
+    type: str
+    script: int
 
 
 #######################################
@@ -44,8 +44,8 @@ class TotalModel(BaseModel):
 #######################################
 class ConfirmedModel(BaseModel):
     confirmed: int
-    dt: str
-    ts: int
+    type: str
+    script: int
 
 
 #######################################
@@ -53,8 +53,8 @@ class ConfirmedModel(BaseModel):
 #######################################
 class DeathsModel(BaseModel):
     deaths: int
-    dt: str
-    ts: int
+    type: str
+    script: int
 
 
 #######################################
@@ -62,8 +62,8 @@ class DeathsModel(BaseModel):
 #######################################
 class RecoveredModel(BaseModel):
     recovered: int
-    dt: str
-    ts: int
+    type: str
+    script: int
 
 
 #######################################
@@ -71,8 +71,8 @@ class RecoveredModel(BaseModel):
 #######################################
 class CountriesModel(BaseModel):
     countries: List[str]
-    dt: str
-    ts: int
+    type: str
+    script: int
 
 
 #######################################
