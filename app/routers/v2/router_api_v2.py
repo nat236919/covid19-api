@@ -33,46 +33,53 @@ def write_log(requested_path: str, client_ip: str) -> None:
     return None
 
 
-@v2.get('/current')
-async def get_current(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """
-    Get the current situation data from all reported countries
-
-    - **location**: a country's name
-    - **confirmed**: confirmed cases
-    - **deaths**:  death cases
-    - **recovered**: recovered cases
-    - **active**: active cases
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_current()
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
-
-    return data
+class GetValues:
+    async def get_values (request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+	pass
 
 
-@v2.get('/current/US')
-async def get_current_us(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
-    """
-    Get all data from USA's current situation
+class GetValuesCurrent(GetValues):
+    async def get_values (request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+	
+        """
+        Get the current situation data from all reported countries
+        - **location**: a country's name
+        - **confirmed**: confirmed cases
+        - **deaths**:  death cases
+        - **recovered**: recovered cases
+        - **active**: active cases
+        """
+    
+	try:
+            background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+            data = COVID_API_V2.get_values()
 
-    - **Province_State**: State's name
-    - **Confirmed**: confirmed cases
-    - **Deaths**: death cases
-    - **Recovered**: recovered cases
-    - **Active**: active cases
-    """
-    try:
-        background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_current_US()
+    	except Exception as e:
+            raise HTTPException(status_code=400, detail=e)
 
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=e)
+    	return data
 
-    return data
+
+class GetValuesUS(GetValues):
+    async def get_values(request: Request, background_tasks: BackgroundTasks) -> Dict[str, Any]:
+
+        """
+	Get all data from USA's current situation
+	- **Province_State**: State's name
+    	- **Confirmed**: confirmed cases
+    	- **Deaths**: death cases
+    	- **Recovered**: recovered cases
+    	- **Active**: active cases
+    	"""
+		
+        try:
+            background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
+            data = COVID_API_V2.get_values()
+
+    	    except Exception as e:
+        	raise HTTPException(status_code=400, detail=e)
+
+    	return data
 
 
 @v2.get('/total')
