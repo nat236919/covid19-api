@@ -16,7 +16,8 @@ time_series = DataTimeSeries()
 
 # Test - Get Lookup table
 def test_get_data_lookup_table() -> None:
-    result = get_data_lookup_table()
+    data = DataTable.get_data_lookup_table() 
+    result = data
     assert len(result) > 0
     assert isinstance(result, dict) is True
 
