@@ -8,7 +8,7 @@ DATE: 17-April-2020
 from abc import ABC, abstractmethod
 
 # Johns Hopkins CSSE - Datasets (https://github.com/CSSEGISandData/COVID-19)
-class dataSets(ABC):
+class IdataSets(ABC):
     
     def __init__(self):
         self.__JHU_CSSE_BASE_PATH = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/'
