@@ -16,6 +16,45 @@ from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
 
 
 # Get Lookup table
+
+class GlobalGetReports:
+    """
+    The Target defines the domain-specific interface used by the client code.
+    """
+
+    def request(self) -> str:
+        return self.get_data_daily_reports()
+
+
+class Adaptee:
+    """
+    The Adaptee contains some useful behavior, but its interface is incompatible
+    with the existing client code. The Adaptee needs some adaptation before the
+    client code can use it.
+    """
+
+    def specific_request(self) -> str:
+        def get():
+            pass
+
+
+class Adapter(GlobalGetReports, Adaptee):
+    """
+    The Adapter makes the Adaptee's interface compatible with the Target's
+    interface via multiple inheritance.
+    """
+
+    def get(self):
+        return self.get_data_daily_reports()
+
+
+def client_code(get_data_daily_reports: "Target") -> None:
+    """
+    The client code supports all classes that follow the Target interface.
+    """
+
+    print(get_data_daily_reports.request(), end="")
+
 def get_data_lookup_table() -> Dict[str, str]:
     """ Get lookup table (country references for iso2) """
     lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
