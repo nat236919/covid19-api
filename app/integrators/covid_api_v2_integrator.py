@@ -29,6 +29,14 @@ from utils.get_data import (DailyReports, DataTimeSeries,
 
 
 class CovidAPIv2Integrator:
+    __instance = None
+
+    @staticmethod
+    def getInstance():
+        if CovidAPIv2Integrator.__instance == None:
+            CovidAPIv2Integrator()
+        return CovidAPIv2Integrator.__instance
+
     """ Covid-19 API v2 methods
         SCHEMA: {
             "data": Any,
@@ -38,6 +46,11 @@ class CovidAPIv2Integrator:
     """
     
     def __init__(self,  daily_reports: DailyReports, time_series: DataTimeSeries) -> None:
+        if CovidAPIv2Integrator.__instance != None:
+            raise Exception("Singleton Class already initialized. Please use getInstance()")
+        else:
+            CovidAPIv2Integrator.__instance = self
+
         """ Initiate instances """
         self.lookup_table = get_data_lookup_table()
         self.scheme = {
