@@ -11,6 +11,7 @@ from typing import Any, Dict
 from fastapi import HTTPException
 
 from integrators.covid_api_v1_integrator import CovidAPIv1
+from adapters.covid_api_v1_integrator_adapter import CovidAPIv1Adapter
 from utils.helper import helper_lookup_country
 from . import v1
 
@@ -20,8 +21,9 @@ def reload_api_v1_integrator(func):
     """ Reload a model for each quest """
     @wraps(func)
     def wrapper(*args, **kwargs):
-        global COVID_API_V1, dt, ts
+        global COVID_API_V1, COVID_API_V1_ADAPTER, dt, ts
         COVID_API_V1 = CovidAPIv1()
+        COVID_API_V1_ADAPTER = CovidAPIv1Adapter(COVID_API_V1)
         dt, ts = COVID_API_V1.datetime_raw, COVID_API_V1.timestamp
         return func(*args, **kwargs)
     return wrapper
@@ -38,7 +40,7 @@ def current_status() -> Dict[str, int]:
 @reload_api_v1_integrator
 def current_status_list() -> Dict[str, Any]:
     """ Coutries are kept in a List """
-    data = COVID_API_V1.get_current_status(list_required=True)
+    data = COVID_API_V1_ADAPTER.get_currrent_status_list()
     return data
 
 
@@ -81,20 +83,10 @@ def affected_countries() -> Dict[int, str]:
 @reload_api_v1_integrator
 def country(country_name: str) -> Dict[str, Any]:
     """ Search by name or ISO (alpha2) """
-    raw_data = COVID_API_V1.get_current_status() # Get all current data
     try:
-        if country_name.lower() not in ['us', 'uk'] and len(country_name) in [2]:
-            country_name = helper_lookup_country(country_name)
-            data = {k: v for k, v in raw_data.items() if country_name.lower() in k.lower()}
-        else:
-            data = {k: v for k, v in raw_data.items() if country_name.lower() == k.lower()}
-
-        # Add dt and ts
-        data['dt'] = raw_data['dt']
-        data['ts'] = raw_data['ts']
-
+        data = COVID_API_V1_ADAPTER.get_current_status_by_country(country_name)
     except:
-        # make custom exception class (ItemNotFoundException)
+        raise HTTPException(status_code=404, detail="Item not found")
         
     return data
 
@@ -103,15 +95,9 @@ def country(country_name: str) -> Dict[str, Any]:
 @reload_api_v1_integrator
 def timeseries(case: str) -> Dict[str, Any]:
     """ Get the time series based on a given case: confirmed, deaths, recovered """
-    raw_data = COVID_API_V1.get_time_series()
-    case = case.lower()
-
-    if case in ['confirmed', 'deaths', 'recovered']:
-        data = {case: raw_data[case]}
-        data['dt'] = raw_data['dt']
-        data['ts'] = raw_data['ts']
-
-    else:
+    try:
+        data = COVID_API_V1_ADAPTER.get_formatted_timeseries(case)
+    except:
         raise HTTPException(status_code=404, detail="Item not found")
 
     return data
