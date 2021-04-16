@@ -22,20 +22,26 @@ from utils.get_data import get_data
 # Create a model and its methods
 class CovidAPIv1:
     """ Model and Its methods """
-    def __init__(self) -> None:
+    __instance = None
+    def __new__(cls, list_of_dataframes, df_confirmed, df_deaths, df_recovered):
+
         """ Get data from helper -> the source data """
+        if cls.__instance is None:
+            cls.__instance = object.__new__(cls)
         list_of_dataframes = get_data()
-        self.df_confirmed = list_of_dataframes['confirmed']
-        self.df_deaths = list_of_dataframes['deaths']
-        self.df_recovered = list_of_dataframes['recovered']
+        cls.__instance.df_confirmed = list_of_dataframes['confirmed']
+        cls.__instance.df_deaths = list_of_dataframes['deaths']
+        cls.__instance.df_recovered = list_of_dataframes['recovered']
 
         list_of_time_series = get_data(time_series=True)
-        self.df_time_series_confirmed = list_of_time_series['confirmed']
-        self.df_time_series_deaths = list_of_time_series['deaths']
-        self.df_time_series_recovered = list_of_time_series['recovered']
+        cls.__instance.df_time_series_confirmed = list_of_time_series['confirmed']
+        cls.__instance.df_time_series_deaths = list_of_time_series['deaths']
+        cls.__instance.df_time_series_recovered = list_of_time_series['recovered']
 
-        self.datetime_raw = self.df_confirmed['datetime'].unique().tolist()[0]
-        self.timestamp = datetime.strptime(self.datetime_raw, '%m/%d/%y').timestamp()
+        cls.__instance.datetime_raw = cls.__instance.df_confirmed['datetime'].unique().tolist()[0]
+        cls.__instance.timestamp = datetime.strptime(cls.__instance.datetime_raw, '%m/%d/%y').timestamp()
+        return cls.__instance
+
 
     def add_dt_and_ts(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """ Add datetime and timestamp to Dict data """
