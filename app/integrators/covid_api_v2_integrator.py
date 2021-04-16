@@ -27,8 +27,42 @@ from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
 from utils.get_data import (DailyReports, DataTimeSeries,
                               get_data_lookup_table)
 
+class BridgePattern:
+ 
+    
+    def get_current(self):
+      pass
+    
+    def get_current_US(self):
+      pass
+    
+    def get_country(self):
+      pass
+    
+    def get_confirmed(self):
+      pass
+    
+    def get_deaths(self):
+      pass
+    
+    def get_recovered(self):
+      pass
+    
+    def get_active(self):
+      pass
+    
+    def get_total(self):
+      pass
+    
+    
+    def get_time_series(self):
+      pass
+    
+    def get_US_time_series(self):
+      pass
+    
 
-class CovidAPIv2Integrator:
+class CovidAPIv2Integrator(BridgePattern):
     """ Covid-19 API v2 methods
         SCHEMA: {
             "data": Any,
