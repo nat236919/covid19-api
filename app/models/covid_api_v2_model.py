@@ -36,7 +36,7 @@ class CurrentUSModel(BaseModel):
 # TotalModel
 #######################################
 class TotalModel(BaseModel):
-    confirmed: int
+    confirmed: ConfirmedModel
     deaths: int
     recovered: int
     active: int
