@@ -30,7 +30,23 @@ def get_data_lookup_table() -> Dict[str, str]:
 
 # Get Daily Reports Data (General and US)
 class DailyReports:
+  
+    DailyReportsInstance = None
+    
+    def getInstance():
+      
+      if DailyReports.DailyReportsInstance == None:
+         DailyReportsInstance = DailyReports()
+         return DailyReportsInstance
+        
     def __init__(self) -> None: 
+      if DailyReports.DailyReportsInstance != None:
+         raise Exception("Singleton class")
+      
+      
+      else:
+        DailyReportsInstance = self
+        
         self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
         self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
 
