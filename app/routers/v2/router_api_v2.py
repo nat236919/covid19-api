@@ -10,13 +10,23 @@ from functools import wraps
 from typing import Any, Dict
 
 from fastapi import BackgroundTasks, HTTPException
-from integrators.covid_api_v2_integrator import CovidAPIv2Integrator
+from app.integrators.covid_api_v2_integrator import CovidAPIv2Integrator
 from starlette.requests import Request
 
 from . import v2
-from utils.get_data import DailyReports
+from app.utils.get_data import DailyReports
+from app.builders import *
+
 
 # Initiate Integrator
+from ...builders import Recovered
+from ...builders.Confirm import Confirm
+from ...builders.Country import Country
+from ...builders.Current import Current
+from ...builders.CurrentUS import CurrentUS
+from ...builders.Death import Death
+from ...builders.Total import Total
+
 DAILY_REPORTS = DailyReports()
 COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS)
 
@@ -45,7 +55,7 @@ async def get_current(request: Request, background_tasks: BackgroundTasks) -> Di
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_current()
+        data = Current.get_data()
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -66,7 +76,7 @@ async def get_current_us(request: Request, background_tasks: BackgroundTasks) ->
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_current_US()
+        data = CurrentUS.get_data()
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -86,7 +96,7 @@ async def get_total(request: Request, background_tasks: BackgroundTasks) -> Dict
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_total()
+        data = Total.get_data()
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -103,7 +113,7 @@ async def get_confirmed(request: Request, background_tasks: BackgroundTasks) -> 
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_confirmed()
+        data = Confirm.get_data()
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -120,7 +130,7 @@ async def get_deaths(request: Request, background_tasks: BackgroundTasks) -> Dic
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_deaths()
+        data = Death.get_data()
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -137,7 +147,7 @@ async def get_recovered(request: Request, background_tasks: BackgroundTasks) -> 
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        data = COVID_API_V2.get_recovered()
+        data = Recovered.get_data()
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=e)
@@ -177,7 +187,7 @@ async def get_country(country_name: str, request: Request, background_tasks: Bac
     """
     try:
         background_tasks.add_task(write_log, requested_path=str(request.url), client_ip=str(request.client))
-        raw_data = COVID_API_V2.get_country(country_name.lower())
+        raw_data = Country.get_data(country_name.lower())
 
     except Exception:
         raise HTTPException(status_code=404, detail="Item not found")
