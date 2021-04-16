@@ -11,6 +11,7 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
+from builders import CountryBuilder
 from models.base_model import ResponseModel
 from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          CountryModel, CurrentModel,
@@ -116,8 +117,20 @@ class CovidAPIv2Integrator:
         df_grp_by_country = df_grp_by_country.reset_index()
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
 
-        all_country_data = [CountryModel(**v) for v in df_grp_by_country.to_dict('index').values()]
+	######
+        ## all_country_data = [CountryModel(**v) for v in df_grp_by_country.to_dict('index').values()]
+	######
 
+        all_country_data = []
+        #
+        # construct a concrete builder
+        countryBuilder = CountryBuilder()
+
+        # use builder to construct the country objects
+        # from its parts of location, confirmed, deaths, recovered and active
+        for value in df_grp_by_country.to_dict('index').values():
+               country_obj = countryBuilder.build(value)
+               all_country_data.append(country_obj)
 
         # Check input
         if not isinstance(country_name, str) or not country_name.isalpha():
