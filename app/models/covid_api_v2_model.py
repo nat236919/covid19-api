@@ -44,9 +44,8 @@ class TotalModel(BaseModel):
 
 #######################################
 # ConfirmedModel
-#######################################
-class ConfirmedModel(BaseModel):
-    confirmed: int
+####################################### 
+class ConfirmedModel(BaseModel): confirmed: int
 
 
 #######################################
@@ -79,6 +78,14 @@ class CountryModel(BaseModel):
     deaths: int
     recovered: int
     active: int
+
+class FormattedCountryModel(BaseModel):
+    location: str
+    confirmed: str
+    deaths: str
+    recovered: str
+    active: str
+
 
 
 #######################################

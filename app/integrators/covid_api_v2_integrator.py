@@ -12,6 +12,7 @@ from typing import Any, Dict, List
 import pandas as pd
 
 from builders import CountryBuilder
+from adapters import Humanreadable
 from models.base_model import ResponseModel
 from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
                                          CountryModel, CurrentModel,
@@ -128,8 +129,9 @@ class CovidAPIv2Integrator:
 
         # use builder to construct the country objects
         # from its parts of location, confirmed, deaths, recovered and active
+        adapter = Humanreadable()
         for value in df_grp_by_country.to_dict('index').values():
-               country_obj = countryBuilder.build(value)
+               country_obj = adapter.adapt(countryBuilder.build(value))
                all_country_data.append(country_obj)
 
         # Check input
