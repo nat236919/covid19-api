@@ -19,8 +19,38 @@ from models.covid_api_v1_model import (ConfirmedModel, CountriesModel,
 from utils.get_data import get_data
 
 
+
+
+class BridgePattern:
+  
+    def add_dt_and_ts(self):
+      pass
+    
+    def get_current_status(self):
+      pass
+    
+    def get_confirmed_cases(self):
+      pass
+    
+    def get_deaths(self):
+      pass
+    
+    def get_recovered(self):
+      pass
+    
+    def get_total(self):
+      pass
+    
+    def get_affected_countries(self):
+      pass
+    
+    def get_time_series(self):
+      pass
+    
+    
 # Create a model and its methods
-class CovidAPIv1:
+
+class CovidAPIv1（BridgePattern）:
     """ Model and Its methods """
     def __init__(self) -> None:
         """ Get data from helper -> the source data """
