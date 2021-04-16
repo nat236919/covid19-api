@@ -23,13 +23,30 @@ COVID_API_V2 = CovidAPIv2Integrator(DAILY_REPORTS, DATA_TIME_SERIES)
 
 
 # Logging
+class SingletonLogging(object): #Singlenton Pattern for Logging 
+    instance = None 
+
+    @staticmethod
+    def get_instance():
+        if SingletonLogging.instnace is None:
+            instance = SingletonLogging()
+        else:
+            raise Exception("This is not possible")
+        return instance
+    def __init__(self) -> None: #"private constructor"
+        SingletonLogging.instance = self
+    
+    def write_log(self, requested_path, client_ip):
+        time_format = '%d-%b-%Y'
+        file_name = datetime.now().strftime(time_format)
+        with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
+            date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
+            message = date_time_message + requested_path + ' | ' + client_ip + '\n'
+            log_file.write(message)
+
 def write_log(requested_path: str, client_ip: str) -> None:
-    time_format = '%d-%b-%Y'
-    file_name = datetime.now().strftime(time_format)
-    with open('logs/{}.txt'.format(file_name), mode='a+') as log_file:
-        date_time_message = datetime.now().strftime(f'{time_format}, %H:%M:%S | ')
-        message = date_time_message + requested_path + ' | ' + client_ip + '\n'
-        log_file.write(message)
+    SingletonLogging = SingletonLogging.get_instance()
+    SingletonLogging.write_log(requested_path, client_ip)
     return None
 
 
