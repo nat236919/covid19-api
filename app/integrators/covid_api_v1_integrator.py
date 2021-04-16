@@ -77,23 +77,42 @@ class CovidAPIv1:
 
         return current_data
 
+
+
+
+class ConfirmedCases(CovidAPIv1):
+    
     def get_confirmed_cases(self) -> Dict[str, int]:
         """ Summation of all confirmed cases """
         data = {'confirmed': sum([int(i) for i in self.df_confirmed['confirmed']])}
         data = ConfirmedModel(**self.add_dt_and_ts(data))
+        
         return data
+    
 
+class ConfirmedDeaths(CovidAPIv1):
+    
     def get_deaths(self) -> Dict[str, int]:
         """ Summation of all deaths """
         data = {'deaths': sum([int(i) for i in self.df_deaths['deaths']])}
         data = DeathsModel(**self.add_dt_and_ts(data))
+        
         return data
 
+
+class ConfirmedRecoveries(CovidAPIv1):
+    
     def get_recovered(self) -> Dict[str, int]:
         """ Summation of all recovers """
         data = {'recovered': sum([int(i) for i in self.df_recovered['recovered']])}
         data = RecoveredModel(**self.add_dt_and_ts(data))
+    
         return data
+        
+        
+        
+
+class ReturnConfirmed(CovidAPIv1):
 
     def get_total(self) -> Dict[str, Any]:
         """ Summation of Confirmed, Deaths, Recovered """
@@ -103,7 +122,11 @@ class CovidAPIv1:
             'recovered': self.get_recovered().recovered
             }
         data = TotalModel(**self.add_dt_and_ts(data))
+        
         return data
+
+    
+class CountriesAffected(CovidAPIv1):
 
     def get_affected_countries(self) -> Dict[str, List]:
         """ The affected countries """
@@ -111,7 +134,11 @@ class CovidAPIv1:
         sort_filter_others = lambda country_list: sorted([country for country in country_list if country not in ['Others']])
         data = {'countries': sort_filter_others(self.df_confirmed['Country/Region'].unique().tolist())}
         data = CountriesModel(**self.add_dt_and_ts(data))
+        
         return data
+
+    
+class ConfirmedTime(CovidAPIv1):
 
     def get_time_series(self) -> Dict[str, Dict]:
         """ Raw time series """
@@ -121,4 +148,5 @@ class CovidAPIv1:
             'recovered':  [v for v in self.df_time_series_recovered.values()],
         }
         data = self.add_dt_and_ts(data)
+        
         return data
