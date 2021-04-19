@@ -10,22 +10,26 @@ from functools import wraps
 from typing import Any, Dict, List
 
 import pandas as pd
+from pydantic import BaseModel
 
 from models.base_model import ResponseModel
 from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
-                                         CountryModel, CurrentModel,
-                                         CurrentUSModel, DeathsModel,
-                                         RecoveredModel,
-                                         TimeseriesCaseCoordinatesModel,
-                                         TimeseriesCaseDataModel,
-                                         TimeseriesCaseModel,
-                                         TimeseriesGlobalModel,
-                                         TimeseriesUSCoordinatesModel,
-                                         TimeseriesUSDataModel,
-                                         TimeseriesUSInfoModel,
-                                         TimeseriesUSModel, TotalModel)
+                                       CountryModel, CurrentModel,
+                                       CurrentUSModel, DeathsModel,
+                                       RecoveredModel,
+                                       TimeseriesCaseCoordinatesModel,
+                                       TimeseriesCaseDataModel,
+                                       TimeseriesCaseModel,
+                                       TimeseriesGlobalModel,
+                                       TimeseriesUSCoordinatesModel,
+                                       TimeseriesUSDataModel,
+                                       TimeseriesUSInfoModel,
+                                       TimeseriesUSModel, TotalModel)
+
+from models.covid_api_v2_model import Models
+
 from utils.get_data import (DailyReports, DataTimeSeries,
-                              get_data_lookup_table)
+                            get_data_lookup_table)
 
 
 class CovidAPIv2Integrator:
@@ -70,10 +74,10 @@ class CovidAPIv2Integrator:
     # GET - Current
     #######################################################################################
     @wrap_data
-    def get_current(self) -> List[CurrentModel]:
+    def get_current(self) -> List[BaseModel]:
         """ Current data from all locations (Lastest date) """
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
+        self.df = self.daily_reports.get_data_daily_reports()  # Get base data
         self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
         self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
 
@@ -81,7 +85,8 @@ class CovidAPIv2Integrator:
         df_grp_by_country = df_grp_by_country.reset_index()
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
 
-        data = [CurrentModel(**v) for v in df_grp_by_country.to_dict('index').values()]
+        model = Models(CurrentModel).return_model()
+        data = [model(**v) for v in df_grp_by_country.to_dict('index').values()]
 
         return data
     
@@ -89,17 +94,19 @@ class CovidAPIv2Integrator:
     # GET - Current US
     #######################################################################################
     @wrap_data
-    def get_current_US(self) -> List[CurrentUSModel]:
+    def get_current_US(self) -> List[BaseModel]:
         """ Get current data for USA's situation """
-        self.df_US = self.daily_reports.get_data_daily_reports(US=True) # Get base data
+        self.df_US = self.daily_reports.get_data_daily_reports(US=True)  # Get base data
 
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        df = self.df_US.groupby(['Province_State'])[concerned_columns].sum().sort_values(by='Confirmed', ascending=False)
+        df = self.df_US.groupby(['Province_State'])[concerned_columns].sum().sort_values(by='Confirmed',
+                                                                                         ascending=False)
         df = df[concerned_columns].astype(int)
         df = df.reset_index()
         df.columns = ['Province_State'] + concerned_columns
 
-        data = [CurrentUSModel(**v) for v in df.to_dict('index').values()]
+        model = Models(CurrentUSModel).return_model()
+        data = [model(**v) for v in df.to_dict('index').values()]
 
         return data
     
@@ -107,10 +114,10 @@ class CovidAPIv2Integrator:
     # GET - Country
     #######################################################################################
     @wrap_data
-    def get_country(self, country_name: str) -> CountryModel:
+    def get_country(self, country_name: str) -> BaseModel:
         """ Get a country data from its name or ISO 2 """
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
+        self.df = self.daily_reports.get_data_daily_reports()  # Get base data
         self.df_grp_by_country = self.df.groupby('Country_Region')[concerned_columns].sum()
         self.df_grp_by_country[concerned_columns] = self.df_grp_by_country[concerned_columns].astype(int)
 
@@ -118,8 +125,8 @@ class CovidAPIv2Integrator:
         df_grp_by_country = df_grp_by_country.reset_index()
         df_grp_by_country.columns = ['location', 'confirmed', 'deaths', 'recovered', 'active']
 
-        all_country_data = [CountryModel(**v) for v in df_grp_by_country.to_dict('index').values()]
-
+        model = Models(CountryModel).return_model()
+        all_country_data = [model(**v) for v in df_grp_by_country.to_dict('index').values()]
 
         # Check input
         if not isinstance(country_name, str) or not country_name.isalpha():
@@ -138,10 +145,12 @@ class CovidAPIv2Integrator:
     # GET - Confirm
     #######################################################################################
     @wrap_data
-    def get_confirmed(self) -> ConfirmedModel:
+    def get_confirmed(self) -> BaseModel:
         """ Summation of all confirmed cases """
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = ConfirmedModel(
+        self.df = self.daily_reports.get_data_daily_reports()  # Get base data
+
+        model = Models(ConfirmedModel).return_model()
+        data = model(
             confirmed=int(self.df['Confirmed'].sum())
         )
         return data
@@ -150,9 +159,10 @@ class CovidAPIv2Integrator:
     # GET - Deaths
     #######################################################################################
     @wrap_data
-    def get_deaths(self) -> DeathsModel:
+    def get_deaths(self) -> BaseModel:
         """ Summation of all deaths """
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
+        self.df = self.daily_reports.get_data_daily_reports()  # Get base data
+        model = Models(DeathsModel).return_model()
         data = DeathsModel(
             deaths=int(self.df['Deaths'].sum())
         )
@@ -162,10 +172,11 @@ class CovidAPIv2Integrator:
     # GET - Recovered
     #######################################################################################
     @wrap_data
-    def get_recovered(self) -> RecoveredModel:
+    def get_recovered(self) -> BaseModel:
         """ Summation of all recovers """
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = RecoveredModel(
+        self.df = self.daily_reports.get_data_daily_reports()  # Get base data
+        model = Models(RecoveredModel).return_model()
+        data = model(
             recovered=int(self.df['Recovered'].sum())
         )
         return data
@@ -174,10 +185,11 @@ class CovidAPIv2Integrator:
     # GET - Active
     #######################################################################################
     @wrap_data
-    def get_active(self) -> ActiveModel:
+    def get_active(self) -> BaseModel:
         """ Summation of all actives """
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = ActiveModel(
+        self.df = self.daily_reports.get_data_daily_reports()  # Get base data
+        model = Models(ActiveModel).return_model()
+        data = model(
             active=int(self.df['Active'].sum())
         )
         return data
@@ -186,10 +198,11 @@ class CovidAPIv2Integrator:
     # GET - Total
     #######################################################################################
     @wrap_data
-    def get_total(self) -> TotalModel:
+    def get_total(self) -> BaseModel:
         """ Summation of Confirmed, Deaths, Recovered, Active """
-        self.df = self.daily_reports.get_data_daily_reports() # Get base data
-        data = TotalModel(
+        self.df = self.daily_reports.get_data_daily_reports()  # Get base data
+        model = Models(TotalModel).return_model()
+        data = model(
             confirmed=int(self.df['Confirmed'].sum()),
             deaths=int(self.df['Deaths'].sum()),
             recovered=int(self.df['Recovered'].sum()),

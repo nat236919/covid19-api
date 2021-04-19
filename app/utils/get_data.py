@@ -36,14 +36,39 @@ class DailyReports:
 
     # Get data from daily reports
     def get_data_daily_reports(self, US: bool = False) -> pd.DataFrame:
-        """ Get data from BASE_URL_DAILY_REPORTS """
+        """ Get data from BASE_URL_DAILY_REPORTS
+
+        pre:
+            # must be a boolean
+            isinstance(US, boolean)
+
+        post:
+            # must be a pd.DataFrame
+            isinstance(df, pd.DataFrame)
+
+            # it contains four columns, e.g. confirmed, deaths, recovered and active
+            len(df.columns) = 4
+
+            # it contains Confirmed column
+            df.columns[0] = 'Confirmed'
+
+            # it contains Deaths column
+            df.columns[1] = 'Deaths'
+
+            # it contains Recovered column
+            df.columns[2] = 'Recovered'
+
+            # it contains Active column
+            df.columns[3] = 'Active'
+
+        """
         # Extract the data
         df = pd.read_csv(self.latest_base_US_url) if US else pd.read_csv(self.latest_base_url)
 
         # Data pre-processing
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         df = helper_df_cols_cleaning(df, concerned_columns, int)
-        
+
         return df
 
       
