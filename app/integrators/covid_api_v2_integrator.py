@@ -36,7 +36,7 @@ class CovidAPIv2Integrator:
             "ts": int = "{timestamp}
         }
     """
-    
+
     def __init__(self,  daily_reports: DailyReports, time_series: DataTimeSeries) -> None:
         """ Initiate instances """
         self.lookup_table = get_data_lookup_table()
@@ -47,6 +47,18 @@ class CovidAPIv2Integrator:
         }
         self.daily_reports = daily_reports
         self.time_series = time_series
+        self.observers = []
+
+    """
+    suggested code for adding an observer pattern to the project
+    """
+    # a method for triggering all the observers after each method call
+    def observers_trigger(self, request_name, return_val):
+        for ob in self.observers:
+            ob.fire(request_name, return_val)
+    # a method for adding an observer
+    def add_observer(self, ob):
+        self.observers.append(ob)
 
     def wrap_data(func) -> ResponseModel:
         """ Wrap a result in a schemed data """
@@ -65,7 +77,7 @@ class CovidAPIv2Integrator:
                 reponse_model = ResponseModel(**packed_data)
             return reponse_model
         return wrapper
-    
+
     #######################################################################################
     # GET - Current
     #######################################################################################
@@ -83,8 +95,11 @@ class CovidAPIv2Integrator:
 
         data = [CurrentModel(**v) for v in df_grp_by_country.to_dict('index').values()]
 
+        # trigger thye observer
+        self.observers_trigger('get_current', data)
+
         return data
-    
+
     #######################################################################################
     # GET - Current US
     #######################################################################################
@@ -101,8 +116,11 @@ class CovidAPIv2Integrator:
 
         data = [CurrentUSModel(**v) for v in df.to_dict('index').values()]
 
+        # trigger thye observer
+        self.observers_trigger('get_current_US', data)
+
         return data
-    
+
     #######################################################################################
     # GET - Country
     #######################################################################################
@@ -132,8 +150,11 @@ class CovidAPIv2Integrator:
         data = [country_data for country_data in all_country_data if country_data.location.lower() in [country_name, country_name_from_code]]
         data = data[0] if data else {}
 
+        # trigger thye observer
+        self.observers_trigger('get_country', data)
+
         return data
-    
+
     #######################################################################################
     # GET - Confirm
     #######################################################################################
@@ -144,6 +165,8 @@ class CovidAPIv2Integrator:
         data = ConfirmedModel(
             confirmed=int(self.df['Confirmed'].sum())
         )
+        # trigger thye observer
+        self.observers_trigger('get_confirmed', data)
         return data
 
     #######################################################################################
@@ -156,8 +179,10 @@ class CovidAPIv2Integrator:
         data = DeathsModel(
             deaths=int(self.df['Deaths'].sum())
         )
+        # trigger thye observer
+        self.observers_trigger('get_deaths', data)
         return data
-    
+
     #######################################################################################
     # GET - Recovered
     #######################################################################################
@@ -168,8 +193,10 @@ class CovidAPIv2Integrator:
         data = RecoveredModel(
             recovered=int(self.df['Recovered'].sum())
         )
+        # trigger thye observer
+        self.observers_trigger('get_recovered', data)
         return data
-    
+
     #######################################################################################
     # GET - Active
     #######################################################################################
@@ -180,8 +207,10 @@ class CovidAPIv2Integrator:
         data = ActiveModel(
             active=int(self.df['Active'].sum())
         )
+        # trigger thye observer
+        self.observers_trigger('get_active', data)
         return data
-    
+
     #######################################################################################
     # GET - Total
     #######################################################################################
@@ -195,8 +224,10 @@ class CovidAPIv2Integrator:
             recovered=int(self.df['Recovered'].sum()),
             active=int(self.df['Active'].sum())
         )
+        # trigger thye observer
+        self.observers_trigger('get_total', data)
         return data
-    
+
     #######################################################################################
     # GET - Timeseries
     #######################################################################################
@@ -215,8 +246,10 @@ class CovidAPIv2Integrator:
             raw_data = self.df_time_series
             data = self.__extract_time_series_global(raw_data)
 
+        # trigger thye observer
+        self.observers_trigger('get_time_series', data)
         return data
-    
+
     def __extract_time_series(self, time_series: Dict) -> List[TimeseriesCaseModel]:
         """ Extract time series from a given case """
 
@@ -244,10 +277,10 @@ class CovidAPIv2Integrator:
         # Extract the time series data
         time_series_data = []
         for data in __unpack_inner_time_series(time_series):
-            time_series_data.append(data) 
+            time_series_data.append(data)
 
         return time_series_data
-    
+
     def __extract_time_series_global(self, dataframe_dict: Dict[str, pd.DataFrame]) -> List[TimeseriesGlobalModel]:
         """ Extract time series for global case
             Iterating all cases from all time series
@@ -264,7 +297,7 @@ class CovidAPIv2Integrator:
         data = [{k: TimeseriesGlobalModel(**v)} for k, v in global_dict.items()]
 
         return data
-    
+
     #######################################################################################
     # GET - Timeseries US
     #######################################################################################
@@ -278,6 +311,8 @@ class CovidAPIv2Integrator:
             raw_data = self.df_US_time_series[case].T.to_dict()
             data = self.__extract_US_time_series(raw_data)
 
+        # trigger thye observer
+        self.observers_trigger('get_US_time_series', data)
         return data
 
     def __extract_US_time_series(self, time_series: Dict[str, Any]) -> List[TimeseriesUSModel]:
@@ -286,7 +321,7 @@ class CovidAPIv2Integrator:
         def __unpack_US_inner_time_series(time_series: Dict[str, Any]) -> TimeseriesUSModel:
             for data in time_series.values():
                 excluded_cols = ['UID', 'iso2', 'iso3', 'code3', 'FIPS',
-                                'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_', 
+                                'Admin2','Province_State', 'Country_Region', 'Lat', 'Long_',
                                 'Combined_Key','Population']
                 # Info
                 timeseries_US_info_model = TimeseriesUSInfoModel(
@@ -322,3 +357,13 @@ class CovidAPIv2Integrator:
             time_series_data.append(data)
 
         return time_series_data
+
+# suggested 'abstract' observer class/interface
+# that future contributors can implement to add observers such as
+# counters or adding checksum to the objects responded by the API server
+class Observer:
+    def __init__(self):
+        pass
+    # the 'abstract' method to overwrite
+    def event_fire(self, request_name, return_val):
+        pass
