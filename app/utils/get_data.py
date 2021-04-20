@@ -19,24 +19,24 @@ from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
 from abc import ABC, abstractmethod
 from typing import List
 
-##################################################################################    
+##################################################################################
 ## Version 2
-##################################################################################  
+##################################################################################
 # Get Lookup table
 def get_data_lookup_table() -> Dict[str, str]:
     """ Get lookup table (country references for iso2) """
     lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
     lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
-    
+
     # Create referral dictionary
     data = lookup_df.to_dict('records')
     data = {v['iso2']: v['Country_Region'] for v in data}
 
     return data
 
-##################################################################################    
+##################################################################################
 ## DailyReport
-##################################################################################  
+##################################################################################
 class Subject(ABC):
     """
     The Subject interface declares a set of methods for managing subscribers.
@@ -76,7 +76,7 @@ class DailyReports:
     more comprehensively (categorized by event type, etc.).
     """
 
-    def __init__(self) -> None: 
+    def __init__(self) -> None:
         self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
         self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
 
@@ -130,9 +130,9 @@ class DailyReportSubscriber(Observer):
     def update(self, subject: Subject) -> None:
             print("DailyReportSubscriber: updated")
 
-##################################################################################    
+##################################################################################
 ## Timeseries
-##################################################################################    
+##################################################################################
 # Get data from time series (General and US)
 class DataTimeSeries:
     """ Get the tiemseires dataset from JHU CSSE and Prepare DataFrames """
