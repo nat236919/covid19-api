@@ -14,25 +14,87 @@ from .file_paths import JHU_CSSE_FILE_PATHS
 from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
                      helper_get_latest_data_url)
 
+from __future__ import annotations
+from abc import ABC, abstractmethod
+from typing import List
 
+##################################################################################
+## Version 2
+##################################################################################
 # Get Lookup table
 def get_data_lookup_table() -> Dict[str, str]:
     """ Get lookup table (country references for iso2) """
     lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
     lookup_df = pd.read_csv(lookup_table_url)[['iso2', 'Country_Region']]
-    
+
     # Create referral dictionary
     data = lookup_df.to_dict('records')
     data = {v['iso2']: v['Country_Region'] for v in data}
 
     return data
 
+##################################################################################
+## DailyReport
+##################################################################################
+class Subject(ABC):
+    """
+    The Subject interface declares a set of methods for managing subscribers.
+    """
+
+    @abstractmethod
+    def attach(self, observer: Observer) -> None:
+        """
+        Attach an observer to the subject.
+        """
+        pass
+
+    @abstractmethod
+    def detach(self, observer: Observer) -> None:
+        """
+        Detach an observer from the subject.
+        """
+        pass
+
+    @abstractmethod
+    def notify(self) -> None:
+        """
+        Notify all observers about an event.
+        """
+        pass
+
 
 # Get Daily Reports Data (General and US)
 class DailyReports:
-    def __init__(self) -> None: 
+    """
+    The Subject owns some important state and notifies observers when the state
+    changes.
+    """
+    _observers: List[Observer] = []
+    """
+    List of subscribers. In real life, the list of subscribers can be stored
+    more comprehensively (categorized by event type, etc.).
+    """
+
+    def __init__(self) -> None:
         self.latest_base_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS'])
         self.latest_base_US_url = helper_get_latest_data_url(JHU_CSSE_FILE_PATHS['BASE_URL_DAILY_REPORTS_US'])
+
+    def attach(self, observer: Observer) -> None:
+        print("Subject: Attached an observer.")
+        self._observers.append(observer)
+
+    def detach(self, observer: Observer) -> None:
+        self._observers.remove(observer)
+
+    """
+    The subscription management methods.
+    """
+    def notify(self) -> None:
+        """
+        Trigger an update in each subscriber.
+        """
+        for observer in self._observers:
+            observer.update(self)
 
     # Get data from daily reports
     def get_data_daily_reports(self, US: bool = False) -> pd.DataFrame:
@@ -43,10 +105,33 @@ class DailyReports:
         # Data pre-processing
         concerned_columns = ['Confirmed', 'Deaths', 'Recovered', 'Active']
         df = helper_df_cols_cleaning(df, concerned_columns, int)
-        
+
+        self.notify()
+
         return df
 
-      
+class Observer(ABC):
+    """
+    The Observer interface declares the update method, used by subjects.
+    """
+    @abstractmethod
+    def update(self, subject: Subject) -> None:
+        """
+        Receive update from subject.
+        """
+        pass
+
+"""
+Concrete Observers react to the updates issued by the Subject they had been
+attached to.
+"""
+class DailyReportSubscriber(Observer):
+    def update(self, subject: Subject) -> None:
+            print("DailyReportSubscriber: updated")
+
+##################################################################################
+## Timeseries
+##################################################################################
 # Get data from time series (General and US)
 class DataTimeSeries:
     """ Get the tiemseires dataset from JHU CSSE and Prepare DataFrames """
