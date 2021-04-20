@@ -119,21 +119,40 @@ class TimeseriesCaseModelBuilder(object):
         self.province_state = province_state
         self.country_region = country_region
         self.timeseries = []
+        self.coordinates = None
+        # added a state field ensuring the object is properly instantiated before calling .build()
+        self.state = 'started'
+
+    def __check_state(self):
+        if self.coordinates != None and self.timeseries != None and len(self.timeseries) > 0:
+            self.state = 'finished'
+        else:
+            self.state = 'building'
+    # getting state
+    def get_state(self):
+        return self.state
 
     def set_coordinates(self, lat, long):
         cord = TimeseriesCaseCoordinatesModel(Lat=lat, Long=long)
         self.coordinates = cord
+        self.__check_state()
 
     # adds one entry to the list
     def add_time_series_entry(self, date, value):
         self.timeseries.append(TimeseriesCaseDataModel(date=date, value=value))
+        self.__check_state()
 
     # add whole map to list
     def add_time_series(self, temp_time_series_dict):
         timeseries_data_model_list = [TimeseriesCaseDataModel(date=k, value=v) for k, v in temp_time_series_dict.items()]
         self.timeseries.extend(timeseries_data_model_list)
+        self.__check_state()
 
     def build(self) -> TimeseriesCaseModel:
+        # might add code regarding the current state of this builder
+        # if self.state != 'finished':
+        #       something...
+
         return TimeseriesCaseModel(
             Province_State=self.province_state,
             Country_Region=self.country_region,
