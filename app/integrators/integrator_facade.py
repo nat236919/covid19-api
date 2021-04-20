@@ -1,4 +1,4 @@
-from .covid_api_v1_integrator import CovidAPIv1
+from .covid_api_v1_integrator import CovidAPIv1Integrator
 from .covid_api_v2_integrator import CovidAPIv2Integrator
 
 from ..utils.get_data import (DailyReports, DataTimeSeries,
@@ -12,7 +12,7 @@ class Integrator_Facade:
     def __init__(self, version: int, daily_reports: DailyReports = None, time_series: DataTimeSeries = None):
         self.version = version
         if(self.version == 1):
-            self.integrator = CovidAPIv1()
+            self.integrator = CovidAPIv1Integrator()
         elif(self.version == 2):
             self.integrator = CovidAPIv2Integrator(daily_reports, time_series)
 
