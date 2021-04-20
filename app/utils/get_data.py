@@ -5,6 +5,8 @@ AUTHOR: Nuttaphat Arunoprayoch
 DATE: 9-Feb-2020
 """
 # Import libraries
+
+from __future__ import annotations
 import csv
 from typing import Dict
 
@@ -14,7 +16,6 @@ from .file_paths import JHU_CSSE_FILE_PATHS
 from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
                      helper_get_latest_data_url)
 
-from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List
 
