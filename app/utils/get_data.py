@@ -9,6 +9,8 @@ import csv
 from typing import Dict
 
 import pandas as pd
+import Observer
+import Subject
 
 from .file_paths import JHU_CSSE_FILE_PATHS
 from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
