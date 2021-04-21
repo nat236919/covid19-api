@@ -10,8 +10,7 @@ from functools import wraps
 from typing import Any, Dict, List
 
 import pandas as pd
-import Observer
-import Subject
+from .IObserver_interface import Observer
 
 from models.base_model import ResponseModel
 from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
