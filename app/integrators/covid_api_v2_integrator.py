@@ -36,7 +36,8 @@ class CovidAPIv2Integrator:
             "ts": int = "{timestamp}
         }
     """
-    def __init__(self, daily_reports: DailyReports) -> None:
+
+    def __init__(self, daily_reports: DailyReports, time_series: DataTimeSeries) -> None:
         """ Initiate instances """
         self.lookup_table = get_data_lookup_table()
         self.scheme = {
@@ -45,6 +46,19 @@ class CovidAPIv2Integrator:
             'ts': None
         }
         self.daily_reports=daily_reports
+        self.time_series = time_series
+        self.observer = []
+
+    #a method for triggering all the observers after each method call
+    def observers_trigger(self, request_name, return_val):
+        for obs in self.observer :
+            obs.fire(request_name, return_val)
+    
+    #a method for adding an observer to a method
+    def add_observer(self, obs):
+        self.observer.append(obs)
+
+
     
     def wrap_data(func) -> ResponseModel:
         """ Wrap a result in a schemed data """
@@ -81,6 +95,8 @@ class CovidAPIv2Integrator:
 
         data = [CurrentModel(**v) for v in df_grp_by_country.to_dict('index').values()]
 
+        self.observers_trigger('get_current', data) #trigger the observer for getCurrent method
+
         return data
     
     #######################################################################################
@@ -98,6 +114,8 @@ class CovidAPIv2Integrator:
         df.columns = ['Province_State'] + concerned_columns
 
         data = [CurrentUSModel(**v) for v in df.to_dict('index').values()]
+
+        self.observers_trigger('get_current_US', data) #trigger the observer for getCurrentUS method
 
         return data
     
@@ -129,6 +147,8 @@ class CovidAPIv2Integrator:
 
         data = [country_data for country_data in all_country_data if country_data.location.lower() in [country_name, country_name_from_code]]
         data = data[0] if data else {}
+
+        self.observers_trigger('get_country', data) #trigger the observer for getCountry method
 
         return data
     
