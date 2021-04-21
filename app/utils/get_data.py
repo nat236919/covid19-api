@@ -48,14 +48,32 @@ class DailyReports:
 
       
 # Get data from time series (General and US)
-class DataTimeSeries:
+class DataTimeSeries(Subject):
     """ Get the tiemseires dataset from JHU CSSE and Prepare DataFrames """
+    _state: bool = None
+    _observers: List[Observer] = []
+
+    def attach(self, observer: Observer) -> None:
+        self._observers.append(observer)
+
+    def detach(self, observer: Observer) -> None:
+        self._observers.remove(observer)
+
+    def notify(self) -> None:
+        """
+        Trigger an update in each subscriber.
+        """
+        for observer in self._observers:
+            observer.update(self)
+
     def get_data_time_series(self, US: bool = False) -> Dict[str, pd.DataFrame]:
         """ Get the dataset from JHU CSSE """
         dataframes = {}
 
         # Determine categories and url
         if US:
+            self._state = True
+            self.notify()
             categories = JHU_CSSE_FILE_PATHS['CATEGORIES'][:-1] # Select only 'confirmed' and 'deaths'
             url = JHU_CSSE_FILE_PATHS['BASE_URL_US_TIME_SERIES']
         else:
