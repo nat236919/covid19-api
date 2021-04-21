@@ -10,6 +10,8 @@ from functools import wraps
 from typing import Any, Dict, List
 
 import pandas as pd
+import Observer
+import Subject
 
 from models.base_model import ResponseModel
 from models.covid_api_v2_model import (ActiveModel, ConfirmedModel,
@@ -28,7 +30,7 @@ from utils.get_data import (DailyReports, DataTimeSeries,
                               get_data_lookup_table)
 
 
-class CovidAPIv2Integrator(IObserver):
+class CovidAPIv2Integrator(Observer):
     """ Covid-19 API v2 methods
         SCHEMA: {
             "data": Any,
