@@ -16,6 +16,36 @@ from .helper import (helper_df_cleaning, helper_df_cols_cleaning,
 
 
 # Get Lookup table
+# class covidUpdaterNotify(ABC):
+#     """
+#     The Subject interface declares a set of methods for managing subscribers.
+#     """
+#
+#     @abstractmethod
+#     def attach(self, client: clint) -> None:
+#         """
+#         Attach an observer(client) to the subject.
+#
+#         """
+#         pass
+#
+#     @abstractmethod
+#     def detach(self, client: client ) -> None:
+#         """
+#         Detach an observer from the subject.
+#
+#         """
+#         pass
+#
+#     @abstractmethod
+#     def notify(self) -> None:
+#         """
+#         Notify all observers about an event.
+# 	Notify all observers about an update for the covid-19 information from the university
+#         """
+#         pass
+
+
 def get_data_lookup_table() -> Dict[str, str]:
     """ Get lookup table (country references for iso2) """
     lookup_table_url = JHU_CSSE_FILE_PATHS['BASE_URL_LOOKUP_TABLE']
