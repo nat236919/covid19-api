@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn:python3.7
+FROM tiangolo/uvicorn-gunicorn:python3.8-slim
 
 # Open port
 EXPOSE 80
