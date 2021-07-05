@@ -12,7 +12,7 @@ from ..integrators import covid_api_v1_integrator
 
 
 # Prepare the model
-INTEGRATOR = covid_api_v1_integrator.CovidAPIv1()
+INTEGRATOR = covid_api_v1_integrator.CovidAPIv1Integrator()
 
 # Test Initial attributes
 def test_init() -> None:
