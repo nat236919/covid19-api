@@ -6,10 +6,6 @@ DATE: 9-Feb-2020
 RUN SERVER: uvicorn main:app --reload
 """
 # Import libraries
-import sys
-from functools import wraps
-from typing import Any, Dict
-
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
