@@ -3,7 +3,8 @@ python:
   - "3.8"
 # command to install dependencies
 install:
-  - pip install -r app/requirements.txt
+  - pip install pipenv
+  - pipenv install
 # command to run tests
 script:
   - pytest app/tests/test_get_data.py
