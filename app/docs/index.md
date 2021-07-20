@@ -20,7 +20,7 @@
       <img src="https://img.shields.io/github/license/nat236919/covid19-api" alt="licence">
   </a>
   <a href="https://travis-ci.org/github/nat236919/covid19-api" target="_blank">
-      <img src="https://travis-ci.org/nat236919/covid19-api.svg?branch=development" alt="build">
+      <img src="https://travis-ci.com/nat236919/covid19-api.svg?branch=master" alt="build">
   </a>
 </p>
 
