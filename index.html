@@ -307,8 +307,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-install" class="md-nav__link">
-    How to install
+  <a href="#how-to-start-a-server" class="md-nav__link">
+    How to Start a Server
   </a>
   
 </li>
@@ -495,8 +495,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-install" class="md-nav__link">
-    How to install
+  <a href="#how-to-start-a-server" class="md-nav__link">
+    How to Start a Server
   </a>
   
 </li>
@@ -638,9 +638,9 @@
 <li>Individual affected country</li>
 <li>Timeseries</li>
 </ol>
-<h2 id="how-to-install">How to install</h2>
+<h2 id="how-to-start-a-server">How to Start a Server</h2>
 <ul>
-<li>Run the following command in your command line to run the server</li>
+<li>Go to <strong>app</strong> directory and Run the following command in your command line to start a server</li>
 </ul>
 <pre><code class="console">uvicorn main:app
 </code></pre>
@@ -661,7 +661,7 @@
 <ul>
 <li>The port can be changed at <b>docker-compose.override.yml</b></li>
 </ul>
-<pre><code class="yml">version: '3'
+<pre><code class="yml">version: &quot;3&quot;
 services:
   web:
     container_name: &quot;covid19_api_web_container&quot;
@@ -670,7 +670,7 @@ services:
     ports:
       - &quot;80:80&quot;
     environment:
-      - 'RUN=uvicorn main:app'
+      - &quot;RUN=uvicorn main:app&quot;
 </code></pre>
 
 <h2 id="how-to-install-from-dockerhub">How to install (from Dockerhub)</h2>
