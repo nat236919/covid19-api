@@ -30,27 +30,27 @@ This API provides the information regarding '2019 Novel Coronavirus (covid-19)'.
 
 ## Example
 
-* https://covid19api.azurewebsites.net/
-* https://covid2019-api.herokuapp.com/
+- https://covid19api.azurewebsites.net/
+- https://covid2019-api.herokuapp.com/
 
 ## Applications
 
-* [Coronavirus App by YaseenAbdullah](https://github.com/YaseenAbdullah/coronavirus)
-* [Covid 19 App - Map, info & help by DavidBarbaran](https://github.com/DavidBarbaran/Covid19App)
-* [COVID-19 Visual Explorer by FitnessAI](https://www.fitnessai.com/covid-19-charts-coronavirus-growth-rate-visual-explorer)
-* [BAILAM (Data and API Integration)](https://www.bailam.com/covid19)
-* [Coronavirus Tech Handbook (Data Tools)](https://coronavirustechhandbook.com/data-tools)
+- [Coronavirus App by YaseenAbdullah](https://github.com/YaseenAbdullah/coronavirus)
+- [Covid 19 App - Map, info & help by DavidBarbaran](https://github.com/DavidBarbaran/Covid19App)
+- [COVID-19 Visual Explorer by FitnessAI](https://www.fitnessai.com/covid-19-charts-coronavirus-growth-rate-visual-explorer)
+- [BAILAM (Data and API Integration)](https://www.bailam.com/covid19)
+- [Coronavirus Tech Handbook (Data Tools)](https://coronavirustechhandbook.com/data-tools)
 
 ### Reference
 
-* https://github.com/CSSEGISandData/COVID-19
+- https://github.com/CSSEGISandData/COVID-19
 
 ## Branches
 
-|  Branch           |     Feature                      |              Description                                     |
-| ----------------- | -------------------------------- |  ----------------------------------------------------------- |
-| master            | Docker + Web API                 | For deploying to a server                                    |
-| development       | Docker + Web API                 | For testing before merging to Master                         |
+| Branch      | Feature          | Description                          |
+| ----------- | ---------------- | ------------------------------------ |
+| master      | Docker + Web API | For deploying to a server            |
+| development | Docker + Web API | For testing before merging to Master |
 
 ## Features
 
@@ -60,9 +60,9 @@ This API provides the information regarding '2019 Novel Coronavirus (covid-19)'.
 4. Individual affected country
 5. Timeseries
 
-## How to install
+## How to Start a Server
 
-* Run the following command in your command line to run the server
+- Go to **app** directory and Run the following command in your command line to start a server
 
 ```console
 uvicorn main:app
@@ -70,22 +70,22 @@ uvicorn main:app
 
 ## How to install (Docker-compose)
 
-* Run the following command in your command line to run the server
+- Run the following command in your command line to run the server
 
 ```console
 docker-compose up
 ```
 
-* Or run the server in the background
+- Or run the server in the background
 
 ```console
 docker-compose up -d
 ```
 
-* The port can be changed at <b>docker-compose.override.yml</b>
+- The port can be changed at <b>docker-compose.override.yml</b>
 
 ```yml
-version: '3'
+version: "3"
 services:
   web:
     container_name: "covid19_api_web_container"
@@ -94,18 +94,18 @@ services:
     ports:
       - "80:80"
     environment:
-      - 'RUN=uvicorn main:app'
+      - "RUN=uvicorn main:app"
 ```
 
 ## How to install (from Dockerhub)
 
-* Download the latest image
+- Download the latest image
 
 ```console
 docker pull nat236919/covid19-api:latest
 ```
 
-* Create a container and run
+- Create a container and run
 
 ```console
 docker run nat236919/covid19-api

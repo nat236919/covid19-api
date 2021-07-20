@@ -5,9 +5,15 @@ EXPOSE 80
 
 # Setup work directory
 WORKDIR /app
-COPY ./app /app
+COPY app ./
 
 # Install dependencies
-COPY ./app/requirements.txt /requirements.txt
-RUN pip install --upgrade pip
-RUN pip install -r /requirements.txt
+COPY Pipfile Pipfile.lock ./
+
+RUN pip install pipenv && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends gcc python3-dev libssl-dev && \
+    pipenv install --deploy --system && \
+    apt-get remove -y gcc python3-dev libssl-dev && \
+    apt-get autoremove -y && \
+    pip uninstall pipenv -y
